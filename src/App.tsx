@@ -1,13 +1,28 @@
+import "./App.css"
 import { RouterProvider,  createBrowserRouter, redirect } from 'react-router-dom';
-import './App.css';
-import { Home } from './components/Home';
+import { Home } from './pages/Home';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { Invest } from './pages/Invest';
+import { Rank } from './pages/Rank';
+import { Mypage } from './pages/Mypage';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/invest",
+    element: <Invest />,
+  },
+  {
+    path: "/rank",
+    element: <Rank />,
+  },
+  {
+    path: "/mypage",
+    element: <Mypage />,
   },
   {
     path: "*",
@@ -20,10 +35,8 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <div className="App_main_wrap">
-        <Header />
-        <RouterProvider router={router} />
-      </div>
+      <Header />
+      <RouterProvider router={router} />
       <Footer />
     </div>
   );

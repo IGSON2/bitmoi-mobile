@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
+import langreducer from "./counter";
 
 export const store = configureStore({
-  reducer: {},
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+  reducer: {
+    language: langreducer,
+  },
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({
+  //     serializableCheck: false,
+  //   }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

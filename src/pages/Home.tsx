@@ -5,7 +5,6 @@ import "./Home.css";
 export const Home = () => {
     const pageInfo:PageInfo = {
         pageId: PageId.Home,
-        href: "/"
     }
     return (
         <div className="home">

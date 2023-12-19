@@ -17,6 +17,7 @@
   padding: 0% 10%;
   line-height: 2;
   animation: fadein 2s ease;
+  text-align: center;
 }
 
 @keyframes fadein {

@@ -5,7 +5,6 @@ import "./Mypage.css";
 export const Mypage = () => {
     const pageInfo:PageInfo = {
         pageId: PageId.MyPage,
-        href: "/"
     }
     return (
         <div className="mypage">

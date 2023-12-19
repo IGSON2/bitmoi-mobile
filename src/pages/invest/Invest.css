@@ -1,0 +1,40 @@
+.invest {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invest h1 {
+  width: 100%;
+  height: 5%;
+  text-align: center;
+}
+
+.modes {
+  width: 80%;
+  padding: 0% 10%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 10%;
+}
+
+.mode {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #cecece;
+  border-radius: 5px;
+}
+
+.mode:hover {
+  border-color: #adadad;
+}

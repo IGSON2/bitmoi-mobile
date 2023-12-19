@@ -5,7 +5,6 @@ import "./Rank.css";
 export const Rank = () => {
     const pageInfo:PageInfo = {
         pageId: PageId.Rank,
-        href: "/"
     }
     return (
         <div className="rank">

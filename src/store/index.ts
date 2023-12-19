@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import langreducer from "./counter";
+import candlesReducer from "./candles";
 
 export const store = configureStore({
   reducer: {
-    language: langreducer,
+    candles: candlesReducer,
   },
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({

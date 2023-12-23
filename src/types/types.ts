@@ -14,12 +14,12 @@ type PData = {
   high: number;
   low: number;
   open: number;
-  time: number;
+  time: string;
 };
 
 type VData = {
   value: number;
-  time: number;
+  time: string;
   color: string;
 };
 
@@ -46,6 +46,7 @@ export type Score = {
 };
 
 export type ChartProps = {
-  candles: Candles;
+  pdatas: PData[];
+  vdats: VData[];
   height: number;
 };

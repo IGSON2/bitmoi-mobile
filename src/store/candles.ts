@@ -7,11 +7,11 @@ const defaultCandle: Candle = {
     high: 0,
     low: 0,
     open: 0,
-    time: 0,
+    time: "",
   },
   vdata: {
     value: 0,
-    time: 0,
+    time: "",
     color: "",
   },
 };

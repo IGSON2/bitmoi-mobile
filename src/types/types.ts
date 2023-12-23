@@ -44,3 +44,8 @@ export type Score = {
   commission: number;
   is_liquidated: boolean;
 };
+
+export type ChartProps = {
+  candles: Candles;
+  height: number;
+};

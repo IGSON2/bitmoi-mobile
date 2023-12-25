@@ -1,23 +1,27 @@
-import { ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { ColorType, createChart, CrosshairMode, IChartApi, LineStyle,ISeriesApi, Range,Time } from "lightweight-charts";
-import { ChartProps } from "../types/types";
+import { OneChart } from "../types/types";
+import { useAppSelector } from "../hooks/hooks";
 
 const backgroundcolor:string = "#555860";
 const linecolor:string = "#ffffff";
 
-export const ChartRef = forwardRef((props:ChartProps,ref: ForwardedRef<HTMLElement | null>)=>{
+export const ChartRef = forwardRef(()=>{
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartApiRef = useRef<IChartApi|null>(null);
     const candleSeriesRef = useRef <ISeriesApi<"Candlestick">|null>(null);
     const volumeSeriesRef = useRef <ISeriesApi<"Histogram"> | null>(null);;
 
+    const oneChart = useAppSelector<OneChart>(state => state.chartInfo.onechart)
+
     const [visibleRange,setVisibleRange]=useState<Range<Time> | null>(null);
 
+    
     useEffect(()=>{
         if (chartContainerRef.current) {
             chartApiRef.current = createChart(chartContainerRef.current, {
-                width: chartContainerRef.current.clientWidth,
-                height: document.body.clientHeight * props.height,
+                width: chartContainerRef.current.clientWidth*0.985,
+                height: document.body.clientHeight *0.75,
                 crosshair: {
                     mode: CrosshairMode.Normal,
                     vertLine: {
@@ -51,55 +55,57 @@ export const ChartRef = forwardRef((props:ChartProps,ref: ForwardedRef<HTMLEleme
                 localization: {
                     dateFormat: "yyyy-MM-dd",
                 },
+                overlayPriceScales:{
+                    scaleMargins: {
+                        top: 0.8,
+                        bottom: 0,
+                      },
+                }
             });
         }
 
         if (chartApiRef.current){
-            candleSeriesRef.current = chartApiRef.current.addCandlestickSeries();
+            candleSeriesRef.current = chartApiRef.current.addCandlestickSeries({
+                priceFormat: {
+                    precision: 4,
+                    minMove: 0.0001,
+                  },
+
+            });
             volumeSeriesRef.current = chartApiRef.current.addHistogramSeries({
                 priceFormat: {
                   type: "volume",
+                  minMove: 0.001,
                 },
                 priceScaleId: "",
-                autoscaleInfoProvider: () => ({
-                    margins: {
-                        top: 0.8,
-                        bottom: 0,
-                    },
-                }),
+                
             });
-            candleSeriesRef.current.applyOptions({
-                priceFormat: {
-                  precision: 4,
-                  minMove: 0.0001,
-                },
-            });
+
         }
     },[])
 
     useEffect(()=>{
-        if (props.pdatas.length > 0 && props.vdats.length > 0){
-            candleSeriesRef.current?.setData([...props.pdatas]);
-            volumeSeriesRef.current?.setData([...props.vdats]);
+        if (oneChart){
+            candleSeriesRef.current?.setData([...oneChart.pdatas]);
+            volumeSeriesRef.current?.setData([...oneChart.vdatas]);
         }else{
             return;
         }
-        var range = 200;
-        const length = props.pdatas.length;
-        if (length < 200) {
+        var range = 100;
+        const length = oneChart.pdatas.length;
+        if (length < range) {
           range = length;
         }
         chartApiRef.current?.timeScale().setVisibleRange({
-            from: props.pdatas[length - range].time,
-            to: props.pdatas[length - 1].time,
+            from: oneChart.pdatas[length - range].time,
+            to: oneChart.pdatas[length - 1].time,
         });
 
         chartApiRef.current?.timeScale().subscribeVisibleTimeRangeChange((param) => {
             setVisibleRange(param);
         });
 
-        chartApiRef.current?.timeScale().fitContent();
-    },[props.pdatas,props.vdats])
+    },[oneChart])
 
     return <div ref={chartContainerRef} />
 })

@@ -26,5 +26,5 @@ const scoreSlice = createSlice({
   },
 });
 
-export const { setScore: setIsEng } = scoreSlice.actions;
+export const { setScore } = scoreSlice.actions;
 export default scoreSlice.reducer;

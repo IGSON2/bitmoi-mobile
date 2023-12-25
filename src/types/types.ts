@@ -23,12 +23,10 @@ type VData = {
   color: string;
 };
 
-export type Candle = {
-  pdata: PData;
-  vdata: VData;
+export type OneChart = {
+  pdatas: PData[];
+  vdatas: VData[];
 };
-
-export type Candles = Candle[];
 
 export type Score = {
   stage: number;
@@ -45,8 +43,11 @@ export type Score = {
   is_liquidated: boolean;
 };
 
-export type ChartProps = {
-  pdatas: PData[];
-  vdats: VData[];
-  height: number;
+export type ChartInfo = {
+  name: string;
+  btcratio: number;
+  entrytime: string;
+  entry_price: number;
+  identifier: string;
+  onechart: OneChart;
 };

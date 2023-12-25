@@ -6,7 +6,7 @@ import { Footer } from './components/Footer';
 import { Invest } from './pages/invest/Invest';
 import { Rank } from './pages/Rank';
 import { Mypage } from './pages/Mypage';
-import Practice from "./pages/invest/practice/Practice";
+import { Practice } from "./pages/invest/practice/Practice";
 import Competition from "./pages/invest/competition/Competition";
 
 const router = createBrowserRouter([

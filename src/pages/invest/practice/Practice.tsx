@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import "./Practice.css"
 import { ChartRef } from "../../../components/ChartRef";
-import { ModePrac, fifM, fiveM, fourH, oneD, oneH} from "../../../types/const";
+import { ModePrac, fifM, fourH, oneD, oneH} from "../../../types/const";
 import { axiosClient } from "../../../utils/axiosClient";
-import { ChartInfo, IntervalType } from "../../../types/types";
+import { ChartInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
-import { useAppDispatch } from "../../../hooks/hooks";
 
 export function Practice () {
     const [titleArray,setTitleArray]=useState<string[]>([])
@@ -43,14 +42,17 @@ export function Practice () {
             isChartLoaded ? 
             <div className="prac_body">
                 <div className="title">{name}</div >
-                <div className="current_price">
-                    <div></div> {/* TODO */}
-                </div>
                 <div className="interval">
                     <Interval intv={fifM}/>
                     <Interval intv={oneH}/>
                     <Interval intv={fourH}/>
                     <Interval intv={oneD}/>
+                </div>
+                <div className="current_price">
+                    <div><span className="current_price_type">O</span>{chartInfo.onechart.pdata[0].open}</div>
+                    <div><span className="current_price_type">H</span>{chartInfo.onechart.pdata[0].high}</div>
+                    <div><span className="current_price_type">L</span>{chartInfo.onechart.pdata[0].low}</div>
+                    <div><span className="current_price_type">C</span>{chartInfo.onechart.pdata[0].close}</div>
                 </div>
                 <ChartRef {...chartInfo.onechart}/>
                 <div className="orderBox">

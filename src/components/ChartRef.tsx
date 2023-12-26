@@ -48,7 +48,7 @@ export const ChartRef = forwardRef((oneChart:OneChart)=>{
                     style: LineStyle.Dotted,
                 },
                 },
-                timeScale: {
+                timeScale: { //TODO : 시간 축에서 일,월 안보이게 하기
                     timeVisible: true,
                     secondsVisible: false,
                 },

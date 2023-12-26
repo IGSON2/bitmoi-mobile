@@ -1,26 +1,26 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { ColorType, createChart, CrosshairMode, IChartApi, LineStyle,ISeriesApi, Range,Time } from "lightweight-charts";
-import { OneChart } from "../types/types";
+import {  OneChart,PData } from "../types/types";
 import { useAppSelector } from "../hooks/hooks";
 
 const backgroundcolor:string = "#555860";
 const linecolor:string = "#ffffff";
 
-export const ChartRef = forwardRef(()=>{
+export const ChartRef = forwardRef((oneChart:OneChart)=>{
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartApiRef = useRef<IChartApi|null>(null);
     const candleSeriesRef = useRef <ISeriesApi<"Candlestick">|null>(null);
     const volumeSeriesRef = useRef <ISeriesApi<"Histogram"> | null>(null);;
 
-    const oneChart = useAppSelector<OneChart>(state => state.chartInfo.onechart)
-
     const [visibleRange,setVisibleRange]=useState<Range<Time> | null>(null);
 
-    
     useEffect(()=>{
+        if (oneChart === {} as OneChart){
+            return;
+        }
         if (chartContainerRef.current) {
             chartApiRef.current = createChart(chartContainerRef.current, {
-                width: chartContainerRef.current.clientWidth*0.985,
+                width: chartContainerRef.current.clientWidth,
                 height: document.body.clientHeight *0.75,
                 crosshair: {
                     mode: CrosshairMode.Normal,
@@ -64,11 +64,13 @@ export const ChartRef = forwardRef(()=>{
             });
         }
 
+        const decimal = getDecimal(oneChart.pdata[0])
+
         if (chartApiRef.current){
             candleSeriesRef.current = chartApiRef.current.addCandlestickSeries({
                 priceFormat: {
-                    precision: 4,
-                    minMove: 0.0001,
+                    precision: decimal,
+                    minMove: 1*Math.pow(10,-decimal),
                   },
 
             });
@@ -82,23 +84,24 @@ export const ChartRef = forwardRef(()=>{
             });
 
         }
+
     },[])
 
     useEffect(()=>{
-        if (oneChart){
-            candleSeriesRef.current?.setData([...oneChart.pdatas]);
-            volumeSeriesRef.current?.setData([...oneChart.vdatas]);
+        if (oneChart.pdata[0].time !== ""){
+            candleSeriesRef.current?.setData([...oneChart.pdata]);
+            volumeSeriesRef.current?.setData([...oneChart.vdata]);
         }else{
             return;
         }
         var range = 100;
-        const length = oneChart.pdatas.length;
+        const length = oneChart.pdata.length;
         if (length < range) {
           range = length;
         }
         chartApiRef.current?.timeScale().setVisibleRange({
-            from: oneChart.pdatas[length - range].time,
-            to: oneChart.pdatas[length - 1].time,
+            from: oneChart.pdata[length - range].time,
+            to: oneChart.pdata[length - 1].time,
         });
 
         chartApiRef.current?.timeScale().subscribeVisibleTimeRangeChange((param) => {
@@ -109,3 +112,15 @@ export const ChartRef = forwardRef(()=>{
 
     return <div ref={chartContainerRef} />
 })
+
+function getDecimal(pdata:PData): number{
+    let decimal:number = 1;
+    Object.values(pdata).forEach((value)=>{
+        if (typeof value === "number"&&value.toString().includes(".")){
+            if (decimal < value.toString().split(".")[1].length){
+                decimal = value.toString().split(".")[1].length;
+            }
+        }
+    });
+    return decimal;
+}

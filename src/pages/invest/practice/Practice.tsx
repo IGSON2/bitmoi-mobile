@@ -1,38 +1,66 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./Practice.css"
 import { ChartRef } from "../../../components/ChartRef";
-import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { setModePrac } from "../../../store/mode";
-import { GetChart } from "../../../utils/chartFetcher";
-import { ModePrac} from "../../../types/const";
-import { setChartLoaded } from "../../../store/chartLoaded";
+import { ModePrac, fifM, fiveM, fourH, oneD, oneH} from "../../../types/const";
+import { axiosClient } from "../../../utils/axiosClient";
+import { ChartInfo, IntervalType } from "../../../types/types";
+import { Interval } from "../../../components/Interval";
+import { useAppDispatch } from "../../../hooks/hooks";
 
 export function Practice () {
-    const isChartLoaded = useAppSelector<boolean>(state => state.isChartLoaded)
-    const name = useAppSelector<string>(state => state.chartInfo.name)
-    const dispatch = useAppDispatch();
-    
+    const [titleArray,setTitleArray]=useState<string[]>([])
+    const [chartInfo,setChartInfo]=useState<ChartInfo>({} as ChartInfo)
+    const [name,setName]=useState<string>("" as string)
+    const [isChartLoaded,setIsChartLoaded]=useState<boolean>(false)
+
     useEffect(()=>{
-        dispatch(setChartLoaded(false));
-        dispatch(setModePrac()); // TODO
-        GetChart(ModePrac,[]);
+        async function GetChart(titleArray:string[]){
+            setIsChartLoaded(false);
+            try{
+                const response = await axiosClient.get(`/${ModePrac}?names=${titleArray}`);
+
+                setTitleArray((current)=>[...current,response.data.name]);
+                if (titleArray.length>=10){
+                    setTitleArray([]);
+                }
+
+                response.data.onechart.pdata.reverse();
+                response.data.onechart.vdata.reverse();
+                setChartInfo(response.data);
+                setName(response.data.name);
+                setIsChartLoaded(true);
+            }catch(error){
+                console.error(error);
+            }
+        }
+        GetChart(titleArray);
     },[])
 
 
     return (
-        <div>
-            {isChartLoaded ? 
-            <div>
-                <h1>{name}</h1>
-                <ChartRef/>
+        <div className="practice">
+            {
+            isChartLoaded ? 
+            <div className="prac_body">
+                <div className="title">{name}</div >
+                <div className="current_price">
+                    <div></div> {/* TODO */}
+                </div>
+                <div className="interval">
+                    <Interval intv={fifM}/>
+                    <Interval intv={oneH}/>
+                    <Interval intv={fourH}/>
+                    <Interval intv={oneD}/>
+                </div>
+                <ChartRef {...chartInfo.onechart}/>
                 <div className="orderBox">
                     <div>매수</div>
                     <div>매도</div>
                     <div>거래내역</div>
                 </div>
             </div> 
-                : <h3>Loading...</h3>}
-            
+            : <h3>Loading...</h3>
+            }
         </div>
     );
 }

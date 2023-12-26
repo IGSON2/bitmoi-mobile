@@ -9,7 +9,7 @@ export type PageInfo = {
   pageId: PageId;
 };
 
-type PData = {
+export type PData = {
   close: number;
   high: number;
   low: number;
@@ -24,8 +24,8 @@ type VData = {
 };
 
 export type OneChart = {
-  pdatas: PData[];
-  vdatas: VData[];
+  pdata: PData[];
+  vdata: VData[];
 };
 
 export type Score = {
@@ -51,3 +51,9 @@ export type ChartInfo = {
   identifier: string;
   onechart: OneChart;
 };
+
+export interface IntervalProps {
+  intv: IntervalType;
+}
+
+export type IntervalType = "5m" | "15m" | "1h" | "4h" | "1d";

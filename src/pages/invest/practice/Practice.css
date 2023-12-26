@@ -1,7 +1,54 @@
+.practice {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prac_body {
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.interval {
+  width: 35%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding-left: 5%;
+}
+
+.interval > div {
+  width: 30px;
+}
+
+.current_price {
+}
+
 .orderBox {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+}
+
+.orderBox > div {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
 }

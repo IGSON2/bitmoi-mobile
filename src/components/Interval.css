@@ -1,0 +1,9 @@
+.interval_unit {
+  flex: 1;
+  text-align: center;
+}
+
+.interval_unit:active,
+.interval_unit:hover {
+  background-color: #ededfc;
+}

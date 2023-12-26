@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import chartInfoReducer from "./chartInfo";
 import scoreReducer from "./score";
 import modeReducer from "./mode";
 import chartLoadedReducer from "./chartLoaded";
+import chartInfoReducer from "./chartInfo";
 
 export const store = configureStore({
   reducer: {
-    chartInfo: chartInfoReducer,
     isChartLoaded: chartLoadedReducer,
     score: scoreReducer,
     mode: modeReducer,
+    chartInfo: chartInfoReducer,
   },
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({

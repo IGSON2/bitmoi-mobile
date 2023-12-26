@@ -8,7 +8,7 @@ const defaultInfo: ChartInfo = {
   entry_price: 0,
   identifier: "",
   onechart: {
-    pdatas: [
+    pdata: [
       {
         close: 0,
         high: 0,
@@ -17,7 +17,7 @@ const defaultInfo: ChartInfo = {
         time: "",
       },
     ],
-    vdatas: [
+    vdata: [
       {
         value: 0,
         time: "",

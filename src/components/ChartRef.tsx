@@ -1,12 +1,8 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ColorType, createChart, CrosshairMode, IChartApi, LineStyle,ISeriesApi, Range,Time } from "lightweight-charts";
-import {  OneChart,PData } from "../types/types";
-import { useAppSelector } from "../hooks/hooks";
+import { OneChart,PData } from "../types/types";
 
-const backgroundcolor:string = "#555860";
-const linecolor:string = "#ffffff";
-
-export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
+export const ChartRef = (oneChart:OneChart)=>{
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartApiRef = useRef<IChartApi|null>(null);
     const candleSeriesRef = useRef <ISeriesApi<"Candlestick">|null>(null);
@@ -15,9 +11,6 @@ export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
     const [visibleRange,setVisibleRange]=useState<Range<Time> | null>(null);
 
     useEffect(()=>{
-        if (oneChart === {} as OneChart){
-            return;
-        }
         if (chartContainerRef.current) {
             chartApiRef.current = createChart(chartContainerRef.current, {
                 width: chartContainerRef.current.clientWidth,
@@ -32,10 +25,10 @@ export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
                     },
                 },
                 layout: {
-                    textColor: backgroundcolor,
+                    textColor: "#555860",
                     background: {
                         type: ColorType.Solid,
-                        color:linecolor
+                        color:"#ffffff"
                     },
                 },
                 grid: {
@@ -51,7 +44,7 @@ export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
                 timeScale: {
                     // visible:true,
                     timeVisible: true,
-                    secondsVisible: true,
+                    // secondsVisible: true,
                 },
                 localization: {
                     dateFormat: "yyyy-MM-dd",
@@ -60,7 +53,7 @@ export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
                     scaleMargins: {
                         top: 0.8,
                         bottom: 0,
-                      },
+                    },
                 }
             });
         }
@@ -86,9 +79,6 @@ export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
 
         }
 
-    },[])
-
-    useEffect(()=>{
         if (oneChart.pdata[0].time !== ""){
             candleSeriesRef.current?.setData([...oneChart.pdata]);
             volumeSeriesRef.current?.setData([...oneChart.vdata]);
@@ -111,8 +101,8 @@ export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
 
     },[oneChart])
 
-    return <div ref={chartContainerRef} /> //TODO: nul
-})
+    return <div style={{width:"100%"}} ref={chartContainerRef} />
+}
 
 function getDecimal(pdata:PData): number{
     let decimal:number = 1;

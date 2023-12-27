@@ -68,11 +68,11 @@ export function Practice () {
                     <div><span className="current_price_type">C</span>{chartInfo.onechart.pdata[chartInfo.onechart.pdata.length-1].close}</div>
                 </div>
                 <ChartRef {...chartInfo.onechart}/>
-                {/* <div className="orderBox">
+                <div className="orderBox">
                     <div>{`매수 (Long)`}</div>
                     <div>{`매도 (Short)`}</div>
                     <div>{`거래내역`}</div>
-                </div> */}
+                </div>
             </div> 
             : <h3>Loading...</h3>
             }

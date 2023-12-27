@@ -6,7 +6,7 @@ import { useAppSelector } from "../hooks/hooks";
 const backgroundcolor:string = "#555860";
 const linecolor:string = "#ffffff";
 
-export const ChartRef = forwardRef((oneChart:OneChart)=>{
+export const ChartRef = forwardRef((oneChart:OneChart,ref)=>{
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartApiRef = useRef<IChartApi|null>(null);
     const candleSeriesRef = useRef <ISeriesApi<"Candlestick">|null>(null);
@@ -48,9 +48,10 @@ export const ChartRef = forwardRef((oneChart:OneChart)=>{
                     style: LineStyle.Dotted,
                 },
                 },
-                timeScale: { //TODO : 시간 축에서 일,월 안보이게 하기
+                timeScale: {
+                    // visible:true,
                     timeVisible: true,
-                    secondsVisible: false,
+                    secondsVisible: true,
                 },
                 localization: {
                     dateFormat: "yyyy-MM-dd",
@@ -110,7 +111,7 @@ export const ChartRef = forwardRef((oneChart:OneChart)=>{
 
     },[oneChart])
 
-    return <div ref={chartContainerRef} />
+    return <div ref={chartContainerRef} /> //TODO: nul
 })
 
 function getDecimal(pdata:PData): number{

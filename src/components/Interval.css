@@ -1,8 +1,21 @@
 .interval_unit {
-  text-align: center;
+  width: 42px;
+  height: 28px;
+  color: #999999;
 }
 
 .interval_unit:active,
 .interval_unit:hover {
   background-color: #ededfc;
+  color: #1409a0;
+  font-weight: 500;
+}
+
+.interval_unit > div {
+  width: 42px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

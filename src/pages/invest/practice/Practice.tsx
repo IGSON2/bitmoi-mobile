@@ -41,7 +41,20 @@ export function Practice () {
             {
             isChartLoaded ? 
             <div className="prac_body">
-                <div className="title">{name}</div >
+                <div className="prac_header">
+                    <img
+                        className="prac_header_back" 
+                        onClick={() => {window.location.href = "/invest";}}
+                        src="/images/left_arrow.png"
+                        alt="back"
+                    />
+                    <div className="title">
+                        <img className="title_img" src={"/images/sample_btc.png"} alt=""/>
+                        <div className="title_name">{name}</div>
+                    </div>
+                    <img className="prac_header_tools" src={"/images/construction.png"} alt=""/>
+                    <img className="prac_header_tools" src={"/images/refresh.png"} alt=""/>
+                </div >
                 <div className="interval">
                     <Interval intv={fifM}/>
                     <Interval intv={oneH}/>
@@ -49,17 +62,17 @@ export function Practice () {
                     <Interval intv={oneD}/>
                 </div>
                 <div className="current_price">
-                    <div><span className="current_price_type">O</span>{chartInfo.onechart.pdata[0].open}</div>
-                    <div><span className="current_price_type">H</span>{chartInfo.onechart.pdata[0].high}</div>
-                    <div><span className="current_price_type">L</span>{chartInfo.onechart.pdata[0].low}</div>
-                    <div><span className="current_price_type">C</span>{chartInfo.onechart.pdata[0].close}</div>
+                    <div><span className="current_price_type">O</span>{chartInfo.onechart.pdata[chartInfo.onechart.pdata.length-1].open}</div>
+                    <div><span className="current_price_type">H</span>{chartInfo.onechart.pdata[chartInfo.onechart.pdata.length-1].high}</div>
+                    <div><span className="current_price_type">L</span>{chartInfo.onechart.pdata[chartInfo.onechart.pdata.length-1].low}</div>
+                    <div><span className="current_price_type">C</span>{chartInfo.onechart.pdata[chartInfo.onechart.pdata.length-1].close}</div>
                 </div>
                 <ChartRef {...chartInfo.onechart}/>
-                <div className="orderBox">
-                    <div>매수</div>
-                    <div>매도</div>
-                    <div>거래내역</div>
-                </div>
+                {/* <div className="orderBox">
+                    <div>{`매수 (Long)`}</div>
+                    <div>{`매도 (Short)`}</div>
+                    <div>{`거래내역`}</div>
+                </div> */}
             </div> 
             : <h3>Loading...</h3>
             }

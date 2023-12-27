@@ -11,27 +11,63 @@
 .prac_body {
   width: 100%;
   height: 100%;
-}
-
-.title {
-  width: 100%;
-  height: 5%;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
 
-.interval {
+.prac_header {
+  width: 96%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 2%;
+}
+
+.prac_header_back {
+  padding: 9px 17px;
+  width: 8px;
+  height: 16px;
+}
+
+.prac_header_tools {
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+}
+
+.title {
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  padding-left: 5%;
+  padding-left: 10px;
+  column-gap: 8px;
+  width: 70%;
 }
 
-.interval > div {
-  width: 40px;
+.title_img {
+  width: 20px;
+  height: 20px;
+  padding: 6px 4px 4px;
+}
+
+.title_name {
+  font-size: large;
+  font-weight: 500;
+}
+
+.interval {
+  width: 96%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding-left: 3%;
 }
 
 .current_price {
@@ -40,8 +76,8 @@
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  column-gap: 1%;
   padding-left: 4%;
+  column-gap: 4px;
   border-top: 1px solid #e7eaf3;
   border-bottom: 1px solid #e7eaf3;
   font-size: small;
@@ -52,8 +88,13 @@
   padding-right: 3px;
 }
 
+.current_price > div {
+  padding: 4px;
+}
+
 .orderBox {
   width: 100%;
+  height: 5%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosClient = axios.create({
-  baseURL: "http://3.38.247.128:5000",
+  baseURL: "https://api.bitmoi.co.kr",
   headers: {
     "Content-Type": "application/json",
   },

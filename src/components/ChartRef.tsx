@@ -10,6 +10,15 @@ export const ChartRef = (oneChart:OneChart)=>{
 
     const [visibleRange,setVisibleRange]=useState<Range<Time> | null>(null);
 
+    const handleResize = () => {
+        if (chartContainerRef.current && chartApiRef.current){
+            chartApiRef.current.applyOptions({
+                width: chartContainerRef.current.clientWidth,
+                height: document.body.clientHeight *0.75,
+            });
+        }
+      };
+
     useEffect(()=>{
         if (chartContainerRef.current) {
             chartApiRef.current = createChart(chartContainerRef.current, {
@@ -42,7 +51,6 @@ export const ChartRef = (oneChart:OneChart)=>{
                 },
                 },
                 timeScale: {
-                    // visible:true,
                     timeVisible: true,
                     // secondsVisible: true,
                 },
@@ -59,12 +67,13 @@ export const ChartRef = (oneChart:OneChart)=>{
         }
 
         const decimal = getDecimal(oneChart.pdata[0])
+        const minMove = Number(Math.pow(10,-decimal).toFixed(decimal))
 
         if (chartApiRef.current){
             candleSeriesRef.current = chartApiRef.current.addCandlestickSeries({
                 priceFormat: {
                     precision: decimal,
-                    minMove: 1*Math.pow(10,-decimal),
+                    minMove: minMove,
                   },
 
             });
@@ -76,8 +85,11 @@ export const ChartRef = (oneChart:OneChart)=>{
                 priceScaleId: "",
                 
             });
-
         }
+        window.addEventListener("resize", handleResize);
+        },[])
+
+    useEffect(()=>{
 
         if (oneChart.pdata[0].time !== ""){
             candleSeriesRef.current?.setData([...oneChart.pdata]);

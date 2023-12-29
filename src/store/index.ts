@@ -3,6 +3,7 @@ import scoreReducer from "./score";
 import modeReducer from "./mode";
 import chartLoadedReducer from "./chartLoaded";
 import chartInfoReducer from "./chartInfo";
+import pracStateReducer from "./pracState";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     score: scoreReducer,
     mode: modeReducer,
     chartInfo: chartInfoReducer,
+    pracState: pracStateReducer,
   },
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({

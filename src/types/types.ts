@@ -5,6 +5,13 @@ export enum PageId {
   MyPage,
 }
 
+export enum OrderBox_Menu {
+  None,
+  Long,
+  Short,
+  History,
+}
+
 export type PageInfo = {
   pageId: PageId;
 };
@@ -55,5 +62,14 @@ export type ChartInfo = {
 export interface IntervalProps {
   intv: IntervalType;
 }
+
+export type Position = {
+  isLong: boolean;
+};
+
+export type PracState = {
+  balance: number;
+  entryPrice: number;
+};
 
 export type IntervalType = "5m" | "15m" | "1h" | "4h" | "1d";

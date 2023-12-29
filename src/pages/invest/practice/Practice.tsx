@@ -5,6 +5,7 @@ import { ModePrac, fifM, fourH, oneD, oneH} from "../../../types/const";
 import { axiosClient } from "../../../utils/axiosClient";
 import { ChartInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
+import { OrderBox } from "../../../components/OrderBox/OrderBox";
 
 export function Practice () {
     const [titleArray,setTitleArray]=useState<string[]>([])
@@ -68,11 +69,7 @@ export function Practice () {
                     <div><span className="current_price_type">C</span>{chartInfo.onechart.pdata[chartInfo.onechart.pdata.length-1].close}</div>
                 </div>
                 <ChartRef {...chartInfo.onechart}/>
-                <div className="orderBox">
-                    <div>{`매수 (Long)`}</div>
-                    <div>{`매도 (Short)`}</div>
-                    <div>{`거래내역`}</div>
-                </div>
+                <OrderBox/>
             </div> 
             : <h3>Loading...</h3>
             }

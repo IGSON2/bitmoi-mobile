@@ -13,11 +13,11 @@ const pracStateSlice = createSlice({
     setPracBalance: (state, action: PayloadAction<number>) => {
       state.balance = action.payload;
     },
-    setEntryPrice: (state, action: PayloadAction<number>) => {
+    setPracEntryPrice: (state, action: PayloadAction<number>) => {
       state.entryPrice = action.payload;
     },
   },
 });
 
-export const { setPracBalance } = pracStateSlice.actions;
+export const { setPracBalance, setPracEntryPrice } = pracStateSlice.actions;
 export default pracStateSlice.reducer;

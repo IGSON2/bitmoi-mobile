@@ -74,12 +74,12 @@
 }
 
 .orderBox_router > .orderBox_menu_box {
-  height: 7%;
+  height: 5%;
 }
 
 .orderBox_router {
   width: inherit;
-  height: 80%;
+  height: 100%;
 }
 
 @keyframes eraseUp {

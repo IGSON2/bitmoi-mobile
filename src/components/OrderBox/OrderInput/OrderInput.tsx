@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react"
 import { useAppSelector } from "../../../hooks/hooks"
 import "./OrderInput.css"
+import HorizontalLine from "../../lines/HorizontalLine";
 
 interface Position {
     isLong: boolean;
@@ -40,31 +41,31 @@ export function OrderInput ({isLong}:Position) {
 
     return (
         <div className="OrderInput">
-            <div>
-                <div>주문가능</div>
-                <div>{balance}</div>
-                <div>USDT</div>
+            <div className="OrderInput_balance">
+                <div className="OrderInput_balance1">주문가능</div>
+                <div className="OrderInput_balance2">{balance}</div>
+                <div className="OrderInput_balance3">USDT</div>
             </div>
-            <div>
-                {/* <label htmlFor="">{'가격(USDT)'}</label> */}
-                {/* <input></input> TODO : 예약주문 */}
-                {/* <input></input> */}
-                <div>
+            <div className="input_wrapper">
+                <div className="input_wrapper_1">
                     <div>{'가격(USDT)'}</div>
                     <div>{entryPrice}</div>
                 </div>
-                <div>현재가</div>
+                <div className="input_wrapper_2">현재가</div>
             </div>
-            <div></div>
-            <div>
-                <input
+            <div className="input_wrapper">
+                <div className="input_wrapper_1">
+                    <label htmlFor="quantity">수량</label>
+                    <input
                     id="quantity"
                     type={"number"}
                     step={"0.0001"}
                     value={quantity}
                     onChange={quantityChange}
-                ></input>
+                    ></input>
+                </div>
                 <select
+                    className="input_wrapper_2"
                     value={quantityRate}
                     onChange={quantityRateChange}
                 >
@@ -75,14 +76,22 @@ export function OrderInput ({isLong}:Position) {
                 </select>
             </div>            
             
-            <div></div>
+            <HorizontalLine/>
 
-            <div></div>
+            <div className="orderInput_title_help">
+                <div>{'수익 실현 가격 (Take Profit)'}</div>
+                <img src="/images/help.png"/>
+            </div>
+
             <div>
                 <input></input>
                 <input></input>
             </div>
-            <div></div>
+
+            <div className="orderInput_title_help">
+                <div>{'손실 감수 가격 (Stop loss)'}</div>
+                <img src="/images/help.png"/>
+            </div>
             <div>
                 <input></input>
                 <input></input>

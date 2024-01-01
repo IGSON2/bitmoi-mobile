@@ -6,12 +6,16 @@ import { axiosClient } from "../../../utils/axiosClient";
 import { ChartInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { setPracEntryPrice } from "../../../store/pracState";
 
 export function Practice () {
     const [titleArray,setTitleArray]=useState<string[]>([])
     const [chartInfo,setChartInfo]=useState<ChartInfo>({} as ChartInfo)
     const [name,setName]=useState<string>("" as string)
     const [isChartLoaded,setIsChartLoaded]=useState<boolean>(false)
+
+    const dispatch = useAppDispatch();
 
     useEffect(()=>{
         async function GetChart(titleArray:string[]){
@@ -29,6 +33,7 @@ export function Practice () {
                 setChartInfo(response.data);
                 setName(response.data.name);
                 setIsChartLoaded(true);
+                dispatch(setPracEntryPrice(response.data.onechart.pdata[response.data.onechart.pdata.length-1].close));
             }catch(error){
                 console.error(error);
             }

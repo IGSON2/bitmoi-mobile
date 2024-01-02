@@ -37,6 +37,99 @@ export function OrderInput ({isLong}:Position) {
               10000
           ) / 10000
         );
+    };
+
+    const profitChange = (event:ChangeEvent<HTMLInputElement>) => {
+        if (event.target.valueAsNumber < 0) {
+          setProfitPrice(0);
+        } else {
+          setProfitPrice(event.target.valueAsNumber);
+          if (isLong) {
+            setProfitRate(
+              Math.floor(
+                (10000 * (event.target.valueAsNumber - entryPrice)) / entryPrice
+              ) / 100
+            );
+          } else {
+            setProfitRate(
+              Math.floor(
+                (10000 * (entryPrice - event.target.valueAsNumber)) / entryPrice
+              ) / 100
+            );
+          }
+        }
+      };
+
+      const profitRateChange = (event:ChangeEvent<HTMLSelectElement>) => {
+        const valueAsNumber = Number(event.target.value);
+        setProfitRate(valueAsNumber);
+        if (isLong) {
+          setProfitPrice(
+            Math.floor(
+              entryPrice * (1 + valueAsNumber / 100) * 10000
+            ) / 10000
+          );
+        } else {
+          setProfitPrice(
+            Math.floor(
+              entryPrice * (1 - valueAsNumber / 100) * 10000
+            ) / 10000
+          );
+          if (valueAsNumber >= 100) {
+            setProfitPrice(Math.floor(entryPrice * (1 - 0.9999) * 10000) / 10000);
+          }
+        }
+      };
+
+      const lossChange = (event:ChangeEvent<HTMLInputElement>) => {
+        if (event.target.valueAsNumber < 0) {
+          setLossPrice(0);
+        } else {
+          setLossPrice(event.target.valueAsNumber);
+          if (isLong) {
+            setLossRate(
+              Math.floor(
+                (10000 * (entryPrice - event.target.valueAsNumber)) / entryPrice
+              ) / 100
+            );
+          } else {
+            setLossRate(
+              Math.floor(
+                (10000 * (event.target.valueAsNumber - entryPrice)) / entryPrice
+              ) / 100
+            );
+          }
+        }
+      };
+      const lossRateChange = (event:ChangeEvent<HTMLSelectElement>) => {
+        const valueAsNumber = Number(event.target.value);
+        setLossRate(valueAsNumber);
+        if (isLong) {
+          setLossPrice(
+            Math.ceil(entryPrice * (1 - valueAsNumber / 100) * 10000) /
+              10000
+          );
+        } else {
+          setLossPrice(
+            Math.floor(
+              entryPrice * (1 + valueAsNumber / 100) * 10000
+            ) / 10000
+          );
+        }
+      };
+      const leverageChange = (event:ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.valueAsNumber) {
+          setLeverage(1);
+        } else {
+          setLeverage(event.target.valueAsNumber);
+          setQuantity(
+            Math.floor(
+              ((balance * event.target.valueAsNumber * 0.9998) / entryPrice) *
+                (quantityRate / 100) *
+                10000
+            ) / 10000
+          );
+        }
       };
 
     return (
@@ -71,7 +164,6 @@ export function OrderInput ({isLong}:Position) {
                 >
                     <option value={25}>25%</option>
                     <option value={50}>50%</option>
-                    <option value={75}>75%</option>
                     <option value={100} selected={true}>100%</option>
                 </select>
             </div>            
@@ -83,22 +175,68 @@ export function OrderInput ({isLong}:Position) {
                 <img src="/images/help.png"/>
             </div>
 
-            <div>
-                <input></input>
-                <input></input>
+            <div className="input_wrapper">
+                <div className="input_wrapper_1">
+                    <label htmlFor="profitPrice">{'익절 가격(USDT)'}</label>
+                    <input 
+                        id="profitPrice"
+                        type={"number"}
+                        step={"0.0001"}
+                        value={profitPrice}
+                        onChange={profitChange}
+                    ></input>
+                </div>
+                <select 
+                    className="input_wrapper_2"
+                    value={profitRate}
+                    onChange={profitRateChange}
+                >
+                    <option value={5}>5%</option>
+                    <option value={10}>10%</option>
+                    <option value={15}>15%</option>
+                    <option value={100} selected={true}>100%</option>
+                </select>
             </div>
 
             <div className="orderInput_title_help">
                 <div>{'손실 감수 가격 (Stop loss)'}</div>
                 <img src="/images/help.png"/>
             </div>
-            <div>
-                <input></input>
-                <input></input>
+            <div className="input_wrapper">
+                <div className="input_wrapper_1">
+                    <label htmlFor="stoplossprice">{'손절 가격(USDT)'}</label>
+                    <input 
+                        id="stoplossprice"
+                        type={"number"}
+                        step={"0.0001"}
+                        value={lossPrice}
+                        onChange={lossChange}
+                        ></input>
+                </div>
+                <select
+                    className="input_wrapper_2"
+                    value={lossRate}
+                    onChange={lossRateChange}
+                >
+                    <option value={5}>-5%</option>
+                    <option value={10}>-10%</option>
+                    <option value={15}>-15%</option>
+                    <option value={100} selected={true}>-100%</option>
+                </select>
             </div> 
-            <div></div>
-            <div></div>
-            <input></input>
+            <div className="orderInput_title_help">
+                <div>{'레버리지 (Leverage)'}</div>
+                <img src="/images/help.png"/>
+            </div>
+            <div className="input_wrapper">{`X${leverage}`}</div>
+            <input
+                type={"range"}
+                value={leverage}
+                min={1}
+                max={50}
+                step={"1"}
+                onChange={leverageChange}
+            ></input>
         </div>
     )
 }

@@ -13,7 +13,7 @@
 
 .orderBox_blank {
   position: fixed;
-  top: 40px;
+  top: 20px;
   width: inherit;
   height: 80%;
   z-index: 9;
@@ -41,7 +41,7 @@
 
 .orderBox_active {
   position: fixed;
-  bottom: 34px;
+  bottom: 25px;
   width: inherit;
   height: 80%;
   animation: eraseUp 0.3s ease-in-out;
@@ -74,7 +74,7 @@
 }
 
 .orderBox_router > .orderBox_menu_box {
-  height: 5%;
+  height: 7%;
 }
 
 .orderBox_router {

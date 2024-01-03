@@ -2,6 +2,8 @@ import { ChangeEvent, useState } from "react"
 import { useAppSelector } from "../../../hooks/hooks"
 import "./OrderInput.css"
 import HorizontalLine from "../../lines/HorizontalLine";
+import { axiosClient } from "../../../utils/axiosClient";
+import { Order } from "../../../types/types";
 
 interface Position {
     isLong: boolean;
@@ -9,8 +11,10 @@ interface Position {
 
   
 export function OrderInput ({isLong}:Position) {
-    const balance = useAppSelector((state)=>state.pracState.balance)
-    const entryPrice = useAppSelector((state)=>state.pracState.entryPrice)
+    const pracState = useAppSelector((state)=>state.pracState)
+    const balance = pracState.balance
+    const entryPrice = pracState.entryPrice
+
     const [quantity, setQuantity] = useState(0);
     const [quantityRate, setQuantityRate] = useState(1);
     const [profitPrice, setProfitPrice] = useState(0);
@@ -101,6 +105,7 @@ export function OrderInput ({isLong}:Position) {
           }
         }
       };
+
       const lossRateChange = (event:ChangeEvent<HTMLSelectElement>) => {
         const valueAsNumber = Number(event.target.value);
         setLossRate(valueAsNumber);
@@ -117,6 +122,7 @@ export function OrderInput ({isLong}:Position) {
           );
         }
       };
+
       const leverageChange = (event:ChangeEvent<HTMLInputElement>) => {
         if (!event.target.valueAsNumber) {
           setLeverage(1);
@@ -132,23 +138,50 @@ export function OrderInput ({isLong}:Position) {
         }
       };
 
+      const submitOrder = async () => {
+        const order:Order = {
+            mode: "practice",
+            user_id: "test",
+            name: pracState.name,
+            stage:pracState.stage,
+            is_long: isLong,
+            entry_price: entryPrice,
+            quantity: quantity,
+            profit_price: profitPrice,
+            loss_price: lossPrice,
+            leverage: leverage,
+            balance: balance,
+            identifier: pracState.identifier,
+            score_id:pracState.score_id,
+            waiting_Term:1
+        }
+        const response = await axiosClient.post("/practice",order);
+        console.log(response.data);
+      }
+
     return (
         <div className="OrderInput">
             <div className="OrderInput_balance">
                 <div className="OrderInput_balance1">주문가능</div>
-                <div className="OrderInput_balance2">{balance}</div>
+                <div className="OrderInput_balance2">
+                    {balance.toLocaleString("ko-KR", {
+                    maximumFractionDigits: 2})}
+                </div>
                 <div className="OrderInput_balance3">USDT</div>
             </div>
             <div className="input_wrapper">
                 <div className="input_wrapper_1">
-                    <div>{'가격(USDT)'}</div>
-                    <div>{entryPrice}</div>
+                    <div className="input_label">{'가격(USDT)'}</div>
+                    <div style={{color:"#191919"}}>{entryPrice}</div>
                 </div>
-                <div className="input_wrapper_2">현재가</div>
+                <select className="input_wrapper_2">
+                    <option selected={true}>현재가</option>
+                </select>
             </div>
+
             <div className="input_wrapper">
                 <div className="input_wrapper_1">
-                    <label htmlFor="quantity">수량</label>
+                    <label className="input_label" htmlFor="quantity">수량</label>
                     <input
                     id="quantity"
                     type={"number"}
@@ -177,7 +210,7 @@ export function OrderInput ({isLong}:Position) {
 
             <div className="input_wrapper">
                 <div className="input_wrapper_1">
-                    <label htmlFor="profitPrice">{'익절 가격(USDT)'}</label>
+                    <label className="input_label" htmlFor="profitPrice">{'익절 가격(USDT)'}</label>
                     <input 
                         id="profitPrice"
                         type={"number"}
@@ -204,7 +237,7 @@ export function OrderInput ({isLong}:Position) {
             </div>
             <div className="input_wrapper">
                 <div className="input_wrapper_1">
-                    <label htmlFor="stoplossprice">{'손절 가격(USDT)'}</label>
+                    <label className="input_label" htmlFor="stoplossprice">{'손절 가격(USDT)'}</label>
                     <input 
                         id="stoplossprice"
                         type={"number"}
@@ -224,12 +257,14 @@ export function OrderInput ({isLong}:Position) {
                     <option value={100} selected={true}>-100%</option>
                 </select>
             </div> 
+
             <div className="orderInput_title_help">
                 <div>{'레버리지 (Leverage)'}</div>
                 <img src="/images/help.png"/>
             </div>
-            <div className="input_wrapper">{`X${leverage}`}</div>
+            <div className="leverage">{`X${leverage}`}</div>
             <input
+                className="leverage_range"
                 type={"range"}
                 value={leverage}
                 min={1}
@@ -237,6 +272,16 @@ export function OrderInput ({isLong}:Position) {
                 step={"1"}
                 onChange={leverageChange}
             ></input>
+
+            <div className="input_wrapper">
+                <button className="reset_btn">초기화</button>
+                <button className={isLong?"order_long_btn":"order_short_btn"} onClick={submitOrder}>{isLong?"매수":"매도"}</button>
+            </div>
+
+            <div className="commission">
+                <div>수수료</div>
+                <div>0.02%</div>
+            </div>
         </div>
     )
 }

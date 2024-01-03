@@ -1,32 +1,39 @@
 .OrderInput {
-  flex: 1;
   width: inherit;
+  height: 93%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  row-gap: 10px;
+  row-gap: 2%;
+  padding-top: 3%;
+  padding-bottom: 15px;
 }
 
 .OrderInput_balance {
   width: 90%;
-  height: 5%;
+  height: 3%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  font-size: 13px;
 }
+
 .OrderInput_balance1 {
-  width: 50%;
+  width: 75%;
 }
 
 .OrderInput_balance2,
 .OrderInput_balance3 {
-  width: 15%;
+  width: 12.5%;
+  font-weight: 600;
+  color: #191919;
+  text-align: end;
 }
 
 .input_wrapper {
-  width: 90%;
+  width: 95%;
   height: 6%;
   display: flex;
   flex-direction: row;
@@ -41,26 +48,29 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
 }
 .input_wrapper_1 > input {
-  width: 100%;
+  width: 90%;
   height: 50%;
   text-align: center;
+  padding: 0px 5%;
 }
 
 .input_wrapper_2 {
-  width: 25%;
-  height: 100%; /*TODO*/
+  width: 28%;
+  height: 100%;
   text-align: center;
+  color: #999999;
 }
 
 .input_wrapper_1,
 .input_wrapper_1 > input,
 .input_wrapper_2 {
-  border-radius: 5px;
   border: none;
   outline: none;
   background-color: #efefef;
+  font-size: x-small;
 }
 
 .orderInput_title_help {
@@ -70,4 +80,60 @@
   column-gap: 8px;
   justify-content: start;
   align-items: center;
+  font-size: small;
+}
+
+.leverage {
+  width: 95%;
+  height: 6%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #efefef;
+  color: #191919;
+  font-weight: 600;
+}
+
+.leverage_range {
+  width: 95%;
+  height: 6%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.reset_btn,
+.order_long_btn,
+.order_short_btn {
+  width: 48%;
+  height: 100%;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: large;
+}
+
+.reset_btn {
+  background-color: #999999;
+}
+
+.order_long_btn {
+  background-color: #0abab5;
+}
+
+.order_short_btn {
+  background-color: #e46f6f;
+}
+
+.commission {
+  width: 90%;
+  height: 3%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: small;
+  color: #888888;
 }

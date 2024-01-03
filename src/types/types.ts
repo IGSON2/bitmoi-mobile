@@ -35,6 +35,23 @@ export type OneChart = {
   vdata: VData[];
 };
 
+export type Order = {
+  mode: string;
+  user_id: string;
+  name: string;
+  stage: number;
+  is_long: boolean;
+  entry_price: number;
+  quantity: number;
+  profit_price: number;
+  loss_price: number;
+  leverage: number;
+  balance: number;
+  identifier: string;
+  score_id: string;
+  waiting_Term: number;
+};
+
 export type Score = {
   stage: number;
   name: string;
@@ -68,8 +85,12 @@ export type Position = {
 };
 
 export type PracState = {
+  name: string;
+  stage: number;
   balance: number;
   entryPrice: number;
+  identifier: string;
+  score_id: string;
 };
 
 export type IntervalType = "5m" | "15m" | "1h" | "4h" | "1d";

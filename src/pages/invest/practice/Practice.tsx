@@ -7,7 +7,7 @@ import { ChartInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
 import { useAppDispatch } from "../../../hooks/hooks";
-import { setPracEntryPrice } from "../../../store/pracState";
+import { setPracEntryPrice, setPracIdentifier, setPracName, setPracScoreId, setPracStage } from "../../../store/pracState";
 
 export function Practice () {
     const [titleArray,setTitleArray]=useState<string[]>([])
@@ -33,6 +33,10 @@ export function Practice () {
                 setChartInfo(response.data);
                 setName(response.data.name);
                 setIsChartLoaded(true);
+                dispatch(setPracScoreId(Date.now().toString()));
+                dispatch(setPracName(response.data.name));
+                dispatch(setPracStage(titleArray.length));
+                dispatch(setPracIdentifier(response.data.identifier));
                 dispatch(setPracEntryPrice(response.data.onechart.pdata[response.data.onechart.pdata.length-1].close));
             }catch(error){
                 console.error(error);

@@ -1,7 +1,7 @@
 import { useAppDispatch } from "../hooks/hooks";
 import { setChartInfo } from "../store/chartInfo";
 import { setChartLoaded } from "../store/chartLoaded";
-import { axiosClient } from "./axiosClient";
+import axiosClient from "./axiosClient";
 
 export async function GetChart(mode:string,titleArray:string[]){
     // const dispatch = useAppDispatch();

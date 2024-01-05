@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import "./Practice.css"
 import { ChartRef } from "../../../components/ChartRef";
 import { ModePrac, fifM, fourH, oneD, oneH} from "../../../types/const";
-import { axiosClient } from "../../../utils/axiosClient";
+import axiosClient from "../../../utils/axiosClient";
 import { ChartInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { setPracEntryPrice, setPracIdentifier, setPracName, setPracScoreId, setPracStage } from "../../../store/pracState";
+import checkAccessTokenValidity from "../../../utils/checkAccessTokenValidity";
 
 export function Practice () {
     const [titleArray,setTitleArray]=useState<string[]>([])
@@ -18,7 +19,15 @@ export function Practice () {
     const dispatch = useAppDispatch();
 
     useEffect(()=>{
+              
         async function GetChart(titleArray:string[]){
+            const userInfo = await checkAccessTokenValidity();
+            if (!userInfo) {
+                alert("로그인이 필요합니다.");
+                window.location.replace("/login");
+                return;
+            }
+
             setIsChartLoaded(false);
             try{
                 const response = await axiosClient.get(`/${ModePrac}?names=${titleArray}`);
@@ -42,6 +51,7 @@ export function Practice () {
                 console.error(error);
             }
         }
+
         GetChart(titleArray);
     },[])
 

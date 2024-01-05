@@ -1,6 +1,7 @@
 import axios from "axios";
+import exp from "constants";
 
-export const axiosClient = axios.create({
+const axiosClient = axios.create({
   baseURL: "https://api.bitmoi.co.kr",
   headers: {
     "Content-Type": "application/json",
@@ -19,3 +20,5 @@ axiosClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export default axiosClient;

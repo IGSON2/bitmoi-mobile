@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import { PageId, PageInfo } from "../types/types";
 import "./Mypage.css";
-import { axiosClient } from "../utils/axiosClient";
+import axiosClient from "../utils/axiosClient";
 
 export const Mypage = () => {
     const [loginURL, setLoginURL] = useState<string>("");

@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react"
 import { useAppSelector } from "../../../hooks/hooks"
 import "./OrderInput.css"
 import HorizontalLine from "../../lines/HorizontalLine";
-import { axiosClient } from "../../../utils/axiosClient";
+import axiosClient from "../../../utils/axiosClient";
 import { Order } from "../../../types/types";
 
 interface Position {

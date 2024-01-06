@@ -6,26 +6,32 @@ import axiosClient from "../../../utils/axiosClient";
 import { ChartInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { setPracEntryPrice, setPracIdentifier, setPracName, setPracScoreId, setPracStage } from "../../../store/pracState";
 import checkAccessTokenValidity from "../../../utils/checkAccessTokenValidity";
+import { setUserInfo } from "../../../store/userInfo";
+import { LoginBlur } from "../../../components/LoginBlur";
 
 export function Practice () {
     const [titleArray,setTitleArray]=useState<string[]>([])
     const [chartInfo,setChartInfo]=useState<ChartInfo>({} as ChartInfo)
     const [name,setName]=useState<string>("" as string)
     const [isChartLoaded,setIsChartLoaded]=useState<boolean>(false)
+    const [isLogined,setIsLogined]=useState<boolean>(false)
+
+    const userInfo = useAppSelector((state)=>state.userInfo);
 
     const dispatch = useAppDispatch();
 
     useEffect(()=>{
               
         async function GetChart(titleArray:string[]){
-            const userInfo = await checkAccessTokenValidity();
-            if (!userInfo) {
-                alert("로그인이 필요합니다.");
-                window.location.replace("/login");
-                return;
+            const userRes = await checkAccessTokenValidity();
+            if (!userRes) {
+                setIsLogined(false);
+            }else{
+                dispatch(setUserInfo(userRes));
+                setIsLogined(true);
             }
 
             setIsChartLoaded(false);
@@ -89,7 +95,11 @@ export function Practice () {
                 </div>
                 <ChartRef {...chartInfo.onechart}/>
                 <OrderBox/>
-            </div> 
+                {
+                    isLogined ? null :
+                    <LoginBlur/>
+                }
+            </div>
             : <h3>Loading...</h3>
             }
         </div>

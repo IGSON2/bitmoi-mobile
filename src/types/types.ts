@@ -94,3 +94,13 @@ export type PracState = {
 };
 
 export type IntervalType = "5m" | "15m" | "1h" | "4h" | "1d";
+
+export type UserInfo = {
+  user_id: string;
+  nickname: string;
+  email: string;
+  photo_url: string;
+  metamask_address: string;
+  password_changed_at: string;
+  created_at: string;
+};

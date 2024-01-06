@@ -8,6 +8,8 @@ import { Rank } from './pages/Rank';
 import { Mypage } from './pages/Mypage';
 import { Practice } from "./pages/invest/practice/Practice";
 import Competition from "./pages/invest/competition/Competition";
+import { Login } from "./pages/Login";
+import { Welcome } from "./pages/Welcome";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
   {
     path: "/mypage",
     element: <Mypage />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/welcome/:accessToken/:refreshToken",
+    element: <Welcome />,
   },
   {
     path: "*",

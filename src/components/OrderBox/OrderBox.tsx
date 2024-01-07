@@ -17,7 +17,7 @@ export function OrderBox(){
     }
     const OnHistoryClick = () => {
         setOrderBoxMenu(OrderBox_Menu.History);
-        setComponentToRender(<History/>)
+        setComponentToRender(<History/>) // TODO: 유저 기록 추가 안됨 -> 외래키 문제
     }
 
     const OnBlankClick = () => {

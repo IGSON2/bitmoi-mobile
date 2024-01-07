@@ -19,8 +19,6 @@ export function Practice () {
     const [isChartLoaded,setIsChartLoaded]=useState<boolean>(false)
     const [isLogined,setIsLogined]=useState<boolean>(false)
 
-    const userInfo = useAppSelector((state)=>state.userInfo);
-
     const dispatch = useAppDispatch();
 
     useEffect(()=>{

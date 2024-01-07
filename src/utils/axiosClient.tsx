@@ -1,5 +1,4 @@
 import axios from "axios";
-import exp from "constants";
 
 const axiosClient = axios.create({
   baseURL: "https://api.bitmoi.co.kr",

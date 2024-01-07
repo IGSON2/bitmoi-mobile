@@ -41,7 +41,8 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/welcome/:accessToken/:refreshToken",
+    // path: "/welcome/:accessToken/:refreshToken",
+    path: "/welcome",
     element: <Welcome />,
   },
   {

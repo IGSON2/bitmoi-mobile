@@ -17,7 +17,7 @@ export function OrderBox(){
     }
     const OnHistoryClick = () => {
         setOrderBoxMenu(OrderBox_Menu.History);
-        setComponentToRender(History)
+        setComponentToRender(<History/>)
     }
 
     const OnBlankClick = () => {

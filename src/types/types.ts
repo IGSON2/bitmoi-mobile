@@ -54,17 +54,17 @@ export type Order = {
 
 export type Score = {
   stage: number;
-  name: string;
+  pairname: string;
+  position: string;
   leverage: number;
-  entry_price: number;
-  profit_price: number;
-  loss_price: number;
-  end_price: number;
+  entryprice: number;
+  endprice: number;
   out_time: number;
   roe: number;
   pnl: number;
   commission: number;
   is_liquidated: boolean;
+  created_at: string;
 };
 
 export type ChartInfo = {

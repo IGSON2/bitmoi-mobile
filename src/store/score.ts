@@ -3,17 +3,17 @@ import { Score } from "../types/types";
 
 const initialState: Score = {
   stage: 0,
-  name: "",
+  pairname: "",
+  position: "",
   leverage: 0,
-  entry_price: 0,
-  profit_price: 0,
-  loss_price: 0,
-  end_price: 0,
+  entryprice: 0,
+  endprice: 0,
   out_time: 0,
   roe: 0,
   pnl: 0,
   commission: 0,
   is_liquidated: false,
+  created_at: "",
 };
 
 const scoreSlice = createSlice({

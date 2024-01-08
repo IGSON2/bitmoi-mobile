@@ -16,7 +16,13 @@ const userInfoSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
-      state = action.payload;
+      state.created_at = action.payload.created_at;
+      state.email = action.payload.email;
+      state.metamask_address = action.payload.metamask_address;
+      state.nickname = action.payload.nickname;
+      state.password_changed_at = action.payload.password_changed_at;
+      state.photo_url = action.payload.photo_url;
+      state.user_id = action.payload.user_id;
     },
   },
 });

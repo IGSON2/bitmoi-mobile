@@ -3,7 +3,7 @@ import "./Practice.css"
 import { ChartRef } from "../../../components/ChartRef";
 import { ModePrac, fifM, fourH, oneD, oneH} from "../../../types/const";
 import axiosClient from "../../../utils/axiosClient";
-import { ChartInfo } from "../../../types/types";
+import { ChartInfo, UserInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
@@ -28,7 +28,7 @@ export function Practice () {
             if (!userRes) {
                 setIsLogined(false);
             }else{
-                dispatch(setUserInfo(userRes));
+                dispatch(setUserInfo(userRes as UserInfo));
                 setIsLogined(true);
             }
 

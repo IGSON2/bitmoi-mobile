@@ -138,9 +138,7 @@ export function OrderInput ({isLong}:Position) {
             return;
         }
         const response = await axiosClient.post("/practice",order);
-        console.log(response.data);
       }
-
     return (
         <div className="OrderInput">
             <div className="OrderInput_balance">
@@ -157,7 +155,7 @@ export function OrderInput ({isLong}:Position) {
                     <div style={{color:"#191919"}}>{entryPrice}</div>
                 </div>
                 <select className="input_wrapper_2">
-                    <option selected={true}>현재가</option>
+                    <option>현재가</option>
                 </select>
             </div>
 
@@ -180,7 +178,7 @@ export function OrderInput ({isLong}:Position) {
                     <option>가능</option>
                     <option value={25}>25%</option>
                     <option value={50}>50%</option>
-                    <option value={100} selected={true}>100%</option>
+                    <option value={100}>100%</option>
                 </select>
             </div>            
             
@@ -207,7 +205,7 @@ export function OrderInput ({isLong}:Position) {
                     value={profitRate}
                     onChange={profitRateChange}
                 >
-                    <option value={0} selected>현재가 대비%</option>
+                    <option value={0}>현재가 대비%</option>
                     <option className="option_neg" value={-30}>-30%</option>
                     <option className="option_neg" value={-25}>-25%</option>
                     <option className="option_neg" value={-20}>-20%</option>
@@ -244,7 +242,7 @@ export function OrderInput ({isLong}:Position) {
                     value={lossRate}
                     onChange={lossRateChange}
                 >
-                    <option value={0} selected>현재가 대비%</option>
+                    <option value={0}>현재가 대비%</option>
                     <option className="option_neg" value={-30}>-30%</option>
                     <option className="option_neg" value={-25}>-25%</option>
                     <option className="option_neg" value={-20}>-20%</option>

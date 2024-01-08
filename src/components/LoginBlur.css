@@ -20,13 +20,13 @@
 
 .login_blur_login {
   width: inherit;
-  height: 20%;
-  padding-top: 15%;
+  height: 210px;
+  padding-top: 45px;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  row-gap: 20%;
+  row-gap: 25px;
   position: fixed;
   bottom: 0%;
   background-color: #f6f6f6;

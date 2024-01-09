@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ChartInfo } from "../types/types";
+import { ChartInfo, OneChart } from "../types/types";
 
 const defaultInfo: ChartInfo = {
   name: "",
@@ -35,6 +35,10 @@ const chartInfoSlice = createSlice({
   reducers: {
     setChartInfo: (state, action: PayloadAction<ChartInfo>) => {
       state = action.payload;
+    },
+    appendOneChart: (state, action: PayloadAction<OneChart>) => {
+      state.onechart.pdata = [...state.onechart.pdata, ...action.payload.pdata];
+      state.onechart.vdata = [...state.onechart.vdata, ...action.payload.vdata];
     },
   },
 });

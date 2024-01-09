@@ -116,6 +116,7 @@ export function OrderInput ({isLong}:Position) {
       };
 
       const submitOrder = async () => {
+        // 주문제출 -> OneChart interval 변경 -> result Chart append
         const order:Order = {
             mode: "practice",
             user_id: userInfo.user_id,

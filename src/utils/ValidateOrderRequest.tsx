@@ -1,6 +1,7 @@
 import { Order } from "../types/types";
 
 export function ValidateOrderRequest(order:Order):Error|null{
+    console.log(order)
     const limit = Math.pow(order.leverage,-1)
     let decimal:number = 4;
     if (typeof order.entry_price === "number"&&order.entry_price.toString().includes(".")){

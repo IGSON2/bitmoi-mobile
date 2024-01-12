@@ -2,20 +2,23 @@ import { configureStore } from "@reduxjs/toolkit";
 import scoreReducer from "./score";
 import modeReducer from "./mode";
 import chartLoadedReducer from "./chartLoaded";
-import chartInfoReducer from "./chartInfo";
-import pracStateReducer from "./pracState";
+import currentChartReducer from "./currentChart";
+import stageStateReducer from "./stageState";
 import userInfoReducer from "./userInfo";
 import intervalChartsReducer from "./intervalCharts";
+import orderReducer from "./order";
+import order from "./order";
 
 export const store = configureStore({
   reducer: {
     isChartLoaded: chartLoadedReducer,
     score: scoreReducer,
     mode: modeReducer,
-    chartInfo: chartInfoReducer,
-    pracState: pracStateReducer,
+    currentChart: currentChartReducer,
+    stageState: stageStateReducer,
     userInfo: userInfoReducer,
     intervalCharts: intervalChartsReducer,
+    order: order,
   },
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({

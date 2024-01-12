@@ -1,10 +1,12 @@
 import { ChangeEvent, useState } from "react"
-import { useAppSelector } from "../../../hooks/hooks"
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks"
 import "./OrderInput.css"
 import HorizontalLine from "../../lines/HorizontalLine";
 import axiosClient from "../../../utils/axiosClient";
 import { Order } from "../../../types/types";
 import { ValidateOrderRequest } from "../../../utils/ValidateOrderRequest";
+import { setOrderIsLong, setOrderLeverage, setOrderLossPrice, setOrderMaxTimestamp, setOrderMinTimestamp, setOrderProfitPrice, setOrderQuantity, setOrderReqInterval } from "../../../store/order";
+import { oneH } from "../../../types/const";
 
 interface Position {
     isLong: boolean;
@@ -12,10 +14,14 @@ interface Position {
 
   
 export function OrderInput ({isLong}:Position) {
-    const pracState = useAppSelector((state)=>state.pracState)
-    const userInfo = useAppSelector((state)=>state.userInfo)
-    const balance = pracState.balance
-    const entryPrice = pracState.entryPrice
+    const entryTimestamp = useAppSelector((state)=>state.stageState.entrytime)
+
+    const order = useAppSelector((state)=>state.order)
+    const entryPrice = order.entry_price
+    const balance = order.balance
+
+    const dispatch = useAppDispatch();
+    dispatch(setOrderIsLong(isLong));
 
     const [quantity, setQuantity] = useState(0);
     const [quantityRate, setQuantityRate] = useState(0);
@@ -116,23 +122,16 @@ export function OrderInput ({isLong}:Position) {
       };
 
       const submitOrder = async () => {
-        // 주문제출 -> OneChart interval 변경 -> result Chart append
-        const order:Order = {
-            mode: "practice",
-            user_id: userInfo.user_id,
-            name: pracState.name,
-            stage:pracState.stage,
-            is_long: isLong,
-            entry_price: entryPrice,
-            quantity: quantity,
-            profit_price: profitPrice,
-            loss_price: lossPrice,
-            leverage: leverage,
-            balance: balance,
-            identifier: pracState.identifier,
-            score_id:pracState.score_id,
-            waiting_Term:1
-        }
+        // 주문제출 -> OneChart interval 변경 및 Min, Max timestamp 설정 -> result Chart append
+        dispatch(setOrderQuantity(quantity));
+        dispatch(setOrderProfitPrice(profitPrice));
+        dispatch(setOrderLossPrice(lossPrice));
+        dispatch(setOrderLeverage(leverage));
+        
+        dispatch(setOrderReqInterval(oneH));
+        dispatch(setOrderMinTimestamp(entryTimestamp));
+        dispatch(setOrderMaxTimestamp(entryTimestamp+1));
+
         const err = ValidateOrderRequest(order);
         if (err){
             setErrorMessage(err.message);
@@ -145,7 +144,7 @@ export function OrderInput ({isLong}:Position) {
             <div className="OrderInput_balance">
                 <div className="OrderInput_balance1">주문가능</div>
                 <div className="OrderInput_balance2">
-                    {balance.toLocaleString("ko-KR", {
+                    {order.balance.toLocaleString("ko-KR", {
                     maximumFractionDigits: 2})}
                 </div>
                 <div className="OrderInput_balance3">USDT</div>

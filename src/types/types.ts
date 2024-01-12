@@ -49,7 +49,9 @@ export type Order = {
   balance: number;
   identifier: string;
   score_id: string;
-  waiting_Term: number;
+  reqinterval: string;
+  min_timestamp: number;
+  max_timestamp: number;
 };
 
 export type Score = {
@@ -67,13 +69,11 @@ export type Score = {
   created_at: string;
 };
 
-export type ChartInfo = {
+export type StageState = {
   name: string;
   btcratio: number;
-  entrytime: string;
-  entry_price: number;
-  identifier: string;
-  onechart: OneChart;
+  entrytime: number;
+  titleArray: string[];
 };
 
 export interface IntervalProps {
@@ -82,15 +82,6 @@ export interface IntervalProps {
 
 export type Position = {
   isLong: boolean;
-};
-
-export type PracState = {
-  name: string;
-  stage: number;
-  balance: number;
-  entryPrice: number;
-  identifier: string;
-  score_id: string;
 };
 
 export type IntervalType = "5m" | "15m" | "1h" | "4h" | "1d";

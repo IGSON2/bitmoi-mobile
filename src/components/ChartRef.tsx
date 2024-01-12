@@ -17,7 +17,9 @@ export const ChartRef = (oneChart:OneChart)=>{
                 height: document.body.clientHeight *0.75,
             });
         }
-      };
+    };
+
+    console.log(oneChart)
 
     useEffect(()=>{
         if (chartContainerRef.current) {

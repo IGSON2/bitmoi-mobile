@@ -27,7 +27,8 @@ const currentChartSlice = createSlice({
   initialState,
   reducers: {
     setCurrentChart: (state, action: PayloadAction<OneChart>) => {
-      state = action.payload;
+      state.pdata = action.payload.pdata;
+      state.vdata = action.payload.vdata;
     },
     appendCurrentChart: (state, action: PayloadAction<OneChart>) => {
       state.pdata = [...state.pdata, ...action.payload.pdata];

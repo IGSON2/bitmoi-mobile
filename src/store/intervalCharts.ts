@@ -32,16 +32,20 @@ const intervalChartsSlice = createSlice({
   initialState,
   reducers: {
     setChart_1D: (state, action: PayloadAction<OneChart>) => {
-      state.oneDay = action.payload;
+      state.oneDay.pdata = action.payload.pdata;
+      state.oneDay.vdata = action.payload.vdata;
     },
     setChart_4H: (state, action: PayloadAction<OneChart>) => {
-      state.fourHours = action.payload;
+      state.fourHours.pdata = action.payload.pdata;
+      state.fourHours.vdata = action.payload.vdata;
     },
     setChart_1H: (state, action: PayloadAction<OneChart>) => {
-      state.oneHour = action.payload;
+      state.oneHour.pdata = action.payload.pdata;
+      state.oneHour.vdata = action.payload.vdata;
     },
     setChart_15M: (state, action: PayloadAction<OneChart>) => {
-      state.fifteenMinutes = action.payload;
+      state.fifteenMinutes.pdata = action.payload.pdata;
+      state.fifteenMinutes.vdata = action.payload.vdata;
     },
   },
 });

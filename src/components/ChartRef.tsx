@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { ColorType, createChart, CrosshairMode, IChartApi, LineStyle,ISeriesApi, Range,Time } from "lightweight-charts";
+import { ColorType, createChart, CrosshairMode, IChartApi, LineStyle,ISeriesApi, Range,Time, UTCTimestamp } from "lightweight-charts";
 import { OneChart,PData } from "../types/types";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 export const ChartRef = (oneChart:OneChart)=>{
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartApiRef = useRef<IChartApi|null>(null);
     const candleSeriesRef = useRef <ISeriesApi<"Candlestick">|null>(null);
     const volumeSeriesRef = useRef <ISeriesApi<"Histogram"> | null>(null);;
+
+    const submit = useAppSelector((state)=>state.submit);
+    const order = useAppSelector((state)=>state.order);
 
     const [visibleRange,setVisibleRange]=useState<Range<Time> | null>(null);
 
@@ -18,8 +22,6 @@ export const ChartRef = (oneChart:OneChart)=>{
             });
         }
     };
-
-    console.log(oneChart)
 
     useEffect(()=>{
         if (chartContainerRef.current) {
@@ -114,6 +116,48 @@ export const ChartRef = (oneChart:OneChart)=>{
         });
 
     },[oneChart])
+
+    useEffect(()=>{
+        if (!candleSeriesRef.current){
+            return;
+        }
+        if (submit){
+            // candleSeriesRef.current.createPriceLine({
+            //     price: order.entry_price,
+            //     color: "rgb(51, 61, 121)",
+            //     lineWidth: 2,
+            //     lineStyle: LineStyle.Dotted,
+            //     axisLabelVisible: true,
+            //     title: "Entry price",
+            // });
+            candleSeriesRef.current.createPriceLine({
+                price: order.profit_price,
+                color: "rgb(53, 182, 169)",
+                lineWidth: 2,
+                lineStyle: LineStyle.Dotted,
+                axisLabelVisible: true,
+                title: "Take profit",
+            });
+            candleSeriesRef.current.createPriceLine({
+                price: order.loss_price,
+                color: "rgb(238, 103, 101)",
+                lineWidth: 2,
+                lineStyle: LineStyle.Dotted,
+                axisLabelVisible: true,
+                title: "Stop loss",
+            });
+            candleSeriesRef.current.setMarkers([
+                {
+                time: order.min_timestamp as UTCTimestamp,
+                position: "aboveBar",
+                color: "rgb(51, 61, 121)",
+                shape: "arrowDown",
+                size: 1.5,
+                },
+            ]);
+        }
+
+    },[submit]);
 
     return <div style={{width:"100%"}} ref={chartContainerRef} />
 }

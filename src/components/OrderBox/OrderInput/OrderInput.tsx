@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks"
 import "./OrderInput.css"
 import HorizontalLine from "../../lines/HorizontalLine";
@@ -7,6 +7,7 @@ import { Order } from "../../../types/types";
 import { ValidateOrderRequest } from "../../../utils/ValidateOrderRequest";
 import { setOrderIsLong, setOrderLeverage, setOrderLossPrice, setOrderMaxTimestamp, setOrderMinTimestamp, setOrderProfitPrice, setOrderQuantity, setOrderReqInterval } from "../../../store/order";
 import { oneH } from "../../../types/const";
+import { setSubmit } from "../../../store/submit";
 
 interface Position {
     isLong: boolean;
@@ -21,8 +22,9 @@ export function OrderInput ({isLong}:Position) {
     const balance = order.balance
 
     const dispatch = useAppDispatch();
-    dispatch(setOrderIsLong(isLong));
-
+    useEffect(()=>{
+      dispatch(setOrderIsLong(isLong));
+    },[isLong])
     const [quantity, setQuantity] = useState(0);
     const [quantityRate, setQuantityRate] = useState(0);
     const [profitPrice, setProfitPrice] = useState(0);
@@ -123,6 +125,7 @@ export function OrderInput ({isLong}:Position) {
 
       const submitOrder = async () => {
         // 주문제출 -> OneChart interval 변경 및 Min, Max timestamp 설정 -> result Chart append
+
         dispatch(setOrderQuantity(quantity));
         dispatch(setOrderProfitPrice(profitPrice));
         dispatch(setOrderLossPrice(lossPrice));
@@ -131,14 +134,36 @@ export function OrderInput ({isLong}:Position) {
         dispatch(setOrderReqInterval(oneH));
         dispatch(setOrderMinTimestamp(entryTimestamp));
         dispatch(setOrderMaxTimestamp(entryTimestamp+1));
+        
+        const orderReq:Order = {
+          mode: order.mode,
+          user_id: order.user_id,
+          name: order.name,
+          stage: order.stage,
+          is_long: order.is_long,
+          entry_price: entryPrice,
+          quantity: quantity,
+          profit_price: profitPrice,
+          loss_price: lossPrice,
+          leverage: leverage,
+          balance: order.balance,
+          identifier: order.identifier,
+          score_id: order.score_id,
+          reqinterval: oneH,
+          min_timestamp: entryTimestamp,
+          max_timestamp: entryTimestamp+1,
+      }
 
-        const err = ValidateOrderRequest(order);
+        const err = ValidateOrderRequest(orderReq);
         if (err){
             setErrorMessage(err.message);
             return;
         }
-        const response = await axiosClient.post("/practice",order);
+        const response = await axiosClient.post("/intermediate",orderReq);
+
+        dispatch(setSubmit(true));
       }
+
     return (
         <div className="OrderInput">
             <div className="OrderInput_balance">

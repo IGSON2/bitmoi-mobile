@@ -12,7 +12,7 @@ import { setUserInfo } from "../../../store/userInfo";
 import { LoginBlur } from "../../../components/LoginBlur";
 import { setChart_1H } from "../../../store/intervalCharts";
 import { setStageState, setStateTitleArray } from "../../../store/stageState";
-import { setOrderEntryPrice, setOrderIdentifier, setOrderMode, setOrderScoreId, setOrderStage, setOrderUserId } from "../../../store/order";
+import { setOrderEntryPrice, setOrderIdentifier, setOrderMode, setOrderName, setOrderScoreId, setOrderStage, setOrderUserId } from "../../../store/order";
 import { setCurrentChart } from "../../../store/currentChart";
 
 export function Practice () {
@@ -24,8 +24,6 @@ export function Practice () {
     const titleArray = useAppSelector((state)=>state.stageState.titleArray);
 
     const dispatch = useAppDispatch();
-
-    console.log(currentChart)
 
     useEffect(()=>{
         async function GetChart(titleArray:string[]){
@@ -46,7 +44,6 @@ export function Practice () {
                 response.data.onechart.vdata.reverse();                
                 dispatch(setChart_1H(response.data.onechart));
                 dispatch(setCurrentChart(response.data.onechart));
-                console.log(response.data.onechart)
 
                 dispatch(setStageState({
                     name: response.data.name,
@@ -55,6 +52,7 @@ export function Practice () {
                 }as StageState));
                 dispatch(setStateTitleArray(response.data.name))
                 
+                dispatch(setOrderName(response.data.name));
                 dispatch(setOrderMode(ModePrac));
                 dispatch(setOrderStage(titleArray.length+1));
                 dispatch(setOrderIdentifier(response.data.identifier));

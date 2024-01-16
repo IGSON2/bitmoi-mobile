@@ -1,23 +1,27 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { OneChart } from "../types/types";
+import { CurrentChart } from "../types/types";
+import { oneH } from "../types/const";
 
-const defaultInfo: OneChart = {
-  pdata: [
-    {
-      close: 0,
-      high: 0,
-      low: 0,
-      open: 0,
-      time: "",
-    },
-  ],
-  vdata: [
-    {
-      value: 0,
-      time: "",
-      color: "",
-    },
-  ],
+const defaultInfo: CurrentChart = {
+  interval: oneH,
+  oneChart: {
+    pdata: [
+      {
+        close: 0,
+        high: 0,
+        low: 0,
+        open: 0,
+        time: "",
+      },
+    ],
+    vdata: [
+      {
+        value: 0,
+        time: "",
+        color: "",
+      },
+    ],
+  },
 };
 
 const initialState = defaultInfo;
@@ -26,13 +30,26 @@ const currentChartSlice = createSlice({
   name: "currentChart",
   initialState,
   reducers: {
-    setCurrentChart: (state, action: PayloadAction<OneChart>) => {
-      state.pdata = action.payload.pdata;
-      state.vdata = action.payload.vdata;
+    setCurrentChart: (state, action: PayloadAction<CurrentChart>) => {
+      state.interval = action.payload.interval;
+      state.oneChart.pdata = action.payload.oneChart.pdata;
+      state.oneChart.vdata = action.payload.oneChart.vdata;
     },
-    appendCurrentChart: (state, action: PayloadAction<OneChart>) => {
-      state.pdata = [...state.pdata, ...action.payload.pdata];
-      state.vdata = [...state.vdata, ...action.payload.vdata];
+    appendCurrentChart: (state, action: PayloadAction<CurrentChart>) => {
+      if (state.interval !== action.payload.interval) {
+        console.error(
+          `interval is not same. current : ${state.interval}, req : ${action.payload.interval}`
+        );
+        return;
+      }
+      state.oneChart.pdata = [
+        ...state.oneChart.pdata,
+        ...action.payload.oneChart.pdata,
+      ];
+      state.oneChart.vdata = [
+        ...state.oneChart.vdata,
+        ...action.payload.oneChart.vdata,
+      ];
     },
   },
 });

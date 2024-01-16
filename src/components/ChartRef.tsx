@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ColorType, createChart, CrosshairMode, IChartApi, LineStyle,ISeriesApi, Range,Time, UTCTimestamp } from "lightweight-charts";
-import { OneChart,PData } from "../types/types";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { PData } from "../types/types";
+import { useAppSelector } from "../hooks/hooks";
 
-export const ChartRef = (oneChart:OneChart)=>{
+export const ChartRef = ()=>{
     const chartContainerRef = useRef<HTMLDivElement>(null);
     const chartApiRef = useRef<IChartApi|null>(null);
     const candleSeriesRef = useRef <ISeriesApi<"Candlestick">|null>(null);
@@ -11,6 +11,7 @@ export const ChartRef = (oneChart:OneChart)=>{
 
     const submit = useAppSelector((state)=>state.submit);
     const order = useAppSelector((state)=>state.order);
+    const oneChart = useAppSelector((state)=>state.currentChart.oneChart);
 
     const [visibleRange,setVisibleRange]=useState<Range<Time> | null>(null);
 

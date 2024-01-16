@@ -19,7 +19,7 @@ export function Practice () {
     const [isChartLoaded,setIsChartLoaded]=useState<boolean>(false)
     const [isLogined,setIsLogined]=useState<boolean>(false)
 
-    const currentChart = useAppSelector((state)=>state.currentChart);
+    const currentChart = useAppSelector((state)=>state.currentChart.oneChart);
     const currentState = useAppSelector((state)=>state.stageState);
     const titleArray = useAppSelector((state)=>state.stageState.titleArray);
 
@@ -43,7 +43,7 @@ export function Practice () {
                 response.data.onechart.pdata.reverse();
                 response.data.onechart.vdata.reverse();                
                 dispatch(setChart_1H(response.data.onechart));
-                dispatch(setCurrentChart(response.data.onechart));
+                dispatch(setCurrentChart({interval:oneH,oneChart: response.data.onechart}));
 
                 dispatch(setStageState({
                     name: response.data.name,
@@ -98,7 +98,7 @@ export function Practice () {
                     <div><span className="current_price_type">L</span>{currentChart.pdata[currentChart.pdata.length-1].low}</div>
                     <div><span className="current_price_type">C</span>{currentChart.pdata[currentChart.pdata.length-1].close}</div>
                 </div>
-                <ChartRef {...currentChart}/> {/* TODO: fix to set data */}
+                <ChartRef/> 
                 <OrderBox/>
                 {
                     isLogined ? null :

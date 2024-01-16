@@ -28,30 +28,40 @@ axiosClient.interceptors.response.use(
   
   async (error) => {
     const originalRequest = error.config;
-
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
+    if (error.response && error.response.status === 401) {
       try {
-        const refResponse = await axiosClient.post("/reissueAccess", {
+        if (!refreshToken) {
+          throw new Error("No refresh token.");
+        }
+        const newAxiosClient = axios.create({
+          baseURL: "https://api.bitmoi.co.kr",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const refResponse = await newAxiosClient.post("/reissueAccess", {
           refresh_token: refreshToken,
         });
-        if (refResponse.status === 200) {
+        if (refResponse && refResponse.status === 200) {
           localStorage.removeItem("accessToken");
           localStorage.setItem("accessToken", refResponse.data.access_token);
           console.log("access token updated by refresh token.");
-        } else {
-          throw Error("refresh token is expired.");
+
+          originalRequest.headers["Authorization"] = `Bearer ${refResponse.data.access_token}`;
+          if (originalRequest.url === "/verifyToken") {
+            originalRequest.data = JSON.stringify({token: refResponse.data.access_token})
+          }
+          
+          axiosClient(originalRequest);
+          return;
         }
-        axiosClient(originalRequest);
       } catch (reissueError) {
         console.error("Error while reissuing access token:", reissueError);
         alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
         window.location.href = "/login";
-        return null;
+        return Promise.reject(reissueError);
       }
     }
-
     return Promise.reject(error);
   }
 );

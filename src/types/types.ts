@@ -35,6 +35,11 @@ export type OneChart = {
   vdata: VData[];
 };
 
+export type CurrentChart = {
+  interval: IntervalType;
+  oneChart: OneChart;
+};
+
 export type Order = {
   mode: string;
   user_id: string;

@@ -9,6 +9,13 @@ export const Mypage = () => {
     const pageInfo:PageInfo = {
         pageId: PageId.MyPage,
     }
+    useEffect(() => {
+        async function getUserInfo (){
+            const userInfo = await axiosClient.get("reissueAccess")
+            console.log(userInfo)
+        }
+        getUserInfo()
+    },[])
     return (
         <div className="mypage">
             <h1>Mypage</h1>

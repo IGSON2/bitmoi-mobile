@@ -37,6 +37,12 @@
   height: 40px;
 }
 
+.prac_header_tools:active {
+  background-color: #ededfc;
+  color: #1409a0;
+  font-weight: 500;
+}
+
 .title {
   display: flex;
   flex-direction: row;
@@ -56,16 +62,6 @@
 .title_name {
   font-size: large;
   font-weight: 500;
-}
-
-.interval {
-  width: 96%;
-  height: 5%;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  padding-left: 3%;
 }
 
 .current_price {

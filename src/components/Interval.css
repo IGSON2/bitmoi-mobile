@@ -1,9 +1,21 @@
+.interval {
+  width: 96%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  padding-left: 3%;
+}
+
+.interval_unit_active,
 .interval_unit {
   width: 42px;
   height: 28px;
   color: #999999;
 }
 
+.interval_unit_active,
 .interval_unit:active,
 .interval_unit:hover {
   background-color: #ededfc;
@@ -11,6 +23,7 @@
   font-weight: 500;
 }
 
+.interval_unit_active > div,
 .interval_unit > div {
   width: 42px;
   height: 28px;

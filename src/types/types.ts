@@ -40,6 +40,13 @@ export type CurrentChart = {
   oneChart: OneChart;
 };
 
+export type IntervalCharts = {
+  oneDay: OneChart;
+  fourHours: OneChart;
+  oneHour: OneChart;
+  fifteenMinutes: OneChart;
+};
+
 export type Order = {
   mode: string;
   user_id: string;
@@ -80,10 +87,6 @@ export type StageState = {
   entrytime: number;
   titleArray: string[];
 };
-
-export interface IntervalProps {
-  intv: IntervalType;
-}
 
 export type Position = {
   isLong: boolean;

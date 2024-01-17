@@ -1,0 +1,24 @@
+.inter_order {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 4px;
+  padding: 0px 10px;
+}
+
+.inter_order > button {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  padding: 12px 10px;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: #373737;
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 100%;
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import "./History.css"
 import axiosClient from "../../../utils/axiosClient"
 import { Score } from "../../../types/types";
-import { Timeformatter } from "../../../utils/Timeformatter";
+import { Timeformatter } from "../../../utils/Timestamp";
 
 type Summary = {
     total: number,

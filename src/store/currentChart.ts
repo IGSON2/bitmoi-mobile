@@ -5,22 +5,8 @@ import { oneH } from "../types/const";
 const defaultInfo: CurrentChart = {
   interval: oneH,
   oneChart: {
-    pdata: [
-      {
-        close: 0,
-        high: 0,
-        low: 0,
-        open: 0,
-        time: "",
-      },
-    ],
-    vdata: [
-      {
-        value: 0,
-        time: "",
-        color: "",
-      },
-    ],
+    pdata: [],
+    vdata: [],
   },
 };
 
@@ -35,25 +21,8 @@ const currentChartSlice = createSlice({
       state.oneChart.pdata = action.payload.oneChart.pdata;
       state.oneChart.vdata = action.payload.oneChart.vdata;
     },
-    appendCurrentChart: (state, action: PayloadAction<CurrentChart>) => {
-      if (state.interval !== action.payload.interval) {
-        console.error(
-          `interval is not same. current : ${state.interval}, req : ${action.payload.interval}`
-        );
-        return;
-      }
-      state.oneChart.pdata = [
-        ...state.oneChart.pdata,
-        ...action.payload.oneChart.pdata,
-      ];
-      state.oneChart.vdata = [
-        ...state.oneChart.vdata,
-        ...action.payload.oneChart.vdata,
-      ];
-    },
   },
 });
 
-export const { setCurrentChart, appendCurrentChart } =
-  currentChartSlice.actions;
+export const { setCurrentChart } = currentChartSlice.actions;
 export default currentChartSlice.reducer;

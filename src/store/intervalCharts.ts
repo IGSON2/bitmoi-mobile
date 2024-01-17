@@ -1,26 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { OneChart } from "../types/types";
+import { CurrentChart, IntervalCharts, OneChart } from "../types/types";
+import { fifM, fourH, oneD, oneH } from "../types/const";
 
 const defaultChart: OneChart = {
-  pdata: [
-    {
-      close: 0,
-      high: 0,
-      low: 0,
-      open: 0,
-      time: "",
-    },
-  ],
-  vdata: [
-    {
-      value: 0,
-      time: "",
-      color: "",
-    },
-  ],
+  pdata: [],
+  vdata: [],
 };
 
-const initialState = {
+const initialState: IntervalCharts = {
   oneDay: defaultChart,
   fourHours: defaultChart,
   oneHour: defaultChart,
@@ -31,25 +18,85 @@ const intervalChartsSlice = createSlice({
   name: "intervalCharts",
   initialState,
   reducers: {
-    setChart_1D: (state, action: PayloadAction<OneChart>) => {
-      state.oneDay.pdata = action.payload.pdata;
-      state.oneDay.vdata = action.payload.vdata;
+    initIntervalCharts: (state) => {
+      state.oneDay = defaultChart;
+      state.fourHours = defaultChart;
+      state.oneHour = defaultChart;
+      state.fifteenMinutes = defaultChart;
     },
-    setChart_4H: (state, action: PayloadAction<OneChart>) => {
-      state.fourHours.pdata = action.payload.pdata;
-      state.fourHours.vdata = action.payload.vdata;
+    setIntervalCharts: (state, action: PayloadAction<CurrentChart>) => {
+      switch (action.payload.interval) {
+        case oneD:
+          state.oneDay.pdata = action.payload.oneChart.pdata;
+          state.oneDay.vdata = action.payload.oneChart.vdata;
+          break;
+        case fourH:
+          state.fourHours.pdata = action.payload.oneChart.pdata;
+          state.fourHours.vdata = action.payload.oneChart.vdata;
+          break;
+        case oneH:
+          state.oneHour.pdata = action.payload.oneChart.pdata;
+          state.oneHour.vdata = action.payload.oneChart.vdata;
+          break;
+        case fifM:
+          state.fifteenMinutes.pdata = action.payload.oneChart.pdata;
+          state.fifteenMinutes.vdata = action.payload.oneChart.vdata;
+          break;
+        default:
+          console.error(`invalid interval : ${action.payload.interval}`);
+          break;
+      }
     },
-    setChart_1H: (state, action: PayloadAction<OneChart>) => {
-      state.oneHour.pdata = action.payload.pdata;
-      state.oneHour.vdata = action.payload.vdata;
-    },
-    setChart_15M: (state, action: PayloadAction<OneChart>) => {
-      state.fifteenMinutes.pdata = action.payload.pdata;
-      state.fifteenMinutes.vdata = action.payload.vdata;
+    appendIntervalChart: (state, action: PayloadAction<CurrentChart>) => {
+      switch (action.payload.interval) {
+        case oneD:
+          state.oneDay.pdata = [
+            ...state.oneDay.pdata,
+            ...action.payload.oneChart.pdata,
+          ];
+          state.oneDay.vdata = [
+            ...state.oneDay.vdata,
+            ...action.payload.oneChart.vdata,
+          ];
+          break;
+        case fourH:
+          state.fourHours.pdata = [
+            ...state.fourHours.pdata,
+            ...action.payload.oneChart.pdata,
+          ];
+          state.fourHours.vdata = [
+            ...state.fourHours.vdata,
+            ...action.payload.oneChart.vdata,
+          ];
+          break;
+        case oneH:
+          state.oneHour.pdata = [
+            ...state.oneHour.pdata,
+            ...action.payload.oneChart.pdata,
+          ];
+          state.oneHour.vdata = [
+            ...state.oneHour.vdata,
+            ...action.payload.oneChart.vdata,
+          ];
+          break;
+        case fifM:
+          state.fifteenMinutes.pdata = [
+            ...state.fifteenMinutes.pdata,
+            ...action.payload.oneChart.pdata,
+          ];
+          state.fifteenMinutes.vdata = [
+            ...state.fifteenMinutes.vdata,
+            ...action.payload.oneChart.vdata,
+          ];
+          break;
+        default:
+          console.error(`invalid interval : ${action.payload.interval}`);
+          break;
+      }
     },
   },
 });
 
-export const { setChart_1D, setChart_4H, setChart_1H, setChart_15M } =
+export const { initIntervalCharts, setIntervalCharts, appendIntervalChart } =
   intervalChartsSlice.actions;
 export default intervalChartsSlice.reducer;

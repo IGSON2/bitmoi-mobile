@@ -29,6 +29,11 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response && error.response.status === 401) {
+      
+      if (originalRequest.url === "/verifyToken") {
+        return Promise.reject(error);
+      }
+
       try {
         if (!refreshToken) {
           throw new Error("No refresh token.");

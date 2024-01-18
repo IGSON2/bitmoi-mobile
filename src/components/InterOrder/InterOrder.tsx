@@ -1,46 +1,68 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { appendIntervalChart } from "../../store/intervalCharts";
-import { IntervalCharts, IntervalType } from "../../types/types";
+import {
+  appendIntervalChart,
+  setIntervalCharts,
+} from "../../store/intervalCharts";
+import { IntervalCharts, IntervalType, Order } from "../../types/types";
 import { getIntervalStep } from "../../utils/Timestamp";
 import axiosClient from "../../utils/axiosClient";
 import "./InterOrder.css";
 import { fifM, fourH, oneD, oneH } from "../../types/const";
 import { setCurrentChart } from "../../store/currentChart";
-import {
-  setOrderMaxTimestamp,
-  setOrderMinTimestamp,
-  setOrderReqInterval,
-} from "../../store/order";
 
 export const InterOrder = () => {
   const [lastUpdated, setLastUpdated] = useState<IntervalType>(oneH);
   const intervalCharts = useAppSelector((state) => state.intervalCharts);
-  const order = useAppSelector((state) => state.order);
+  const orderState = useAppSelector((state) => state.order);
 
   const dispatch = useAppDispatch();
 
   async function GetMediateChart(intv: IntervalType) {
-    dispatch(setOrderReqInterval(intv));
-    dispatch(
-      setOrderMinTimestamp(getLastIdxTimeFromIntv(intv, intervalCharts))
-    );
-    dispatch(
-      setOrderMaxTimestamp(
-        getMaxTimeFromIntv(intervalCharts) + getIntervalStep(intv)
-      )
-    );
-    // order.reqinterval = intv;
-    // order.min_timestamp = getLastIdxTimeFromIntv(intv, intervalCharts);
-    // order.max_timestamp =
-    //   getMaxTimeFromIntv(intervalCharts) + getIntervalStep(intv);
+    let minTimestamp = 0;
+    const maxTimestamp =
+      getMaxTimeFromIntv(intervalCharts) + getIntervalStep(intv);
 
-    console.log(order);
+    if (checkIntervalCharts(intv, intervalCharts)) {
+      minTimestamp = getLastIdxTimeFromIntv(intv, intervalCharts);
+    } else {
+      const fIdentifier = encodeURIComponent(orderState.identifier);
+      const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
+      try {
+        const response = await axiosClient.get(reqURL);
+        response.data.onechart.pdata.reverse();
+        response.data.onechart.vdata.reverse();
+        dispatch(
+          setIntervalCharts({
+            interval: intv,
+            oneChart: response.data.onechart,
+          })
+        );
+        minTimestamp = response.data.onechart.pdata[0].time;
+      } catch (error) {
+        console.error(
+          "Error fetching another intermideate interval chart:",
+          error
+        );
+      }
+    }
+
+    const orderReq: Order = {
+      ...orderState,
+      reqinterval: intv,
+      min_timestamp: minTimestamp,
+      max_timestamp: maxTimestamp,
+    };
 
     try {
-      const result = await axiosClient.post("/intermediate", order);
+      const interResponse = await axiosClient.post("/intermediate", orderReq);
+      interResponse.data.result_chart.pdata.reverse();
+      interResponse.data.result_chart.vdata.reverse();
       dispatch(
-        appendIntervalChart({ interval: intv, oneChart: result.data.onechart })
+        appendIntervalChart({
+          interval: intv,
+          oneChart: interResponse.data.result_chart,
+        })
       );
       setLastUpdated(intv);
     } catch (error) {
@@ -122,45 +144,57 @@ export const InterOrder = () => {
   );
 };
 
+function checkIntervalCharts(
+  intv: IntervalType,
+  intvC: IntervalCharts
+): boolean {
+  switch (intv) {
+    case oneD:
+      return intvC.oneDay.pdata.length > 0;
+    case fourH:
+      return intvC.fourHours.pdata.length > 0;
+    case oneH:
+      return intvC.oneHour.pdata.length > 0;
+    case fifM:
+      return intvC.fifteenMinutes.pdata.length > 0;
+    default:
+      console.error("Invalid interval type");
+      return false;
+  }
+}
+
 function getLastIdxTimeFromIntv(
   intv: IntervalType,
   intvC: IntervalCharts
 ): number {
   switch (intv) {
     case oneD:
-      return intvC.oneDay.pdata.length > 0 // 존재하지 않을 경우 초기화 및
-        ? Number(intvC.oneDay.pdata[0].time)
-        : 0;
+      return Number(intvC.oneDay.pdata[0].time);
     case fourH:
-      return intvC.fourHours.pdata.length > 0
-        ? Number(intvC.fourHours.pdata[0].time)
-        : 0;
+      return Number(intvC.fourHours.pdata[0].time);
     case oneH:
-      return intvC.oneHour.pdata.length > 0
-        ? Number(intvC.oneHour.pdata[0].time)
-        : 0;
+      return Number(intvC.oneHour.pdata[0].time);
     case fifM:
-      return intvC.fifteenMinutes.pdata.length > 0
-        ? Number(intvC.fifteenMinutes.pdata[0].time)
-        : 0;
+      return Number(intvC.fifteenMinutes.pdata[0].time);
     default:
+      console.error("Invalid interval type");
       return 0;
   }
 }
 
 function getMaxTimeFromIntv(intvC: IntervalCharts): number {
-  const oneDayMaxTime =
-    intvC.oneDay.pdata.length > 0 ? Number(intvC.oneDay.pdata[0].time) : 0;
-  const fourHoursMaxTime =
-    intvC.fourHours.pdata.length > 0
-      ? Number(intvC.fourHours.pdata[0].time)
-      : 0;
-  const oneHourMaxTime =
-    intvC.oneHour.pdata.length > 0 ? Number(intvC.oneHour.pdata[0].time) : 0;
-  const fifteenMinutesMaxTime =
-    intvC.fifteenMinutes.pdata.length > 0
-      ? Number(intvC.fifteenMinutes.pdata[0].time)
-      : 0;
+  const oneDayMaxTime = checkIntervalCharts(oneD, intvC)
+    ? getLastIdxTimeFromIntv(oneD, intvC)
+    : 0;
+  const fourHoursMaxTime = checkIntervalCharts(fourH, intvC)
+    ? getLastIdxTimeFromIntv(fourH, intvC)
+    : 0;
+  const oneHourMaxTime = checkIntervalCharts(oneH, intvC)
+    ? getLastIdxTimeFromIntv(oneH, intvC)
+    : 0;
+  const fifteenMinutesMaxTime = checkIntervalCharts(fifM, intvC)
+    ? getLastIdxTimeFromIntv(fifM, intvC)
+    : 0;
 
   return Math.max(
     oneDayMaxTime,

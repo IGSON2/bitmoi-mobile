@@ -6,7 +6,6 @@ import { setIntervalCharts } from "../store/intervalCharts";
 import { setCurrentChart } from "../store/currentChart";
 import { IntervalType } from "../types/types";
 import { useState } from "react";
-import { setSubmit } from "../store/submit";
 
 export function Interval() {
   const orderState = useAppSelector((state) => state.order);
@@ -16,7 +15,6 @@ export function Interval() {
 
   const checkInterval = (intv: IntervalType) => {
     setCurrentIntv(intv);
-    dispatch(setSubmit(true));
     switch (intv) {
       case oneD:
         if (intervalChart.oneDay.pdata.length > 0) {

@@ -27,6 +27,7 @@ import {
 } from "../../../store/order";
 import { setCurrentChart } from "../../../store/currentChart";
 import { InterOrder } from "../../../components/InterOrder/InterOrder";
+import { setSubmit } from "../../../store/submit";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
@@ -42,6 +43,9 @@ export function Practice() {
 
   useEffect(() => {
     async function GetChart(titleArray: string[]) {
+      dispatch(initOrder());
+      dispatch(initIntervalCharts());
+      dispatch(setSubmit(false));
       const userRes = await checkAccessTokenValidity();
       if (!userRes) {
         setIsLogined(false);
@@ -59,7 +63,6 @@ export function Practice() {
 
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
-        dispatch(initIntervalCharts());
         dispatch(
           setIntervalCharts({
             interval: oneH,
@@ -99,7 +102,6 @@ export function Practice() {
         console.error(error);
       }
     }
-    dispatch(initOrder());
     GetChart(titleArray);
   }, [titleArray, refreshCnt]);
 

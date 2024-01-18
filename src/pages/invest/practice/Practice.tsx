@@ -61,6 +61,7 @@ export function Practice() {
           `/${ModePrac}?names=${titleArray.join(",")}`
         );
 
+        dispatch(setOrderEntryPrice(response.data.onechart.pdata[0].close));
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
         dispatch(
@@ -90,13 +91,7 @@ export function Practice() {
         dispatch(setOrderStage(titleArray.length + 1));
         dispatch(setOrderIdentifier(response.data.identifier));
         dispatch(setOrderScoreId(Date.now().toString()));
-        dispatch(
-          setOrderEntryPrice(
-            response.data.onechart.pdata[
-              response.data.onechart.pdata.length - 1
-            ].close
-          )
-        );
+
         setIsChartLoaded(true);
       } catch (error) {
         console.error(error);

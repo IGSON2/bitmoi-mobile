@@ -4,7 +4,12 @@ import {
   appendIntervalChart,
   setIntervalCharts,
 } from "../../store/intervalCharts";
-import { IntervalCharts, IntervalType, Order } from "../../types/types";
+import {
+  IntervalCharts,
+  IntervalType,
+  OneChart,
+  Order,
+} from "../../types/types";
 import { getIntervalStep } from "../../utils/Timestamp";
 import axiosClient from "../../utils/axiosClient";
 import "./InterOrder.css";
@@ -30,6 +35,7 @@ export const InterOrder = () => {
       const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
       try {
         const response = await axiosClient.get(reqURL);
+        minTimestamp = response.data.onechart.pdata[0].time;
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
         dispatch(
@@ -38,7 +44,6 @@ export const InterOrder = () => {
             oneChart: response.data.onechart,
           })
         );
-        minTimestamp = response.data.onechart.pdata[0].time;
       } catch (error) {
         console.error(
           "Error fetching another intermideate interval chart:",
@@ -58,6 +63,13 @@ export const InterOrder = () => {
       const interResponse = await axiosClient.post("/intermediate", orderReq);
       interResponse.data.result_chart.pdata.reverse();
       interResponse.data.result_chart.vdata.reverse();
+
+      interResponse.data.another_charts.forEach((oneChart: OneChart) => {
+        console.log(oneChart);
+      });
+      // interResponse.data.another_charts[OneD].pdata.reverse();
+      // interResponse.data.another_charts[OneD].vdata.reverse();
+      // dispatch(appendIntervalChart({ interval: OneD, oneChart: interResponse.data.another_charts[OneD] }));
       dispatch(
         appendIntervalChart({
           interval: intv,
@@ -169,13 +181,17 @@ function getLastIdxTimeFromIntv(
 ): number {
   switch (intv) {
     case oneD:
-      return Number(intvC.oneDay.pdata[0].time);
+      return Number(intvC.oneDay.pdata[intvC.oneDay.pdata.length - 1].time);
     case fourH:
-      return Number(intvC.fourHours.pdata[0].time);
+      return Number(
+        intvC.fourHours.pdata[intvC.fourHours.pdata.length - 1].time
+      );
     case oneH:
-      return Number(intvC.oneHour.pdata[0].time);
+      return Number(intvC.oneHour.pdata[intvC.oneHour.pdata.length - 1].time);
     case fifM:
-      return Number(intvC.fifteenMinutes.pdata[0].time);
+      return Number(
+        intvC.fifteenMinutes.pdata[intvC.fifteenMinutes.pdata.length - 1].time
+      );
     default:
       console.error("Invalid interval type");
       return 0;

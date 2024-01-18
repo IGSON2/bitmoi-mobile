@@ -1,6 +1,6 @@
-import { Order } from "../types/types";
+import { OrderInit } from "../types/types";
 
-export function ValidateOrderRequest(order: Order): Error | null {
+export function ValidateOrderRequest(order: OrderInit): Error | null {
   const limit = Math.pow(order.leverage, -1);
   let decimal: number = 4;
   if (

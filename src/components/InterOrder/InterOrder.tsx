@@ -64,12 +64,12 @@ export const InterOrder = () => {
       interResponse.data.result_chart.pdata.reverse();
       interResponse.data.result_chart.vdata.reverse();
 
+      // key 배열을 통한 순회가 좋을듯
       interResponse.data.another_charts.forEach((oneChart: OneChart) => {
-        console.log(oneChart);
+        oneChart.pdata.reverse();
+        oneChart.vdata.reverse();
+        // dispatch(appendIntervalChart({ interval: OneD, oneChart: interResponse.data.another_charts[OneD] }));
       });
-      // interResponse.data.another_charts[OneD].pdata.reverse();
-      // interResponse.data.another_charts[OneD].vdata.reverse();
-      // dispatch(appendIntervalChart({ interval: OneD, oneChart: interResponse.data.another_charts[OneD] }));
       dispatch(
         appendIntervalChart({
           interval: intv,

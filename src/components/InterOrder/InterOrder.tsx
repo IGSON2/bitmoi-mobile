@@ -32,7 +32,7 @@ export const InterOrder = () => {
   const dispatch = useAppDispatch();
 
   async function GetMediateChart(intv: IntervalType) {
-    let min_timestamp = getMaxTimeFromIntv(intv, intervalCharts);
+    let min_timestamp = getLastIdxTimeFromIntv(intv, intervalCharts);
     if (min_timestamp === 0) {
       const fIdentifier = encodeURIComponent(orderState.identifier);
       const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
@@ -59,7 +59,7 @@ export const InterOrder = () => {
       ...orderState,
       reqinterval: intv,
       min_timestamp: min_timestamp,
-      max_timestamp: min_timestamp + getIntervalStep(intv),
+      max_timestamp: getLatestTimestamp(intervalCharts) + getIntervalStep(intv),
     };
 
     try {
@@ -87,14 +87,16 @@ export const InterOrder = () => {
         oc.vdata.reverse();
         const slicedOc = sliceOnechart(
           oc,
-          getMaxTimeFromIntv(key as IntervalType, intervalCharts)
+          getLastIdxTimeFromIntv(key as IntervalType, intervalCharts)
         );
-        dispatch(
-          appendIntervalChart({
-            interval: key as IntervalType,
-            oneChart: slicedOc,
-          })
-        );
+        if (slicedOc) {
+          dispatch(
+            appendIntervalChart({
+              interval: key as IntervalType,
+              oneChart: slicedOc,
+            })
+          );
+        }
       }
       setIntervalInfo((prev) => ({
         interval: intv,
@@ -202,6 +204,9 @@ function getLastIdxTimeFromIntv(
   intv: IntervalType,
   intvC: IntervalCharts
 ): number {
+  if (!checkIntervalCharts(intv, intvC)) {
+    return 0;
+  }
   switch (intv) {
     case oneD:
       return Number(intvC.oneDay.pdata[intvC.oneDay.pdata.length - 1].time);
@@ -221,31 +226,21 @@ function getLastIdxTimeFromIntv(
   }
 }
 
-function getMaxTimeFromIntv(intv: IntervalType, intvC: IntervalCharts): number {
-  if (!checkIntervalCharts(intv, intvC)) {
-    return 0;
-  }
-  switch (intv) {
-    case oneD:
-      return getLastIdxTimeFromIntv(oneD, intvC);
-    case fourH:
-      return getLastIdxTimeFromIntv(fourH, intvC);
-    case oneH:
-      return getLastIdxTimeFromIntv(oneH, intvC);
-    case fifM:
-      return getLastIdxTimeFromIntv(fifM, intvC);
-    default:
-      console.error("Invalid interval type");
-      return 0;
-  }
+function getLatestTimestamp(intvC: IntervalCharts): number {
+  const oneDay = getLastIdxTimeFromIntv(oneD, intvC);
+  const fourHours = getLastIdxTimeFromIntv(fourH, intvC);
+  const oneHour = getLastIdxTimeFromIntv(oneH, intvC);
+  const fifteenMinutes = getLastIdxTimeFromIntv(fifM, intvC);
+
+  return Math.max(oneDay, fourHours, oneHour, fifteenMinutes);
 }
 
 // time이 오름차순이여야 함.
-function sliceOnechart(oc: OneChart, lastTimestamp: number): OneChart {
-  if (Number(oc.pdata[0].time) > lastTimestamp) {
-    return oc;
-  }
+function sliceOnechart(oc: OneChart, lastTimestamp: number): OneChart | null {
   const idx = oc.pdata.findIndex((pd) => Number(pd.time) > lastTimestamp);
+  if (idx === -1) {
+    return null;
+  }
   oc.pdata = oc.pdata.slice(idx);
   oc.vdata = oc.vdata.slice(idx);
   return oc;

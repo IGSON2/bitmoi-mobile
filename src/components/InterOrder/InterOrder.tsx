@@ -16,26 +16,29 @@ import "./InterOrder.css";
 import { fifM, fourH, oneD, oneH } from "../../types/const";
 import { setCurrentChart } from "../../store/currentChart";
 
+type stepInfo = {
+  fromEntry: number;
+  interval: IntervalType;
+};
+
 export const InterOrder = () => {
-  const [lastUpdated, setLastUpdated] = useState<IntervalType>(oneH);
+  const [intervalInfo, setIntervalInfo] = useState<stepInfo>({
+    interval: oneH,
+    fromEntry: 0,
+  });
   const intervalCharts = useAppSelector((state) => state.intervalCharts);
   const orderState = useAppSelector((state) => state.order);
 
   const dispatch = useAppDispatch();
 
   async function GetMediateChart(intv: IntervalType) {
-    let minTimestamp = 0;
-    const maxTimestamp =
-      getMaxTimeFromIntv(intervalCharts) + getIntervalStep(intv);
-
-    if (checkIntervalCharts(intv, intervalCharts)) {
-      minTimestamp = getLastIdxTimeFromIntv(intv, intervalCharts);
-    } else {
+    let min_timestamp = getMaxTimeFromIntv(intv, intervalCharts);
+    if (min_timestamp === 0) {
       const fIdentifier = encodeURIComponent(orderState.identifier);
       const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
       try {
         const response = await axiosClient.get(reqURL);
-        minTimestamp = response.data.onechart.pdata[0].time;
+        min_timestamp = response.data.onechart.pdata[0].time;
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
         dispatch(
@@ -55,8 +58,8 @@ export const InterOrder = () => {
     const orderReq: Order = {
       ...orderState,
       reqinterval: intv,
-      min_timestamp: minTimestamp,
-      max_timestamp: maxTimestamp,
+      min_timestamp: min_timestamp,
+      max_timestamp: min_timestamp + getIntervalStep(intv),
     };
 
     try {
@@ -64,30 +67,50 @@ export const InterOrder = () => {
       interResponse.data.result_chart.pdata.reverse();
       interResponse.data.result_chart.vdata.reverse();
 
-      // key 배열을 통한 순회가 좋을듯
-      interResponse.data.another_charts.forEach((oneChart: OneChart) => {
-        oneChart.pdata.reverse();
-        oneChart.vdata.reverse();
-        // dispatch(appendIntervalChart({ interval: OneD, oneChart: interResponse.data.another_charts[OneD] }));
-      });
       dispatch(
         appendIntervalChart({
           interval: intv,
           oneChart: interResponse.data.result_chart,
         })
       );
-      setLastUpdated(intv);
+
+      for (const key in interResponse.data.another_charts) {
+        if (
+          !interResponse.data.another_charts[key].pdata ||
+          !checkIntervalCharts(key as IntervalType, intervalCharts)
+        ) {
+          continue;
+        }
+
+        const oc: OneChart = interResponse.data.another_charts[key];
+        oc.pdata.reverse();
+        oc.vdata.reverse();
+        const slicedOc = sliceOnechart(
+          oc,
+          getMaxTimeFromIntv(key as IntervalType, intervalCharts)
+        );
+        dispatch(
+          appendIntervalChart({
+            interval: key as IntervalType,
+            oneChart: slicedOc,
+          })
+        );
+      }
+      setIntervalInfo((prev) => ({
+        interval: intv,
+        fromEntry: prev.fromEntry + getIntervalStep(intv),
+      }));
     } catch (error) {
       console.error(error);
     }
   }
 
   useEffect(() => {
-    switch (lastUpdated) {
+    switch (intervalInfo.interval) {
       case oneD:
         dispatch(
           setCurrentChart({
-            interval: lastUpdated,
+            interval: intervalInfo.interval,
             oneChart: intervalCharts.oneDay,
           })
         );
@@ -95,7 +118,7 @@ export const InterOrder = () => {
       case fourH:
         dispatch(
           setCurrentChart({
-            interval: lastUpdated,
+            interval: intervalInfo.interval,
             oneChart: intervalCharts.fourHours,
           })
         );
@@ -103,7 +126,7 @@ export const InterOrder = () => {
       case oneH:
         dispatch(
           setCurrentChart({
-            interval: lastUpdated,
+            interval: intervalInfo.interval,
             oneChart: intervalCharts.oneHour,
           })
         );
@@ -111,7 +134,7 @@ export const InterOrder = () => {
       case fifM:
         dispatch(
           setCurrentChart({
-            interval: lastUpdated,
+            interval: intervalInfo.interval,
             oneChart: intervalCharts.fifteenMinutes,
           })
         );
@@ -119,7 +142,7 @@ export const InterOrder = () => {
       default:
         break;
     }
-  }, [lastUpdated]);
+  }, [intervalInfo]);
 
   return (
     <div className="inter_order">
@@ -198,24 +221,32 @@ function getLastIdxTimeFromIntv(
   }
 }
 
-function getMaxTimeFromIntv(intvC: IntervalCharts): number {
-  const oneDayMaxTime = checkIntervalCharts(oneD, intvC)
-    ? getLastIdxTimeFromIntv(oneD, intvC)
-    : 0;
-  const fourHoursMaxTime = checkIntervalCharts(fourH, intvC)
-    ? getLastIdxTimeFromIntv(fourH, intvC)
-    : 0;
-  const oneHourMaxTime = checkIntervalCharts(oneH, intvC)
-    ? getLastIdxTimeFromIntv(oneH, intvC)
-    : 0;
-  const fifteenMinutesMaxTime = checkIntervalCharts(fifM, intvC)
-    ? getLastIdxTimeFromIntv(fifM, intvC)
-    : 0;
+function getMaxTimeFromIntv(intv: IntervalType, intvC: IntervalCharts): number {
+  if (!checkIntervalCharts(intv, intvC)) {
+    return 0;
+  }
+  switch (intv) {
+    case oneD:
+      return getLastIdxTimeFromIntv(oneD, intvC);
+    case fourH:
+      return getLastIdxTimeFromIntv(fourH, intvC);
+    case oneH:
+      return getLastIdxTimeFromIntv(oneH, intvC);
+    case fifM:
+      return getLastIdxTimeFromIntv(fifM, intvC);
+    default:
+      console.error("Invalid interval type");
+      return 0;
+  }
+}
 
-  return Math.max(
-    oneDayMaxTime,
-    fourHoursMaxTime,
-    oneHourMaxTime,
-    fifteenMinutesMaxTime
-  );
+// time이 오름차순이여야 함.
+function sliceOnechart(oc: OneChart, lastTimestamp: number): OneChart {
+  if (Number(oc.pdata[0].time) > lastTimestamp) {
+    return oc;
+  }
+  const idx = oc.pdata.findIndex((pd) => Number(pd.time) > lastTimestamp);
+  oc.pdata = oc.pdata.slice(idx);
+  oc.vdata = oc.vdata.slice(idx);
+  return oc;
 }

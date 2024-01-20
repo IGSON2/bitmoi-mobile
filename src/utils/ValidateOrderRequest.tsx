@@ -9,6 +9,10 @@ export function ValidateOrderRequest(order: OrderInit): Error | null {
   ) {
     decimal = order.entry_price.toString().split(".")[1].length;
   }
+  if (order.quantity <= 0) {
+    return new Error("수량은 0보다 커야 합니다.");
+  }
+
   if (order.is_long) {
     if (order.entry_price > order.profit_price) {
       return new Error(

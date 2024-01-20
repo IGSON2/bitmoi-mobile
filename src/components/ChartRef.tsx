@@ -21,6 +21,7 @@ export const ChartRef = () => {
 
   const submit = useAppSelector((state) => state.submit);
   const order = useAppSelector((state) => state.order);
+  const etnryTime = useAppSelector((state) => state.stageState.entrytime);
   const oneChart = useAppSelector((state) => state.currentChart.oneChart);
 
   const [visibleRange, setVisibleRange] = useState<Range<Time> | null>(null);
@@ -156,7 +157,7 @@ export const ChartRef = () => {
       });
       candleSeriesRef.current.setMarkers([
         {
-          time: order.min_timestamp as UTCTimestamp,
+          time: etnryTime as UTCTimestamp,
           position: "aboveBar",
           color: "rgb(51, 61, 121)",
           shape: "arrowDown",

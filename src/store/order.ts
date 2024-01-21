@@ -25,7 +25,21 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     initOrder: (state) => {
-      state = initialState;
+      state.mode = "";
+      state.user_id = "";
+      state.name = "";
+      state.stage = 1;
+      state.is_long = true;
+      state.entry_price = 0;
+      state.quantity = 0;
+      state.profit_price = 0;
+      state.loss_price = 0;
+      state.leverage = 1;
+      state.identifier = "";
+      state.score_id = "";
+      state.reqinterval = "";
+      state.min_timestamp = 0;
+      state.max_timestamp = 0;
     },
     setOrderMode: (state, action: PayloadAction<string>) => {
       state.mode = action.payload;

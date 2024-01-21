@@ -31,6 +31,18 @@ export const InterOrder = () => {
 
   const dispatch = useAppDispatch();
 
+  async function ClosePosition() {
+    let max_reqTime = getLatestTimestamp(intervalCharts);
+    const orderReq: Order = {
+      ...orderState,
+      reqinterval: fifM,
+      min_timestamp: max_reqTime - 1,
+      max_timestamp: max_reqTime,
+    };
+    const res = await axiosClient.post("/intermediate/close", orderReq);
+    console.log("포지션 자체 종료", res.data);
+  }
+
   async function GetMediateChart(intv: IntervalType) {
     let min_timestamp = getLastIdxTimeFromIntv(intv, intervalCharts);
     if (min_timestamp === 0) {
@@ -64,6 +76,12 @@ export const InterOrder = () => {
 
     try {
       const interResponse = await axiosClient.post("/intermediate", orderReq);
+
+      if (interResponse.data.score.out_time > 0) {
+        console.log("손익 라인 터치", interResponse.data.score.out_time);
+        // 손익 라인 터치 시 핸들링
+      }
+
       interResponse.data.result_chart.pdata.reverse();
       interResponse.data.result_chart.vdata.reverse();
 
@@ -79,6 +97,7 @@ export const InterOrder = () => {
           !interResponse.data.another_charts[key].pdata ||
           !checkIntervalCharts(key as IntervalType, intervalCharts)
         ) {
+          // 차트가 존재하지 않으면 Fetching 하고 붙여주어야 interval component에서 append된 기간까지 렌더링됨
           continue;
         }
 
@@ -148,7 +167,9 @@ export const InterOrder = () => {
 
   return (
     <div className="inter_order">
-      <button style={{ backgroundColor: "#BFBFBF" }}>종료</button>
+      <button style={{ backgroundColor: "#BFBFBF" }} onClick={ClosePosition}>
+        종료
+      </button>
       <button
         onClick={async () => {
           await GetMediateChart(fifM);

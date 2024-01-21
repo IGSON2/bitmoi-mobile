@@ -10,7 +10,6 @@ export const Welcome = () => {
 
     useEffect(() => {
         if(accessToken !== undefined && refreshToken !== undefined){
-            console.log(accessToken,refreshToken);
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
         }
@@ -18,8 +17,8 @@ export const Welcome = () => {
 
 
     return (
-        <div className="Welcome">
-            <h1>Welcome</h1>
+        <div className="welcome">
+            <h3>시뮬레이션 모의투자 비트모이의 회원이 되신 것을 축하드립니다!</h3>
             <button onClick={()=>{window.location.href="/invest/practice"}}>모의투자 하러 가기</button>
         </div>
     );

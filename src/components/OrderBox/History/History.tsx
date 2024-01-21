@@ -45,7 +45,7 @@ export const History = () => {
                     <div>{`${summary.total}전 ${summary.total_win}승 ${summary.total_lose}패`}</div>
                 </div>
                 <div className="history_row_box">
-                    <div>{`이번 달 승률(${Math.floor(100*summary.month_win/summary.month)/100})`}</div>
+                    <div>{`이번 달 승률 (${100*Math.floor(100*summary.month_win/summary.month)/100})`}</div>
                     <div>{`${summary.month}전 ${summary.month_win}승 ${summary.month_lose}패`}</div>
                 </div>
                 <div className="history_row_box">
@@ -70,18 +70,19 @@ export const History = () => {
                             </div>
                             <div className="history_row_box">
                                 <div className="history_score_title">{score.pairname}</div>
-                                <div>
+                                <div className="history_score_prices">
                                     <div className="history_score_entry_price">{score.entryprice}</div>
-                                    <div className="history_score_end_price">{score.endprice}</div>
+                                    <div>/</div>
+                                    <div className={`history_score_end_price ${score.roe>0?"roe_pos":"roe_neg"}`}>{score.endprice}</div>
                                 </div>
                             </div>
-                            <div className="history_row_box">
+                            <div className="history_row_box" style={{paddingTop:"17px"}}>
                                 <div>수익금</div>
                                 <div className="history_score_pnl"><span style={{color:"#191919"}}>{`${score.pnl>0?"+":""}${score.pnl.toLocaleString("en-US",{maximumFractionDigits:0})}`}</span> USDT</div>
                             </div>
-                            <div className="history_row_box">
+                            <div className="history_row_box" style={{paddingBottom:"21px"}}>
                                 <div>수익률</div>
-                                <div className={`history_score_roe ${score.roe>0?"roe_pos":"roe_neg"}`}>{Math.round(score.roe)}%</div>
+                                <div className={`history_score_roe ${score.roe>0?"roe_pos":"roe_neg"}`}>{`${score.pnl>0?"+":"-"}${Math.round(score.roe)}%`}</div>
                             </div>
                         </div>
                     )

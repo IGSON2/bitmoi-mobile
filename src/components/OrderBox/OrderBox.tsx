@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./OrderBox.css";
 import { OrderBox_Menu } from "../../types/types";
 import { History } from "./History/History";
 import { OrderInput } from "./OrderInput/OrderInput";
+import { useAppSelector } from "../../hooks/hooks";
 
 export function OrderBox() {
+  const closed = useAppSelector((state) => state.positionClosed.closed);
   const [orderBoxMenu, setOrderBoxMenu] = useState<OrderBox_Menu>(
     OrderBox_Menu.None
   );
@@ -28,6 +30,12 @@ export function OrderBox() {
     setOrderBoxMenu(OrderBox_Menu.None);
     setComponentToRender(<div></div>);
   };
+
+  useEffect(() => {
+    if(closed){
+      setComponentToRender(<div></div>); // 왜 안바뀌는가?
+    }
+  },[closed]);
 
   return (
     <div className="orderBox">

@@ -15,6 +15,7 @@ import axiosClient from "../../utils/axiosClient";
 import "./InterOrder.css";
 import { fifM, fourH, oneD, oneH } from "../../types/const";
 import { setCurrentChart } from "../../store/currentChart";
+import { setPositionClosed } from "../../store/positionClosed";
 
 type stepInfo = {
   fromEntry: number;
@@ -40,6 +41,7 @@ export const InterOrder = () => {
       max_timestamp: max_reqTime,
     };
     const res = await axiosClient.post("/intermediate/close", orderReq);
+    dispatch(setPositionClosed(true));
     console.log("포지션 자체 종료", res.data);
   }
 
@@ -79,7 +81,7 @@ export const InterOrder = () => {
 
       if (interResponse.data.score.out_time > 0) {
         console.log("손익 라인 터치", interResponse.data.score.out_time);
-        // 손익 라인 터치 시 핸들링
+        dispatch(setPositionClosed(true));
       }
 
       interResponse.data.result_chart.pdata.reverse();

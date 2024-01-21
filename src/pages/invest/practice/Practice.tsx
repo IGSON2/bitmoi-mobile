@@ -28,6 +28,7 @@ import {
 import { setCurrentChart } from "../../../store/currentChart";
 import { InterOrder } from "../../../components/InterOrder/InterOrder";
 import { setSubmit } from "../../../store/submit";
+import ResultModal from "../../../components/InterOrder/ResultModal/ResultModal";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
@@ -38,6 +39,7 @@ export function Practice() {
   const currentState = useAppSelector((state) => state.stageState);
   const titleArray = useAppSelector((state) => state.stageState.titleArray);
   const submit = useAppSelector((state) => state.submit.check);
+  const position_closed = useAppSelector((state) => state.positionClosed.closed);
 
   const dispatch = useAppDispatch();
 
@@ -155,6 +157,7 @@ export function Practice() {
             </div>
           </div>
           <ChartRef />
+          {position_closed? <ResultModal /> : null}
           {submit ? <InterOrder /> : <OrderBox />}
           {isLogined ? null : <LoginBlur />}
         </div>

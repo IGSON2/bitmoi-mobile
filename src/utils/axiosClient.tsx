@@ -57,8 +57,7 @@ axiosClient.interceptors.response.use(
             originalRequest.data = JSON.stringify({token: refResponse.data.access_token})
           }
           
-          axiosClient(originalRequest);
-          return;
+          return axiosClient(originalRequest);
         }
       } catch (reissueError) {
         console.error("Error while reissuing access token:", reissueError);

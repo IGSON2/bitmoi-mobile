@@ -23,7 +23,7 @@ export function Timeformatter(unixTime: string, isChart: boolean): string {
   return formattedTime;
 }
 
-export function getIntervalStep(intv: IntervalType): number {
+export function GetIntervalStep(intv: IntervalType): number {
   switch (intv) {
     case fifM:
       return 15 * 60;
@@ -37,4 +37,18 @@ export function getIntervalStep(intv: IntervalType): number {
       console.error("Invalid interval type");
   }
   return 1;
+}
+
+export function ConvertSeconds(sec: number): string {
+  const day = Math.floor(sec / 86400);
+  const hour = Math.floor((sec % 86400) / 3600);
+  const min = Math.floor((sec % 3600) / 60);
+  return (
+    day.toString() +
+    "일 " +
+    hour.toString().padStart(2, "0") +
+    "시간 " +
+    min.toString().padStart(2, "0") +
+    "분"
+  );
 }

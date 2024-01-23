@@ -82,7 +82,31 @@ export type Order = {
   max_timestamp: number;
 };
 
+export type AfterScore = {
+  closed_time: number;
+  min_roe: number;
+  max_roe: number;
+};
+
+export type CurrentScore = {
+  name: string;
+  is_long: boolean;
+  entry_time: string;
+  leverage: number;
+  end_price: number;
+  out_time: number;
+  roe: number;
+  pnl: number;
+  commission: number;
+  is_liquidated: boolean;
+};
+
 export type Score = {
+  current_score: CurrentScore;
+  after_score: AfterScore;
+};
+
+export type ScoreHistory = {
   stage: number;
   pairname: string;
   position: string;
@@ -102,6 +126,7 @@ export type StageState = {
   btcratio: number;
   entrytime: number;
   titleArray: string[];
+  elapsed_time: number;
 };
 
 export type Position = {

@@ -130,7 +130,7 @@ export const ChartRef = () => {
     if (!candleSeriesRef.current) {
       return;
     }
-    if (submit) {
+    if (submit.check) {
       // candleSeriesRef.current.createPriceLine({
       //     price: order.entry_price,
       //     color: "rgb(51, 61, 121)",

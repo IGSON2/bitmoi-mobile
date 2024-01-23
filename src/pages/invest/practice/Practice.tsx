@@ -39,7 +39,9 @@ export function Practice() {
   const currentState = useAppSelector((state) => state.stageState);
   const titleArray = useAppSelector((state) => state.stageState.titleArray);
   const submit = useAppSelector((state) => state.submit.check);
-  const position_closed = useAppSelector((state) => state.positionClosed.closed);
+  const position_closed = useAppSelector(
+    (state) => state.positionClosed.closed
+  );
 
   const dispatch = useAppDispatch();
 
@@ -118,7 +120,9 @@ export function Practice() {
             <div className="title">
               <img
                 className="title_img"
-                src={"/images/sample_btc.png"}
+                src={`https://cdn.bitmoi.co.kr/symbols/${currentState.name
+                  .replace("USDT", "")
+                  .toLowerCase()}.png`}
                 alt=""
               />
               <div className="title_name">{currentState.name}</div>
@@ -157,7 +161,7 @@ export function Practice() {
             </div>
           </div>
           <ChartRef />
-          {position_closed? <ResultModal /> : null}
+          {position_closed ? <ResultModal /> : null}
           {submit ? <InterOrder /> : <OrderBox />}
           {isLogined ? null : <LoginBlur />}
         </div>

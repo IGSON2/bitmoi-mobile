@@ -6,6 +6,7 @@ const defaultInfo: StageState = {
   btcratio: 0,
   entrytime: 0,
   titleArray: [],
+  elapsed_time: 0,
 };
 
 const initialState = defaultInfo;
@@ -25,8 +26,12 @@ const stageStateSlice = createSlice({
         state.titleArray = [action.payload];
       }
     },
+    setElapsedTime: (state, action: PayloadAction<number>) => {
+      state.elapsed_time = action.payload;
+    },
   },
 });
 
-export const { setStageState, setStateTitleArray } = stageStateSlice.actions;
+export const { setStageState, setStateTitleArray, setElapsedTime } =
+  stageStateSlice.actions;
 export default stageStateSlice.reducer;

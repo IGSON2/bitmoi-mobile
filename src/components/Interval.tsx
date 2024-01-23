@@ -10,11 +10,10 @@ import { useState } from "react";
 export function Interval() {
   const orderState = useAppSelector((state) => state.order);
   const intervalChart = useAppSelector((state) => state.intervalCharts);
-  const [currentIntv, setCurrentIntv] = useState<IntervalType>(oneH);
+  const currentIntv = useAppSelector((state) => state.currentChart.interval);
   const dispatch = useAppDispatch();
 
   const checkInterval = (intv: IntervalType) => {
-    setCurrentIntv(intv);
     switch (intv) {
       case oneD:
         if (intervalChart.oneDay.pdata.length > 0) {

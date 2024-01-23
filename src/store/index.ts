@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import scoreHistoryReducer from "./scoreHistory";
 import scoreReducer from "./score";
 import modeReducer from "./mode";
 import chartLoadedReducer from "./chartLoaded";
@@ -14,6 +15,7 @@ export const store = configureStore({
   reducer: {
     isChartLoaded: chartLoadedReducer,
     score: scoreReducer,
+    scoreHistory: scoreHistoryReducer,
     mode: modeReducer,
     currentChart: currentChartReducer,
     stageState: stageStateReducer,

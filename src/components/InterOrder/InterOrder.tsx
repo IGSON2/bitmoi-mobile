@@ -10,22 +10,24 @@ import {
   OneChart,
   Order,
 } from "../../types/types";
-import { getIntervalStep } from "../../utils/Timestamp";
+import { GetIntervalStep } from "../../utils/Timestamp";
 import axiosClient from "../../utils/axiosClient";
 import "./InterOrder.css";
 import { fifM, fourH, oneD, oneH } from "../../types/const";
 import { setCurrentChart } from "../../store/currentChart";
 import { setPositionClosed } from "../../store/positionClosed";
+import { setCurrentScore, setScore } from "../../store/score";
+import { setElapsedTime } from "../../store/stageState";
 
 type stepInfo = {
-  fromEntry: number;
+  elapsedTime: number;
   interval: IntervalType;
 };
 
 export const InterOrder = () => {
   const [intervalInfo, setIntervalInfo] = useState<stepInfo>({
     interval: oneH,
-    fromEntry: 0,
+    elapsedTime: 0,
   });
   const intervalCharts = useAppSelector((state) => state.intervalCharts);
   const orderState = useAppSelector((state) => state.order);
@@ -42,6 +44,12 @@ export const InterOrder = () => {
     };
     const res = await axiosClient.post("/intermediate/close", orderReq);
     dispatch(setPositionClosed(true));
+    dispatch(
+      setScore({
+        current_score: res.data.score,
+        after_score: res.data.after_score,
+      })
+    );
     console.log("포지션 자체 종료", res.data);
   }
 
@@ -73,7 +81,7 @@ export const InterOrder = () => {
       ...orderState,
       reqinterval: intv,
       min_timestamp: min_timestamp,
-      max_timestamp: getLatestTimestamp(intervalCharts) + getIntervalStep(intv),
+      max_timestamp: getLatestTimestamp(intervalCharts) + GetIntervalStep(intv),
     };
 
     try {
@@ -82,6 +90,7 @@ export const InterOrder = () => {
       if (interResponse.data.score.out_time > 0) {
         console.log("손익 라인 터치", interResponse.data.score.out_time);
         dispatch(setPositionClosed(true));
+        dispatch(setCurrentScore(interResponse.data.score));
       }
 
       interResponse.data.result_chart.pdata.reverse();
@@ -121,7 +130,7 @@ export const InterOrder = () => {
       }
       setIntervalInfo((prev) => ({
         interval: intv,
-        fromEntry: prev.fromEntry + getIntervalStep(intv),
+        elapsedTime: prev.elapsedTime + GetIntervalStep(intv),
       }));
     } catch (error) {
       console.error(error);
@@ -129,6 +138,7 @@ export const InterOrder = () => {
   }
 
   useEffect(() => {
+    dispatch(setElapsedTime(intervalInfo.elapsedTime));
     switch (intervalInfo.interval) {
       case oneD:
         dispatch(

@@ -27,45 +27,91 @@ function ResultModal() {
     setIbr(getIbr(score.current_score.roe));
   }, [score]);
 
+  console.log(ibr);
+
   return (
     <div className="result_modal">
       <div className="result_modal_blank"></div>
       <div className="result_modal_score">
-        <div className="result_modal_current">
-          <img className="result_modal_emoji" src={ibr.imageUrl} alt="emoji" />
-          <div className="result_modal_title">포지션결과</div>
-          <img onClick={close} src="/images/close.png" alt="close" />
-          <div>
-            <div>{score.current_score.name}</div>
-            <div>
-              <div>{score.current_score.is_long}</div>
+        <img
+          className={`result_modal_close`}
+          onClick={close}
+          src="/images/close.png"
+          alt="close"
+        />
+        <div className="result_modal_center_wrapper">
+          <img
+            className={`result_modal_emoji`}
+            src={ibr.imageUrl}
+            alt="emoji"
+          />
+        </div>
+        <div className={`result_modal_center_wrapper result_modal_title`}>
+          포지션 결과
+        </div>
+        <div className="result_modal_main_wrapper">
+          <div className="result_modal_main_info">
+            <div className="result_modal_name">{score.current_score.name}</div>
+            <div
+              className="result_modal_position"
+              style={
+                score.current_score.is_long
+                  ? { color: "#249C91", fontWeight: 700 }
+                  : { color: "#E36F6F", fontWeight: 700 }
+              }
+            >
+              <div>{score.current_score.is_long ? "LONG" : "SHORT"}</div>
               <VerticalLine />
               <div>{score.current_score.leverage}X</div>
             </div>
-            <div>
-              <div>{score.current_score.roe.toFixed(2)} %</div>
-              <div>{score.current_score.pnl.toFixed(0)} USDT</div>
+          </div>
+          <div
+            className="result_modal_profit_info"
+            style={
+              score.current_score.roe > 0
+                ? { color: "#249C91" }
+                : { color: "#EF5350" }
+            }
+          >
+            <div className="result_modal_roe">
+              {getPosNegMark(score.current_score.roe) +
+                score.current_score.roe.toLocaleString("ko-KR", {
+                  maximumFractionDigits: 2,
+                })}
+              %
+            </div>
+            <div className="result_modal_pnl">
+              {getPosNegMark(score.current_score.pnl) +
+                score.current_score.pnl.toLocaleString("ko-KR", {
+                  maximumFractionDigits: 0,
+                })}{" "}
+              USDT
             </div>
           </div>
         </div>
         <div className="result_modal_after">
-          <div>
-            <div>매수 체결</div>
+          <div className="result_modal_between_wrapper">
+            <div className="result_modal_after_title">매수 체결</div>
             <div>{ConvertSeconds(state.elapsed_time)}</div>
           </div>
-          <div>
-            <div>포지션 종료</div>
+          <div className="result_modal_between_wrapper">
+            <div className="result_modal_after_title">포지션 종료</div>
             <div>{ConvertSeconds(score.after_score.closed_time)}</div>
           </div>
-          <div>
-            <div>진입 후 최대 손익률</div>
-            <div>{`${score.after_score.max_roe > 0 ? "+" : "-"}${(
+          <div className="result_modal_between_wrapper">
+            <div className="result_modal_after_title">진입 후 최대 손익률</div>
+            <div>{`${getPosNegMark(score.after_score.max_roe)}${(
               score.after_score.max_roe * 100
-            ).toFixed(0)}% / ${score.after_score.min_roe > 0 ? "+" : ""}${(
+            ).toLocaleString("ko-KR", {
+              maximumFractionDigits: 0,
+            })}% / ${getPosNegMark(score.after_score.min_roe)}${(
               score.after_score.min_roe * 100
-            ).toFixed(0)}%`}</div>
+            ).toLocaleString("ko-KR", {
+              maximumFractionDigits: 0,
+            })}%`}</div>
           </div>
         </div>
+        <div className="result_modal_comment">{ibr.comment}</div>
       </div>
     </div>
   );
@@ -74,36 +120,61 @@ function ResultModal() {
 function getIbr(roe: number): infoByRoe {
   const info: infoByRoe = { imageUrl: "", comment: "" };
   if (roe > 0) {
-    if (roe <= 0.15) {
-      return { imageUrl: "/images/profit-1.gif", comment: "" };
-    } else if (roe < 0.5) {
-      return { imageUrl: "/images/profit-2.gif", comment: "" };
-    } else if (roe < 2) {
-      return { imageUrl: "/images/profit-3.gif", comment: "" };
-    } else if (roe < 10) {
-      return { imageUrl: "/images/profit-4.gif", comment: "" };
-    } else if (roe >= 10) {
-      return { imageUrl: "/images/profit-5.gif", comment: "" };
+    if (roe <= 15) {
+      return {
+        imageUrl: "/images/profit-1.gif",
+        comment: "익절은 항상 옳다! 익항옳!",
+      };
+    } else if (roe < 50) {
+      return {
+        imageUrl: "/images/profit-2.gif",
+        comment:
+          "투자에 소질이 있네요?! 연습을 조금 더 하시면\n완벽해질 거에요. 방금 진입한 이유를 꼭 기억하세요!",
+      };
+    } else if (roe < 200) {
+      return {
+        imageUrl: "/images/profit-3.gif",
+        comment:
+          "이대로만 가면 내 집 마련 성공!\n더욱 매매 복기가 필요한 시점!!!",
+      };
+    } else if (roe < 1000) {
+      return {
+        imageUrl: "/images/profit-4.gif",
+        comment: "미친 수익률...!\n혹시... 워뇨띠..!?",
+      };
+    } else if (roe >= 1000) {
+      return {
+        imageUrl: "/images/profit-5.gif",
+        comment: "매수는 기술, 매도는 예술\n당신은... 마술",
+      };
     }
   } else {
-    if (roe >= -0.15) {
+    if (roe >= -15) {
       info.imageUrl = "/images/loss-1.gif";
       info.comment =
         "실전 투자 전 연습이 더 필요해보여요!\n예상한 손절이라면 좋은 전략이에요.";
-    } else if (roe > -0.5) {
+    } else if (roe > -50) {
       info.imageUrl = "/images/loss-2.gif";
       info.comment =
         "손절에 대한 대응이 익절보다 중요해요.\n잃지 않도록 손절 대응이 필요해보여요!";
-    } else if (roe > -0.8) {
+    } else if (roe > -80) {
       info.imageUrl = "/images/loss-3.gif";
       info.comment = "당신의 손은 똥손입니까??? 절대 선물은 하지마세요...";
-    } else if (roe < -0.8) {
+    } else if (roe < -80) {
       info.imageUrl = "/images/loss-4.gif";
       info.comment =
         "청산에 살으리랐다~ 얄라리 얄라셩\n투자는 포기하시는게....현물만 하세요...";
     }
   }
   return info;
+}
+
+function getPosNegMark(roe: number): string {
+  if (roe > 0) {
+    return "+";
+  } else {
+    return "";
+  }
 }
 
 export default ResultModal;

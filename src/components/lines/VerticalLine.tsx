@@ -2,10 +2,10 @@ const VerticalLine = () => {
   return (
     <div
       style={{
-        height: "100%",
-        width: "1%",
+        height: "80%",
+        width: "1px",
         textAlign: "left",
-        borderLeft: "1px solid #aaa",
+        borderLeft: "2px solid #D9D9D9;",
         lineHeight: "0.1em",
       }}
     >

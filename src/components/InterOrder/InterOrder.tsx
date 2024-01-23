@@ -18,6 +18,7 @@ import { setCurrentChart } from "../../store/currentChart";
 import { setPositionClosed } from "../../store/positionClosed";
 import { setCurrentScore, setScore } from "../../store/score";
 import { setElapsedTime } from "../../store/stageState";
+import { setAddOrderBalance, setOrderBalance } from "../../store/order";
 
 type stepInfo = {
   elapsedTime: number;
@@ -50,7 +51,7 @@ export const InterOrder = () => {
         after_score: res.data.after_score,
       })
     );
-    console.log("포지션 자체 종료", res.data);
+    dispatch(setAddOrderBalance(res.data.score.pnl));
   }
 
   async function GetMediateChart(intv: IntervalType) {
@@ -88,9 +89,9 @@ export const InterOrder = () => {
       const interResponse = await axiosClient.post("/intermediate", orderReq);
 
       if (interResponse.data.score.out_time > 0) {
-        console.log("손익 라인 터치", interResponse.data.score.out_time);
         dispatch(setPositionClosed(true));
         dispatch(setCurrentScore(interResponse.data.score));
+        dispatch(setAddOrderBalance(interResponse.data.score.pnl));
       }
 
       interResponse.data.result_chart.pdata.reverse();

@@ -20,8 +20,8 @@ jobs:
       - name: Retrieve and create SSL files
         run: |
           cd server
-          echo "${{ secrets.server_crt }}" > server.crt
-          echo "${{ secrets.server_key }}" > server.key
+          echo "${{ secrets.SERVER_CRT }}" > server.crt
+          echo "${{ secrets.SERVER_PEM }}" > server.key
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2

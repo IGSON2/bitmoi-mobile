@@ -5,10 +5,11 @@ import { setSubmit } from "../../../store/submit";
 import "./ResultModal.css";
 import VerticalLine from "../../lines/VerticalLine";
 import { ConvertSeconds } from "../../../utils/Timestamp";
+import { setStateTitleArray } from "../../../store/stageState";
 
 type infoByRoe = {
   imageUrl: string;
-  comment: string;
+  comment: string[];
 };
 
 function ResultModal() {
@@ -16,11 +17,12 @@ function ResultModal() {
   const state = useAppSelector((state) => state.stageState);
   const dispatch = useAppDispatch();
 
-  const [ibr, setIbr] = useState<infoByRoe>({ imageUrl: "", comment: "" });
+  const [ibr, setIbr] = useState<infoByRoe>({ imageUrl: "", comment: [] });
 
   function close() {
     dispatch(setSubmit(false));
     dispatch(setPositionClosed(false));
+    dispatch(setStateTitleArray(score.current_score.name));
   }
 
   useEffect(() => {
@@ -101,69 +103,87 @@ function ResultModal() {
           <div className="result_modal_between_wrapper">
             <div className="result_modal_after_title">진입 후 최대 손익률</div>
             <div>{`${getPosNegMark(score.after_score.max_roe)}${(
-              score.after_score.max_roe * 100
+              score.current_score.leverage *
+              score.after_score.max_roe *
+              100
             ).toLocaleString("ko-KR", {
               maximumFractionDigits: 0,
             })}% / ${getPosNegMark(score.after_score.min_roe)}${(
-              score.after_score.min_roe * 100
+              score.current_score.leverage *
+              score.after_score.min_roe *
+              100
             ).toLocaleString("ko-KR", {
               maximumFractionDigits: 0,
             })}%`}</div>
           </div>
         </div>
-        <div className="result_modal_comment">{ibr.comment}</div>
+        <div className="result_modal_comment">
+          {ibr.comment.map((c) => {
+            return <p>{c}</p>;
+          })}
+        </div>
       </div>
     </div>
   );
 }
 
 function getIbr(roe: number): infoByRoe {
-  const info: infoByRoe = { imageUrl: "", comment: "" };
+  const info: infoByRoe = { imageUrl: "", comment: [] };
   if (roe > 0) {
     if (roe <= 15) {
       return {
         imageUrl: "/images/profit-1.gif",
-        comment: "익절은 항상 옳다! 익항옳!",
+        comment: ["익절은 항상 옳다! 익항옳!"],
       };
     } else if (roe < 50) {
       return {
         imageUrl: "/images/profit-2.gif",
-        comment:
-          "투자에 소질이 있네요?! 연습을 조금 더 하시면\n완벽해질 거에요. 방금 진입한 이유를 꼭 기억하세요!",
+        comment: [
+          "투자에 소질이 있네요?! 연습을 조금 더 하시면",
+          "완벽해질 거에요. 방금 진입한 이유를 꼭 기억하세요!",
+        ],
       };
     } else if (roe < 200) {
       return {
         imageUrl: "/images/profit-3.gif",
-        comment:
-          "이대로만 가면 내 집 마련 성공!\n더욱 매매 복기가 필요한 시점!!!",
+        comment: [
+          "이대로만 가면 내 집 마련 성공!",
+          "더욱 매매 복기가 필요한 시점!!!",
+        ],
       };
     } else if (roe < 1000) {
       return {
         imageUrl: "/images/profit-4.gif",
-        comment: "미친 수익률...!\n혹시... 워뇨띠..!?",
+        comment: ["미친 수익률...!", "혹시... 워뇨띠..!?"],
       };
     } else if (roe >= 1000) {
       return {
         imageUrl: "/images/profit-5.gif",
-        comment: "매수는 기술, 매도는 예술\n당신은... 마술",
+        comment: ["매수는 기술, 매도는 예술", "당신은... 마술"],
       };
     }
   } else {
     if (roe >= -15) {
       info.imageUrl = "/images/loss-1.gif";
-      info.comment =
-        "실전 투자 전 연습이 더 필요해보여요!\n예상한 손절이라면 좋은 전략이에요.";
+      info.comment = [
+        "실전 투자 전 연습이 더 필요해보여요!",
+        "예상한 손절이라면 좋은 전략이에요.",
+      ];
     } else if (roe > -50) {
       info.imageUrl = "/images/loss-2.gif";
-      info.comment =
-        "손절에 대한 대응이 익절보다 중요해요.\n잃지 않도록 손절 대응이 필요해보여요!";
+      info.comment = [
+        "손절에 대한 대응이 익절보다 중요해요.",
+        "잃지 않도록 손절 대응이 필요해보여요!",
+      ];
     } else if (roe > -80) {
       info.imageUrl = "/images/loss-3.gif";
-      info.comment = "당신의 손은 똥손입니까??? 절대 선물은 하지마세요...";
+      info.comment = ["당신의 손은 똥손입니까???", "절대 선물은 하지마세요..."];
     } else if (roe < -80) {
       info.imageUrl = "/images/loss-4.gif";
-      info.comment =
-        "청산에 살으리랐다~ 얄라리 얄라셩\n투자는 포기하시는게....현물만 하세요...";
+      info.comment = [
+        "청산에 살으리랐다~ 얄라리 얄라셩",
+        "투자는 포기하시는게....현물만 하세요...",
+      ];
     }
   }
   return info;

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./History.css";
 import axiosClient from "../../../utils/axiosClient";
 import { ScoreHistory } from "../../../types/types";
 import { Timeformatter } from "../../../utils/Timestamp";
+import { useAppSelector } from "../../../hooks/hooks";
 
 type Summary = {
   total: number;
@@ -16,6 +17,7 @@ type Summary = {
 };
 
 export const History = () => {
+  const historyRef = useRef<HTMLDivElement>(null);
   const [scores, setScores] = useState<ScoreHistory[]>([]);
   const [summary, setSummary] = useState<Summary>({
     total: 0,
@@ -28,17 +30,52 @@ export const History = () => {
     month_pnl: 0,
   });
 
+  const mode = useAppSelector((state) => state.order.mode);
+  const [page, setPage] = useState<number>(1);
+
+  const handleScroll = () => {
+    const container = historyRef.current;
+    if (container) {
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+
+      if (scrollTop + clientHeight === scrollHeight) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
   useEffect(() => {
     async function GetHistory() {
-      const res = await axiosClient.get("/myscore/1");
-      setScores(res.data);
+      const res = await axiosClient.get(`/myscore?mode=${mode}&page=${page}`);
+      if (res.data.length === 0) {
+        if (historyRef.current) {
+          historyRef.current?.removeEventListener("scroll", handleScroll); //TODO: 적용안됨
+        }
+        return;
+      }
+      setScores((prev) => [...prev, ...res.data]);
       const summary = calcSummary(res.data);
       setSummary(summary);
     }
     GetHistory();
+  }, [page]);
+
+  useEffect(() => {
+    const container = historyRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
   }, []);
+
   return (
-    <div className="history">
+    <div className="history" ref={historyRef}>
       <div className="history_summary">
         <div className="history_row_box history_summary_title">
           <div>전체 승률</div>

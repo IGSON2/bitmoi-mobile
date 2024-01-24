@@ -21,7 +21,6 @@ import {
   setOrderIdentifier,
   setOrderMode,
   setOrderName,
-  setOrderScoreId,
   setOrderStage,
   setOrderUserId,
 } from "../../../store/order";
@@ -94,7 +93,6 @@ export function Practice() {
         dispatch(setOrderMode(ModePrac));
         dispatch(setOrderStage(titleArray.length + 1));
         dispatch(setOrderIdentifier(response.data.identifier));
-        dispatch(setOrderScoreId(Date.now().toString()));
 
         setIsChartLoaded(true);
       } catch (error) {

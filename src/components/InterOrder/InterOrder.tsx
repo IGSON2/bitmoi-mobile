@@ -18,7 +18,7 @@ import { setCurrentChart } from "../../store/currentChart";
 import { setPositionClosed } from "../../store/positionClosed";
 import { setCurrentScore, setScore } from "../../store/score";
 import { setElapsedTime } from "../../store/stageState";
-import { setAddOrderBalance, setOrderBalance } from "../../store/order";
+import { setAddOrderBalance } from "../../store/order";
 
 type stepInfo = {
   elapsedTime: number;
@@ -92,6 +92,9 @@ export const InterOrder = () => {
         dispatch(setPositionClosed(true));
         dispatch(setCurrentScore(interResponse.data.score));
         dispatch(setAddOrderBalance(interResponse.data.score.pnl));
+      }
+      if (interResponse.data.result_chart.pdata[0].time === min_timestamp) {
+        alert("마지막 캔들입니다.");
       }
 
       interResponse.data.result_chart.pdata.reverse();

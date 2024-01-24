@@ -5,21 +5,19 @@ import "./Mypage.css";
 import axiosClient from "../utils/axiosClient";
 
 export const Mypage = () => {
-
-    const pageInfo:PageInfo = {
-        pageId: PageId.MyPage,
+  const pageInfo: PageInfo = {
+    pageId: PageId.MyPage,
+  };
+  useEffect(() => {
+    async function getUserInfo() {
+      const userInfo = await axiosClient.get("reissueAccess");
     }
-    useEffect(() => {
-        async function getUserInfo (){
-            const userInfo = await axiosClient.get("reissueAccess")
-            console.log(userInfo)
-        }
-        getUserInfo()
-    },[])
-    return (
-        <div className="mypage">
-            <h1>Mypage</h1>
-            <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
-        </div>
-    );
-}
+    getUserInfo();
+  }, []);
+  return (
+    <div className="mypage">
+      <h1>Mypage</h1>
+      <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
+    </div>
+  );
+};

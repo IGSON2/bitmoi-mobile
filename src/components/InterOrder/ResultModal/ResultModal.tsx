@@ -29,8 +29,6 @@ function ResultModal() {
     setIbr(getIbr(score.current_score.roe));
   }, [score]);
 
-  console.log(ibr);
-
   return (
     <div className="result_modal">
       <div className="result_modal_blank"></div>

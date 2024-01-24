@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import "./OrderInput.css";
 import HorizontalLine from "../../lines/HorizontalLine";
 import axiosClient from "../../../utils/axiosClient";
-import { Order, OrderInit } from "../../../types/types";
+import { OrderInit } from "../../../types/types";
 import { ValidateOrderRequest } from "../../../utils/ValidateOrderRequest";
 import {
   setOrderIsLong,
@@ -30,9 +30,11 @@ export function OrderInput({ isLong }: Position) {
   const balance = order.balance;
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(setOrderIsLong(isLong));
   }, [isLong]);
+
   const [quantity, setQuantity] = useState(0);
   const [quantityRate, setQuantityRate] = useState(0);
   const [profitPrice, setProfitPrice] = useState(0);
@@ -159,8 +161,7 @@ export function OrderInput({ isLong }: Position) {
       return;
     }
     try {
-      const response = await axiosClient.post("/intermediate/init", orderReq);
-      console.log(response);
+      await axiosClient.post("/intermediate/init", orderReq);
     } catch (error) {
       console.error(error);
     }

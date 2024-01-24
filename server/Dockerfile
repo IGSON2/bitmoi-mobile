@@ -2,7 +2,6 @@ FROM golang:alpine3.18 as builder
 WORKDIR /bitmoi-mobile
 COPY . .
 
-RUN go mod init bitmoi-mobile/server
 RUN go mod tidy
 RUN go build -o server
 

@@ -1,12 +1,8 @@
-import { useEffect } from "react";
 import Pagination from "../../components/Pagination";
-import { useAppDispatch } from "../../hooks/hooks";
 import { PageId, PageInfo } from "../../types/types";
 import "./Invest.css";
-import { setOrderScoreId } from "../../store/order";
 
 export const Invest = () => {
-  const dispatch = useAppDispatch();
   const goPractice = async () => {
     window.location.href = "/invest/practice";
   };
@@ -18,9 +14,7 @@ export const Invest = () => {
   const pageInfo: PageInfo = {
     pageId: PageId.Invest,
   };
-  useEffect(() => {
-    dispatch(setOrderScoreId(Date.now().toString()));
-  }, []);
+
   return (
     <div className="invest">
       <h1>모의투자</h1>

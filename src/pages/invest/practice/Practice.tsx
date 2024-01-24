@@ -21,6 +21,7 @@ import {
   setOrderIdentifier,
   setOrderMode,
   setOrderName,
+  setOrderScoreId,
   setOrderStage,
   setOrderUserId,
 } from "../../../store/order";
@@ -90,7 +91,6 @@ export function Practice() {
         // dispatch(setStateTitleArray(response.data.name)) //TODO : 최종 스코어 반환 시 배열 추가
 
         dispatch(setOrderName(response.data.name));
-        dispatch(setOrderMode(ModePrac));
         dispatch(setOrderStage(titleArray.length + 1));
         dispatch(setOrderIdentifier(response.data.identifier));
 
@@ -101,6 +101,11 @@ export function Practice() {
     }
     GetChart(titleArray);
   }, [titleArray, refreshCnt]);
+
+  useEffect(() => {
+    dispatch(setOrderMode(ModePrac));
+    dispatch(setOrderScoreId(Date.now().toString()));
+  }, []);
 
   return (
     <div className="practice">

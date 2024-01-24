@@ -36,7 +36,6 @@ const orderSlice = createSlice({
       state.loss_price = 0;
       state.leverage = 1;
       state.identifier = "";
-      state.score_id = "";
       state.reqinterval = "";
       state.min_timestamp = 0;
       state.max_timestamp = 0;

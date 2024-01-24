@@ -25,7 +25,6 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     initOrder: (state) => {
-      state.mode = "";
       state.user_id = "";
       state.name = "";
       state.stage = 1;

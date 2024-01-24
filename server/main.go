@@ -14,8 +14,7 @@ import (
 )
 
 const (
-	// port = ":443"
-	port = ":80"
+	port = ":443"
 )
 
 var (
@@ -48,11 +47,11 @@ func init() {
 }
 
 func main() {
-	// noTLSApp := fiber.New()
-	// noTLSApp.Use(redirectMiddleware, loggerMiddleware)
-	// go func() {
-	// 	log.Fatalln(noTLSApp.Listen(":80"))
-	// }()
+	noTLSApp := fiber.New()
+	noTLSApp.Use(redirectMiddleware, loggerMiddleware)
+	go func() {
+		log.Fatalln(noTLSApp.Listen(":80"))
+	}()
 	app := fiber.New()
 
 	app.Use(allowOriginMiddleware, limiterMiddleware, loggerMiddleware)
@@ -63,7 +62,7 @@ func main() {
 	app.Static("/rank", "./build")
 	app.Static("/login", "./build")
 	app.Static("/welcome", "./build")
-	// log.Fatalln(app.ListenTLS(port, "./server.crt", "./server.key"))
-	log.Fatalln(app.Listen(port))
+	log.Fatalln(app.ListenTLS(port, "./server.crt", "./server.key"))
+	// log.Fatalln(app.Listen(port))
 
 }

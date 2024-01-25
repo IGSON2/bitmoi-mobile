@@ -67,8 +67,8 @@ export const ChartRef = () => {
           },
         },
         timeScale: {
+          visible: false,
           timeVisible: true,
-          // secondsVisible: true,
         },
         localization: {
           dateFormat: "yyyy-MM-dd",

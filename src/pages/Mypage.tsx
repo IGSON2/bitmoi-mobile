@@ -9,9 +9,7 @@ export const Mypage = () => {
     pageId: PageId.MyPage,
   };
   useEffect(() => {
-    async function getUserInfo() {
-      const userInfo = await axiosClient.get("reissueAccess");
-    }
+    async function getUserInfo() {}
     getUserInfo();
   }, []);
   return (

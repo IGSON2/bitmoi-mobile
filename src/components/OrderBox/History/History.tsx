@@ -4,6 +4,7 @@ import axiosClient from "../../../utils/axiosClient";
 import { ScoreHistory } from "../../../types/types";
 import { Timeformatter } from "../../../utils/Timestamp";
 import { useAppSelector } from "../../../hooks/hooks";
+import { getPosNegMark } from "../../../utils/priceUtil";
 
 type Summary = {
   total: number;
@@ -40,7 +41,7 @@ export const History = () => {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight === scrollHeight) {
+      if (scrollTop + clientHeight === scrollHeight - 0.5) {
         setPage((prevPage) => prevPage + 1);
       }
     }
@@ -139,11 +140,9 @@ export const History = () => {
             <div className="history_row_box" style={{ paddingTop: "17px" }}>
               <div>수익금</div>
               <div className="history_score_pnl">
-                <span style={{ color: "#191919" }}>{`${
-                  score.pnl > 0 ? "+" : ""
-                }${score.pnl.toLocaleString("en-US", {
-                  maximumFractionDigits: 0,
-                })}`}</span>{" "}
+                <span style={{ color: "#191919" }}>{`${getPosNegMark(
+                  Math.round(score.pnl)
+                )}`}</span>{" "}
                 USDT
               </div>
             </div>
@@ -153,7 +152,7 @@ export const History = () => {
                 className={`history_score_roe ${
                   score.roe > 0 ? "roe_pos" : "roe_neg"
                 }`}
-              >{`${score.pnl > 0 ? "+" : "-"}${Math.round(score.roe)}%`}</div>
+              >{`${getPosNegMark(Math.round(score.roe))}%`}</div>
             </div>
           </div>
         );

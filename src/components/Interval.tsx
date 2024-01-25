@@ -79,27 +79,15 @@ export function Interval() {
     <div className="interval">
       <div
         className={`${
-          currentIntv === oneD ? "interval_unit_active" : "interval_unit"
+          currentIntv === fifM ? "interval_unit_active" : "interval_unit"
         }`}
         onClick={async () => {
-          if (!checkInterval(oneD)) {
-            await getAnotherInterval(oneD);
+          if (!checkInterval(fifM)) {
+            await getAnotherInterval(fifM);
           }
         }}
       >
-        <div>{oneD}</div>
-      </div>
-      <div
-        className={`${
-          currentIntv === fourH ? "interval_unit_active" : "interval_unit"
-        }`}
-        onClick={async () => {
-          if (!checkInterval(fourH)) {
-            await getAnotherInterval(fourH);
-          }
-        }}
-      >
-        <div>{fourH}</div>
+        <div>{fifM}</div>
       </div>
       <div
         className={`${
@@ -115,15 +103,27 @@ export function Interval() {
       </div>
       <div
         className={`${
-          currentIntv === fifM ? "interval_unit_active" : "interval_unit"
+          currentIntv === fourH ? "interval_unit_active" : "interval_unit"
         }`}
         onClick={async () => {
-          if (!checkInterval(fifM)) {
-            await getAnotherInterval(fifM);
+          if (!checkInterval(fourH)) {
+            await getAnotherInterval(fourH);
           }
         }}
       >
-        <div>{fifM}</div>
+        <div>{fourH}</div>
+      </div>
+      <div
+        className={`${
+          currentIntv === oneD ? "interval_unit_active" : "interval_unit"
+        }`}
+        onClick={async () => {
+          if (!checkInterval(oneD)) {
+            await getAnotherInterval(oneD);
+          }
+        }}
+      >
+        <div>{oneD}</div>
       </div>
     </div>
   );

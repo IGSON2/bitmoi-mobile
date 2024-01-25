@@ -5,6 +5,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  padding: 40px 0 20px 0;
 }
 
 .invest h1 {

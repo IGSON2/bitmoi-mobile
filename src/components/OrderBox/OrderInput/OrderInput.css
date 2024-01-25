@@ -1,16 +1,133 @@
-.OrderInput {
+.orderInput {
   width: inherit;
   height: 93%;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
-  row-gap: 20px;
   padding-top: 3%;
   padding-bottom: 15px;
+  overflow: auto;
 }
 
-.OrderInput_balance {
+.orderInput_leverage {
+  width: 95%;
+  height: 6%;
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderInput_leverage_title {
+  width: 40%;
+  min-width: 145px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 8px;
+  justify-content: start;
+  align-items: center;
+  font-size: small;
+}
+
+.orderInput_leverage_value {
+  height: 90%;
+  min-width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #191919;
+  font-size: 13px;
+  font-weight: 600;
+  background: #efefef;
+  border-radius: 5px;
+}
+
+.orderInput_leverage_modal {
+  width: inherit;
+  height: 100%;
+  z-index: 12;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.orderInput_leverage_blank {
+  position: fixed;
+  top: 0px;
+  width: inherit;
+  height: 100%;
+  z-index: 13;
+  opacity: 0.4;
+  background-color: #999999;
+}
+
+.orderInput_leverage_range {
+  width: 327px;
+  height: 210px;
+  z-index: 14;
+  border-radius: 4px;
+  background: #f6f6f6;
+  box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.25);
+  padding: 24px 12px;
+  position: fixed;
+  top: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 28px;
+}
+
+.orderInput_leverage_range > div,
+.orderInput_leverage_range > input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.orderInput_leverage_range_value {
+  width: 100%;
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #efefef;
+}
+
+.orderInput_leverage_range > input {
+  accent-color: #0abab5;
+}
+
+.orderInput_leverage_range_buttons {
+  height: 42px;
+  flex-direction: row;
+}
+
+.orderInput_leverage_range_buttons > button {
+  height: 100%;
+  border: none;
+  border-radius: 50px;
+}
+
+.orderInput_leverage_range_buttons_cancel {
+  background: #e1e1e1;
+  color: #000000;
+  width: 40%;
+}
+
+.orderInput_leverage_range_buttons_select {
+  background: #000000;
+  color: #f3f3f3;
+  width: 60%;
+}
+
+.orderInput_balance {
   width: 90%;
   height: 3%;
   display: flex;
@@ -20,12 +137,12 @@
   font-size: 13px;
 }
 
-.OrderInput_balance1 {
+.orderInput_balance1 {
   width: 75%;
 }
 
-.OrderInput_balance2,
-.OrderInput_balance3 {
+.orderInput_balance2,
+.orderInput_balance3 {
   width: 12.5%;
   font-weight: 600;
   color: #191919;
@@ -34,7 +151,7 @@
 
 .input_wrapper {
   width: 95%;
-  height: 6%;
+  min-height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -73,6 +190,15 @@
   font-size: small;
 }
 
+.input_narrow_wrapper {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 70px;
+}
+
 .orderInput_title_help {
   width: 90%;
   display: flex;
@@ -83,26 +209,13 @@
   font-size: small;
 }
 
-.leverage {
+.input_title_wrapper {
+  height: 60%;
   width: 95%;
-  height: 6%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: #efefef;
-  color: #191919;
-  font-weight: 600;
-}
-
-.leverage_range {
-  width: 95%;
-  height: 6%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  accent-color: #0abab5;
 }
 
 .reset_btn,
@@ -149,4 +262,12 @@
   align-items: center;
   font-size: small;
   color: #888888;
+}
+
+.option_neg {
+  color: #f00;
+}
+
+.option_pos {
+  color: #0038ff;
 }

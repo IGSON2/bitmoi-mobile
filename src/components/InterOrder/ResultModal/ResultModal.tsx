@@ -6,6 +6,7 @@ import "./ResultModal.css";
 import VerticalLine from "../../lines/VerticalLine";
 import { ConvertSeconds } from "../../../utils/Timestamp";
 import { setStateTitleArray } from "../../../store/stageState";
+import { getPosNegMark } from "../../../utils/priceUtil";
 
 type infoByRoe = {
   imageUrl: string;
@@ -74,17 +75,10 @@ function ResultModal() {
             }
           >
             <div className="result_modal_roe">
-              {getPosNegMark(score.current_score.roe) +
-                score.current_score.roe.toLocaleString("ko-KR", {
-                  maximumFractionDigits: 2,
-                })}
-              %
+              {getPosNegMark(Math.round(100 * score.current_score.roe) / 100)}%
             </div>
             <div className="result_modal_pnl">
-              {getPosNegMark(score.current_score.pnl) +
-                score.current_score.pnl.toLocaleString("ko-KR", {
-                  maximumFractionDigits: 0,
-                })}{" "}
+              {getPosNegMark(Math.round(100 * score.current_score.pnl) / 100)}{" "}
               USDT
             </div>
           </div>
@@ -100,19 +94,15 @@ function ResultModal() {
           </div>
           <div className="result_modal_between_wrapper">
             <div className="result_modal_after_title">진입 후 최대 손익률</div>
-            <div>{`${getPosNegMark(score.after_score.max_roe)}${(
-              score.current_score.leverage *
-              score.after_score.max_roe *
-              100
-            ).toLocaleString("ko-KR", {
-              maximumFractionDigits: 0,
-            })}% / ${getPosNegMark(score.after_score.min_roe)}${(
-              score.current_score.leverage *
-              score.after_score.min_roe *
-              100
-            ).toLocaleString("ko-KR", {
-              maximumFractionDigits: 0,
-            })}%`}</div>
+            <div>{`${getPosNegMark(
+              Math.round(
+                score.current_score.leverage * score.after_score.max_roe * 100
+              )
+            )}% / ${getPosNegMark(
+              Math.round(
+                score.current_score.leverage * score.after_score.min_roe * 100
+              )
+            )}%`}</div>
           </div>
         </div>
         <div className="result_modal_comment">
@@ -185,14 +175,6 @@ function getIbr(roe: number): infoByRoe {
     }
   }
   return info;
-}
-
-function getPosNegMark(roe: number): string {
-  if (roe > 0) {
-    return "+";
-  } else {
-    return "";
-  }
 }
 
 export default ResultModal;

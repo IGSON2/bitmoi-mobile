@@ -32,10 +32,10 @@ export function OrderBox() {
   };
 
   useEffect(() => {
-    if(closed){
+    if (closed) {
       setComponentToRender(<div></div>); // 왜 안바뀌는가?
     }
-  },[closed]);
+  }, [closed]);
 
   return (
     <div className="orderBox">
@@ -57,36 +57,34 @@ export function OrderBox() {
         >{`거래내역`}</div>
       </div>
       {orderBoxMenu !== OrderBox_Menu.None ? (
-        <div className="orderBox_active">
-          <div className="orderBox_router">
-            <div className="orderBox_menu_box">
-              <div
-                className={
-                  orderBoxMenu === OrderBox_Menu.Long
-                    ? "orderBox_menu long_active"
-                    : "orderBox_menu"
-                }
-                onClick={OnLongClick}
-              >{`매수 (Long)`}</div>
-              <div
-                className={
-                  orderBoxMenu === OrderBox_Menu.Short
-                    ? "orderBox_menu short_active"
-                    : "orderBox_menu"
-                }
-                onClick={OnShortClick}
-              >{`매도 (Short)`}</div>
-              <div
-                className={
-                  orderBoxMenu === OrderBox_Menu.History
-                    ? "orderBox_menu history_active"
-                    : "orderBox_menu"
-                }
-                onClick={OnHistoryClick}
-              >{`거래내역`}</div>
-            </div>
-            {componentToRender}
+        <div className="orderBox_router">
+          <div className="orderBox_menu_box">
+            <div
+              className={
+                orderBoxMenu === OrderBox_Menu.Long
+                  ? "orderBox_menu long_active"
+                  : "orderBox_menu"
+              }
+              onClick={OnLongClick}
+            >{`매수 (Long)`}</div>
+            <div
+              className={
+                orderBoxMenu === OrderBox_Menu.Short
+                  ? "orderBox_menu short_active"
+                  : "orderBox_menu"
+              }
+              onClick={OnShortClick}
+            >{`매도 (Short)`}</div>
+            <div
+              className={
+                orderBoxMenu === OrderBox_Menu.History
+                  ? "orderBox_menu history_active"
+                  : "orderBox_menu"
+              }
+              onClick={OnHistoryClick}
+            >{`거래내역`}</div>
           </div>
+          {componentToRender}
         </div>
       ) : null}
     </div>

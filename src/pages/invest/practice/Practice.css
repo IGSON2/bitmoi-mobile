@@ -1,8 +1,10 @@
 .practice {
   width: inherit;
-  flex: 1;
+  height: 100%;
+  /* flex: 1; */
   background-color: #f6f6f6;
   z-index: 1;
+  padding: 20px 0 20px 0;
 }
 
 .prac_body {

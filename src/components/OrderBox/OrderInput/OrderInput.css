@@ -41,8 +41,8 @@
   color: #191919;
   font-size: 13px;
   font-weight: 600;
+  border: 1px solid #e6e6e6;
   background: #efefef;
-  border-radius: 5px;
 }
 
 .orderInput_leverage_modal {
@@ -179,6 +179,7 @@
   height: 100%;
   text-align: center;
   color: #999999;
+  border-radius: 0px;
 }
 
 .input_wrapper_1,

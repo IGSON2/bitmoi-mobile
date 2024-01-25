@@ -4,7 +4,10 @@ import "./OrderInput.css";
 import HorizontalLine from "../../lines/HorizontalLine";
 import axiosClient from "../../../utils/axiosClient";
 import { OrderInit } from "../../../types/types";
-import { ValidateOrderRequest } from "../../../utils/ValidateOrderRequest";
+import {
+  ValidateOrderRequest,
+  validateLossPrice,
+} from "../../../utils/ValidateOrderRequest";
 import {
   setOrderIsLong,
   setOrderLeverage,
@@ -102,6 +105,16 @@ export function OrderInput({ isLong }: Position) {
 
   const lossRateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const valueAsNumber = Number(event.target.value);
+    const err = validateLossPrice(
+      order.is_long,
+      entryPrice,
+      Math.ceil(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000,
+      leverage
+    );
+    if (err) {
+      setErrorMessage(err.message);
+      return;
+    }
     setLossRate(valueAsNumber);
     if (isLong) {
       setLossPrice(

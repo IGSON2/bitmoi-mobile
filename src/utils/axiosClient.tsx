@@ -25,11 +25,10 @@ axiosClient.interceptors.response.use(
   (response) => {
     return response;
   },
-  
+
   async (error) => {
     const originalRequest = error.config;
     if (error.response && error.response.status === 401) {
-      
       if (originalRequest.url === "/verifyToken") {
         return Promise.reject(error);
       }
@@ -52,11 +51,15 @@ axiosClient.interceptors.response.use(
           localStorage.setItem("accessToken", refResponse.data.access_token);
           console.log("access token updated by refresh token.");
 
-          originalRequest.headers["Authorization"] = `Bearer ${refResponse.data.access_token}`;
+          originalRequest.headers[
+            "Authorization"
+          ] = `Bearer ${refResponse.data.access_token}`;
           if (originalRequest.url === "/verifyToken") {
-            originalRequest.data = JSON.stringify({token: refResponse.data.access_token})
+            originalRequest.data = JSON.stringify({
+              token: refResponse.data.access_token,
+            });
           }
-          
+
           return axiosClient(originalRequest);
         }
       } catch (reissueError) {
@@ -65,6 +68,10 @@ axiosClient.interceptors.response.use(
         window.location.href = "/login";
         return Promise.reject(reissueError);
       }
+    }
+    // TODO: status === 429일 때, response가 undefined로 반환되는 문제 해결 필요
+    else if (error.response.status === 429) {
+      alert("요청이 너무 잦습니다. 잠시 후 다시 시도해주세요.");
     }
     return Promise.reject(error);
   }

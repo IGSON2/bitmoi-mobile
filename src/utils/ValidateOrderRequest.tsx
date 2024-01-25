@@ -54,3 +54,36 @@ export function ValidateOrderRequest(order: OrderInit): Error | null {
   }
   return null;
 }
+
+export function validateLossPrice(
+  isLong: boolean,
+  entry: number,
+  loss: number,
+  lev: number
+): Error | null {
+  const limit = Math.pow(lev, -1);
+  let decimal: number = 4;
+  if (typeof entry === "number" && entry.toString().includes(".")) {
+    decimal = entry.toString().split(".")[1].length;
+  }
+  if (isLong) {
+    if ((entry - loss) / entry > limit) {
+      return new Error(
+        `현재 레버리지 X${lev}의 최대 손실 감수가격은 ${
+          Math.ceil(entry * (1 - limit) * Math.pow(10, decimal)) /
+          Math.pow(10, decimal)
+        }입니다.`
+      );
+    }
+  } else {
+    if ((loss - entry) / entry > limit) {
+      return new Error(
+        `현재 레버리지 X${lev}의 최대 손실 감수가격은 ${
+          Math.floor(entry * (1 + limit) * Math.pow(10, decimal)) /
+          Math.pow(10, decimal)
+        }입니다.`
+      );
+    }
+  }
+  return null;
+}

@@ -72,9 +72,6 @@ const orderSlice = createSlice({
     setOrderBalance: (state, action: PayloadAction<number>) => {
       state.balance = action.payload;
     },
-    setAddOrderBalance: (state, action: PayloadAction<number>) => {
-      state.balance += action.payload;
-    },
     setOrderIdentifier: (state, action: PayloadAction<string>) => {
       state.identifier = action.payload;
     },
@@ -106,7 +103,6 @@ export const {
   setOrderLossPrice,
   setOrderLeverage,
   setOrderBalance,
-  setAddOrderBalance,
   setOrderIdentifier,
   setOrderScoreId,
   setOrderReqInterval,

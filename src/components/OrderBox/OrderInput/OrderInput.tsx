@@ -18,7 +18,7 @@ import {
   setOrderQuantity,
   setOrderReqInterval,
 } from "../../../store/order";
-import { oneH } from "../../../types/const";
+import { ModePrac, oneH } from "../../../types/const";
 import { setSubmit } from "../../../store/submit";
 
 interface Position {
@@ -59,10 +59,11 @@ export function OrderInput({ isLong }: Position) {
 
   const quantityRateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const valueAsNumber = Number(event.target.value);
+    const withCommission = order.mode === ModePrac ? 1 : 0.98;
     setQuantityRate(valueAsNumber);
     setQuantity(
       Math.floor(
-        ((balance * leverage * 0.98) / entryPrice) *
+        ((balance * leverage * withCommission) / entryPrice) *
           (valueAsNumber / 100) *
           10000
       ) / 10000

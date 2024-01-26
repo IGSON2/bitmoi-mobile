@@ -142,5 +142,8 @@ export type UserInfo = {
   photo_url: string;
   metamask_address: string;
   password_changed_at: string;
+  prac_balance: number;
+  comp_balance: number;
+  recommender_code: string;
   created_at: string;
 };

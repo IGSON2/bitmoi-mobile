@@ -18,7 +18,6 @@ import { setCurrentChart } from "../../store/currentChart";
 import { setPositionClosed } from "../../store/positionClosed";
 import { setCurrentScore, setScore } from "../../store/score";
 import { setElapsedTime } from "../../store/stageState";
-import { setAddOrderBalance } from "../../store/order";
 
 type stepInfo = {
   elapsedTime: number;
@@ -51,7 +50,6 @@ export const InterOrder = () => {
         after_score: res.data.after_score,
       })
     );
-    dispatch(setAddOrderBalance(res.data.score.pnl));
   }
 
   async function GetMediateChart(intv: IntervalType) {
@@ -91,7 +89,6 @@ export const InterOrder = () => {
       if (interResponse.data.score.out_time > 0) {
         dispatch(setPositionClosed(true));
         dispatch(setCurrentScore(interResponse.data.score));
-        dispatch(setAddOrderBalance(interResponse.data.score.pnl));
       }
       if (interResponse.data.result_chart.pdata[0].time === min_timestamp) {
         alert("마지막 캔들입니다.");

@@ -17,6 +17,7 @@ import {
 import { setStageState } from "../../../store/stageState";
 import {
   initOrder,
+  setOrderBalance,
   setOrderEntryPrice,
   setOrderIdentifier,
   setOrderMode,
@@ -56,6 +57,7 @@ export function Practice() {
       } else {
         dispatch(setUserInfo(userRes as UserInfo));
         dispatch(setOrderUserId(userRes.user_id));
+        dispatch(setOrderBalance(userRes.prac_balance));
         setIsLogined(true);
       }
 

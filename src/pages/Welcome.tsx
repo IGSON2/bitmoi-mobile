@@ -24,6 +24,7 @@ export const Welcome = () => {
   return (
     <div className="welcome">
       <h3>시뮬레이션 모의투자 비트모이의 회원이 되신 것을 축하드립니다!</h3>
+      <button>출석체크</button> {/*TODO*/}
       <button
         onClick={() => {
           window.location.href = "/invest/practice";

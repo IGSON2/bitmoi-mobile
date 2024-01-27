@@ -30,6 +30,7 @@ import { setCurrentChart } from "../../../store/currentChart";
 import { InterOrder } from "../../../components/InterOrder/InterOrder";
 import { setSubmit } from "../../../store/submit";
 import ResultModal from "../../../components/InterOrder/ResultModal/ResultModal";
+import { initScore } from "../../../store/score";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
@@ -49,6 +50,7 @@ export function Practice() {
   useEffect(() => {
     async function GetChart(titleArray: string[]) {
       dispatch(initOrder());
+      dispatch(initScore());
       dispatch(initIntervalCharts());
       dispatch(setSubmit(false));
       const userRes = await checkAccessTokenValidity();

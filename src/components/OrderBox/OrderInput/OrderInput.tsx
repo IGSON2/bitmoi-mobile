@@ -8,7 +8,7 @@ import {
   ValidateOrderRequest,
   validateLossPrice,
 } from "../../../utils/ValidateOrderRequest";
-import {
+import order, {
   setOrderIsLong,
   setOrderLeverage,
   setOrderLossPrice,
@@ -432,10 +432,12 @@ export function OrderInput({ isLong }: Position) {
         <div className="error_message">{errorMessage}</div>
       ) : null}
 
-      <div className="commission">
-        <div>수수료</div>
-        <div>0.02%</div>
-      </div>
+      {order.mode === ModePrac ? null : (
+        <div className="commission">
+          <div>수수료</div>
+          <div>0.02%</div>
+        </div>
+      )}
     </div>
   );
 }

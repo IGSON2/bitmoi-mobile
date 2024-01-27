@@ -12,7 +12,7 @@ const initialState: Order = {
   profit_price: 0,
   loss_price: 0,
   leverage: 1,
-  balance: 1000,
+  balance: 0,
   identifier: "",
   score_id: "",
   reqinterval: "",

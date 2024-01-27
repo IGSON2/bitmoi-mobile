@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
+
 const axiosClient = axios.create({
-  baseURL: "https://api.bitmoi.co.kr",
+  baseURL: apiURL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -38,7 +40,7 @@ axiosClient.interceptors.response.use(
           throw new Error("No refresh token.");
         }
         const newAxiosClient = axios.create({
-          baseURL: "https://api.bitmoi.co.kr",
+          baseURL: apiURL,
           headers: {
             "Content-Type": "application/json",
           },

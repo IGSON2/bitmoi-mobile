@@ -2,7 +2,8 @@ import "./Login.css";
 
 export const Login = () => {
   function login() {
-    window.location.href = "https://api.bitmoi.co.kr/oauth";
+    const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
+    window.location.href = `${apiURL}/oauth`;
   }
   return (
     <div className="login">

@@ -22,7 +22,7 @@ var (
 		AllowOrigins: "*",
 	})
 	limiterMiddleware = limiter.New(limiter.Config{
-		Max:        30,
+		Max:        50,
 		Expiration: 30 * time.Second,
 		KeyGenerator: func(c *fiber.Ctx) string {
 			return c.Get("x-forwarded-for")

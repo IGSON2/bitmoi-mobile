@@ -3,7 +3,8 @@ import "./Practice.css";
 import { ChartRef } from "../../../components/ChartRef";
 import { ModePrac, oneH } from "../../../types/const";
 import axiosClient from "../../../utils/axiosClient";
-import { StageState, UserInfo } from "../../../types/types";
+import { StageState } from "../../../types/stageState";
+import { UserInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
@@ -14,16 +15,14 @@ import {
   initIntervalCharts,
   setIntervalCharts,
 } from "../../../store/intervalCharts";
-import { setStageState } from "../../../store/stageState";
+import { setAddRefreshCnt, setStageState } from "../../../store/stageState";
 import {
   initOrder,
-  setOrderBalance,
   setOrderEntryPrice,
   setOrderIdentifier,
   setOrderMode,
   setOrderName,
   setOrderScoreId,
-  setOrderStage,
   setOrderUserId,
 } from "../../../store/order";
 import { setCurrentChart } from "../../../store/currentChart";
@@ -35,11 +34,10 @@ import { initScore } from "../../../store/score";
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
   const [isLogined, setIsLogined] = useState<boolean>(false);
-  const [refreshCnt, setRefreshCnt] = useState<number>(0);
 
   const currentChart = useAppSelector((state) => state.currentChart.oneChart);
   const currentState = useAppSelector((state) => state.stageState);
-  const titleArray = useAppSelector((state) => state.stageState.titleArray);
+  const refreshCnt = useAppSelector((state) => state.stageState.refresh_cnt);
   const submit = useAppSelector((state) => state.submit.check);
   const position_closed = useAppSelector(
     (state) => state.positionClosed.closed
@@ -48,7 +46,7 @@ export function Practice() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    async function GetChart(titleArray: string[]) {
+    async function GetChart() {
       dispatch(initOrder());
       dispatch(initScore());
       dispatch(initIntervalCharts());
@@ -59,15 +57,12 @@ export function Practice() {
       } else {
         dispatch(setUserInfo(userRes as UserInfo));
         dispatch(setOrderUserId(userRes.user_id));
-        dispatch(setOrderBalance(userRes.prac_balance));
         setIsLogined(true);
       }
 
       setIsChartLoaded(false);
       try {
-        const response = await axiosClient.get(
-          `/${ModePrac}?names=${titleArray.join(",")}`
-        );
+        const response = await axiosClient.get(`/${ModePrac}`);
 
         dispatch(setOrderEntryPrice(response.data.onechart.pdata[0].close));
         response.data.onechart.pdata.reverse();
@@ -95,20 +90,19 @@ export function Practice() {
         // dispatch(setStateTitleArray(response.data.name)) //TODO : 최종 스코어 반환 시 배열 추가
 
         dispatch(setOrderName(response.data.name));
-        dispatch(setOrderStage(titleArray.length + 1));
         dispatch(setOrderIdentifier(response.data.identifier));
+        dispatch(setOrderScoreId(Date.now().toString()));
 
         setIsChartLoaded(true);
       } catch (error) {
         console.error(error);
       }
     }
-    GetChart(titleArray);
-  }, [titleArray, refreshCnt]);
+    GetChart();
+  }, [refreshCnt]);
 
   useEffect(() => {
     dispatch(setOrderMode(ModePrac));
-    dispatch(setOrderScoreId(Date.now().toString()));
   }, []);
 
   return (
@@ -144,7 +138,7 @@ export function Practice() {
               src={"/images/refresh.png"}
               alt=""
               onClick={() => {
-                setRefreshCnt(refreshCnt + 1);
+                dispatch(setAddRefreshCnt());
               }}
             />
           </div>

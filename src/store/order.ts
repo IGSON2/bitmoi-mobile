@@ -5,14 +5,12 @@ const initialState: Order = {
   mode: "",
   user_id: "",
   name: "",
-  stage: 1,
   is_long: true,
   entry_price: 0,
   quantity: 0,
   profit_price: 0,
   loss_price: 0,
   leverage: 1,
-  balance: 0,
   identifier: "",
   score_id: "",
   reqinterval: "",
@@ -27,7 +25,6 @@ const orderSlice = createSlice({
     initOrder: (state) => {
       state.user_id = "";
       state.name = "";
-      state.stage = 1;
       state.is_long = true;
       state.entry_price = 0;
       state.quantity = 0;
@@ -48,9 +45,6 @@ const orderSlice = createSlice({
     setOrderName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
-    setOrderStage: (state, action: PayloadAction<number>) => {
-      state.stage = action.payload;
-    },
     setOrderIsLong: (state, action: PayloadAction<boolean>) => {
       state.is_long = action.payload;
     },
@@ -68,9 +62,6 @@ const orderSlice = createSlice({
     },
     setOrderLeverage: (state, action: PayloadAction<number>) => {
       state.leverage = action.payload;
-    },
-    setOrderBalance: (state, action: PayloadAction<number>) => {
-      state.balance = action.payload;
     },
     setOrderIdentifier: (state, action: PayloadAction<string>) => {
       state.identifier = action.payload;
@@ -95,14 +86,12 @@ export const {
   setOrderMode,
   setOrderUserId,
   setOrderName,
-  setOrderStage,
   setOrderIsLong,
   setOrderEntryPrice,
   setOrderQuantity,
   setOrderProfitPrice,
   setOrderLossPrice,
   setOrderLeverage,
-  setOrderBalance,
   setOrderIdentifier,
   setOrderScoreId,
   setOrderReqInterval,

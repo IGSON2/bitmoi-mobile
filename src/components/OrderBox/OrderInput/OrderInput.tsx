@@ -8,7 +8,7 @@ import {
   ValidateOrderRequest,
   validateLossPrice,
 } from "../../../utils/ValidateOrderRequest";
-import order, {
+import {
   setOrderIsLong,
   setOrderLeverage,
   setOrderLossPrice,
@@ -31,8 +31,9 @@ export function OrderInput({ isLong }: Position) {
   const entryTimestamp = useAppSelector((state) => state.stageState.entrytime);
 
   const order = useAppSelector((state) => state.order);
+  const leverage = order.leverage;
   const entryPrice = order.entry_price;
-  const balance = order.balance;
+  const pracBalance = useAppSelector((state) => state.userInfo.prac_balance);
 
   const dispatch = useAppDispatch();
 
@@ -40,20 +41,27 @@ export function OrderInput({ isLong }: Position) {
     dispatch(setOrderIsLong(isLong));
   }, [isLong]);
 
-  const [quantity, setQuantity] = useState(0);
-  const [quantityRate, setQuantityRate] = useState(0);
-  const [profitPrice, setProfitPrice] = useState(0);
+  const [quantityRate, setQuantityRate] = useState(
+    Math.floor(
+      (10000 * order.quantity) / ((pracBalance * leverage) / entryPrice)
+    ) / 100
+  );
   const [profitRate, setProfitRate] = useState(0);
-  const [lossPrice, setLossPrice] = useState(0);
   const [lossRate, setLossRate] = useState(1);
-  const [leverage, setLeverage] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
 
   const quantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.valueAsNumber < 0) {
-      setQuantity(0);
+      dispatch(setOrderQuantity(0));
+      setQuantityRate(0);
     } else {
-      setQuantity(event.target.valueAsNumber);
+      dispatch(setOrderQuantity(event.target.valueAsNumber));
+      setQuantityRate(
+        Math.floor(
+          (10000 * event.target.valueAsNumber) /
+            ((pracBalance * leverage) / entryPrice)
+        ) / 100
+      );
     }
   };
 
@@ -61,20 +69,22 @@ export function OrderInput({ isLong }: Position) {
     const valueAsNumber = Number(event.target.value);
     const withCommission = order.mode === ModePrac ? 1 : 0.98;
     setQuantityRate(valueAsNumber);
-    setQuantity(
-      Math.floor(
-        ((balance * leverage * withCommission) / entryPrice) *
-          (valueAsNumber / 100) *
-          10000
-      ) / 10000
+    dispatch(
+      setOrderQuantity(
+        Math.floor(
+          ((pracBalance * leverage * withCommission) / entryPrice) *
+            (valueAsNumber / 100) *
+            10000
+        ) / 10000
+      )
     );
   };
 
   const profitChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.valueAsNumber < 0) {
-      setProfitPrice(0);
+      dispatch(setOrderProfitPrice(0));
     } else {
-      setProfitPrice(event.target.valueAsNumber);
+      dispatch(setOrderProfitPrice(event.target.valueAsNumber));
       setProfitRate(
         Math.floor(
           (10000 * (event.target.valueAsNumber - entryPrice)) / entryPrice
@@ -86,16 +96,18 @@ export function OrderInput({ isLong }: Position) {
   const profitRateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const valueAsNumber = Number(event.target.value);
     setProfitRate(valueAsNumber);
-    setProfitPrice(
-      Math.floor(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000
+    dispatch(
+      setOrderProfitPrice(
+        Math.floor(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000
+      )
     );
   };
 
   const lossChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.valueAsNumber < 0) {
-      setLossPrice(0);
+      dispatch(setOrderLossPrice(0));
     } else {
-      setLossPrice(event.target.valueAsNumber);
+      dispatch(setOrderLossPrice(event.target.valueAsNumber));
       setLossRate(
         Math.floor(
           (10000 * (event.target.valueAsNumber - entryPrice)) / entryPrice
@@ -118,57 +130,40 @@ export function OrderInput({ isLong }: Position) {
     }
     setLossRate(valueAsNumber);
     if (isLong) {
-      setLossPrice(
-        Math.ceil(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000
+      dispatch(
+        setOrderLossPrice(
+          Math.ceil(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000
+        )
       );
     } else {
-      setLossPrice(
-        Math.floor(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000
+      dispatch(
+        setOrderLossPrice(
+          Math.floor(entryPrice * (1 + valueAsNumber / 100) * 10000) / 10000
+        )
       );
     }
   };
 
   const leverageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.valueAsNumber) {
-      setLeverage(1);
+      dispatch(setOrderLeverage(1));
     } else {
-      setLeverage(event.target.valueAsNumber);
-      setQuantity(
-        Math.floor(
-          ((balance * event.target.valueAsNumber * 0.98) / entryPrice) *
-            (quantityRate / 100) *
-            10000
-        ) / 10000
+      dispatch(setOrderLeverage(event.target.valueAsNumber));
+      dispatch(
+        setOrderQuantity(
+          Math.floor(
+            ((pracBalance * event.target.valueAsNumber) / entryPrice) *
+              (quantityRate / 100) *
+              10000
+          ) / 10000
+        )
       );
     }
   };
 
   const submitOrder = async () => {
-    // 주문제출 -> OneChart interval 변경 및 Min, Max timestamp 설정 -> result Chart append
-
-    dispatch(setOrderQuantity(quantity));
-    dispatch(setOrderProfitPrice(profitPrice));
-    dispatch(setOrderLossPrice(lossPrice));
-    dispatch(setOrderLeverage(leverage));
-
-    dispatch(setOrderReqInterval(oneH));
-    dispatch(setOrderMinTimestamp(entryTimestamp));
-    dispatch(setOrderMaxTimestamp(entryTimestamp + 1));
-
     const orderReq: OrderInit = {
-      mode: order.mode,
-      user_id: order.user_id,
-      score_id: order.score_id,
-      name: order.name,
-      stage: order.stage,
-      is_long: order.is_long,
-      entry_price: entryPrice,
-      quantity: quantity,
-      profit_price: profitPrice,
-      loss_price: lossPrice,
-      leverage: leverage,
-      balance: order.balance,
-      identifier: order.identifier,
+      ...order,
     };
 
     const err = ValidateOrderRequest(orderReq);
@@ -186,12 +181,12 @@ export function OrderInput({ isLong }: Position) {
 
   const resetInput = () => {
     setQuantityRate(0);
-    setQuantity(0);
+    dispatch(setOrderQuantity(0));
     setProfitRate(0);
-    setProfitPrice(0);
+    dispatch(setOrderProfitPrice(0));
     setLossRate(0);
-    setLossPrice(0);
-    setLeverage(1);
+    dispatch(setOrderLossPrice(0));
+    dispatch(setOrderLeverage(1));
   };
 
   return (
@@ -244,7 +239,7 @@ export function OrderInput({ isLong }: Position) {
       <div className="orderInput_balance">
         <div className="orderInput_balance1">주문가능</div>
         <div className="orderInput_balance2">
-          {order.balance.toLocaleString("ko-KR", {
+          {pracBalance.toLocaleString("ko-KR", {
             maximumFractionDigits: 2,
           })}
         </div>
@@ -269,7 +264,7 @@ export function OrderInput({ isLong }: Position) {
             id="quantity"
             type={"number"}
             step={"0.0001"}
-            value={quantity}
+            value={order.quantity}
             onChange={quantityChange}
           ></input>
         </div>
@@ -301,7 +296,7 @@ export function OrderInput({ isLong }: Position) {
               id="profitPrice"
               type={"number"}
               step={"0.0001"}
-              value={profitPrice}
+              value={order.profit_price}
               onChange={profitChange}
             ></input>
           </div>
@@ -311,42 +306,42 @@ export function OrderInput({ isLong }: Position) {
             onChange={profitRateChange}
           >
             <option value={0}>현재가 대비%</option>
-            <option className="option_neg" value={-30}>
-              -30%
-            </option>
-            <option className="option_neg" value={-25}>
-              -25%
-            </option>
-            <option className="option_neg" value={-20}>
-              -20%
-            </option>
-            <option className="option_neg" value={-15}>
-              -15%
-            </option>
-            <option className="option_neg" value={-10}>
-              -10%
-            </option>
-            <option className="option_neg" value={-5}>
-              -5%
-            </option>
-            <option value={0}>0%</option>
-            <option className="option_pos" value={5}>
-              5%
-            </option>
-            <option className="option_pos" value={10}>
-              10%
-            </option>
-            <option className="option_pos" value={15}>
-              15%
-            </option>
-            <option className="option_pos" value={20}>
-              20%
+            <option className="option_pos" value={30}>
+              30%
             </option>
             <option className="option_pos" value={25}>
               25%
             </option>
-            <option className="option_pos" value={30}>
-              30%
+            <option className="option_pos" value={20}>
+              20%
+            </option>
+            <option className="option_pos" value={15}>
+              15%
+            </option>
+            <option className="option_pos" value={10}>
+              10%
+            </option>
+            <option className="option_pos" value={5}>
+              5%
+            </option>
+            <option value={0}>0%</option>
+            <option className="option_neg" value={-5}>
+              -5%
+            </option>
+            <option className="option_neg" value={-10}>
+              -10%
+            </option>
+            <option className="option_neg" value={-15}>
+              -15%
+            </option>
+            <option className="option_neg" value={-20}>
+              -20%
+            </option>
+            <option className="option_neg" value={-25}>
+              -25%
+            </option>
+            <option className="option_neg" value={-30}>
+              -30%
             </option>
           </select>
         </div>
@@ -365,7 +360,7 @@ export function OrderInput({ isLong }: Position) {
               id="stoplossprice"
               type={"number"}
               step={"0.0001"}
-              value={lossPrice}
+              value={order.loss_price}
               onChange={lossChange}
             ></input>
           </div>
@@ -375,42 +370,42 @@ export function OrderInput({ isLong }: Position) {
             onChange={lossRateChange}
           >
             <option value={0}>현재가 대비%</option>
-            <option className="option_neg" value={-30}>
-              -30%
-            </option>
-            <option className="option_neg" value={-25}>
-              -25%
-            </option>
-            <option className="option_neg" value={-20}>
-              -20%
-            </option>
-            <option className="option_neg" value={-15}>
-              -15%
-            </option>
-            <option className="option_neg" value={-10}>
-              -10%
-            </option>
-            <option className="option_neg" value={-5}>
-              -5%
-            </option>
-            <option value={0}>0%</option>
-            <option className="option_pos" value={5}>
-              5%
-            </option>
-            <option className="option_pos" value={10}>
-              10%
-            </option>
-            <option className="option_pos" value={15}>
-              15%
-            </option>
-            <option className="option_pos" value={20}>
-              20%
+            <option className="option_pos" value={30}>
+              30%
             </option>
             <option className="option_pos" value={25}>
               25%
             </option>
-            <option className="option_pos" value={30}>
-              30%
+            <option className="option_pos" value={20}>
+              20%
+            </option>
+            <option className="option_pos" value={15}>
+              15%
+            </option>
+            <option className="option_pos" value={10}>
+              10%
+            </option>
+            <option className="option_pos" value={5}>
+              5%
+            </option>
+            <option value={0}>0%</option>
+            <option className="option_neg" value={-5}>
+              -5%
+            </option>
+            <option className="option_neg" value={-10}>
+              -10%
+            </option>
+            <option className="option_neg" value={-15}>
+              -15%
+            </option>
+            <option className="option_neg" value={-20}>
+              -20%
+            </option>
+            <option className="option_neg" value={-25}>
+              -25%
+            </option>
+            <option className="option_neg" value={-30}>
+              -30%
             </option>
           </select>
         </div>

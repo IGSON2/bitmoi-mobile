@@ -134,7 +134,7 @@
   height: 15px;
 }
 
-.result_modal_after {
+.result_modal_detail {
   border-radius: 5px;
   background: #fff;
   width: 303px;
@@ -157,7 +157,7 @@
   align-items: center;
 }
 
-.result_modal_after_title {
+.result_modal_detail_title {
   color: #999999;
   font-weight: 700;
 }

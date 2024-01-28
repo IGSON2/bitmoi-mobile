@@ -5,8 +5,9 @@ import { setSubmit } from "../../../store/submit";
 import "./ResultModal.css";
 import VerticalLine from "../../lines/VerticalLine";
 import { ConvertSeconds } from "../../../utils/Timestamp";
-import { setStateTitleArray } from "../../../store/stageState";
-import { getPosNegMark } from "../../../utils/priceUtil";
+import { FormatPosNeg } from "../../../utils/PriceStyler";
+import { GetMinMaxRoe } from "../../../types/stageState";
+import { setAddRefreshCnt } from "../../../store/stageState";
 
 type infoByRoe = {
   imageUrl: string;
@@ -23,7 +24,7 @@ function ResultModal() {
   function close() {
     dispatch(setSubmit(false));
     dispatch(setPositionClosed(false));
-    dispatch(setStateTitleArray(score.current_score.name));
+    dispatch(setAddRefreshCnt());
   }
 
   useEffect(() => {
@@ -69,39 +70,36 @@ function ResultModal() {
           <div
             className="result_modal_profit_info"
             style={
-              score.current_score.roe > 0
+              score.current_score.roe >= 0
                 ? { color: "#249C91" }
                 : { color: "#EF5350" }
             }
           >
             <div className="result_modal_roe">
-              {getPosNegMark(Math.round(100 * score.current_score.roe) / 100)}%
+              {FormatPosNeg(Math.round(100 * score.current_score.roe) / 100)}%
             </div>
             <div className="result_modal_pnl">
-              {getPosNegMark(Math.round(100 * score.current_score.pnl) / 100)}{" "}
+              {FormatPosNeg(Math.round(100 * score.current_score.pnl) / 100)}{" "}
               USDT
             </div>
           </div>
         </div>
-        <div className="result_modal_after">
+        <div className="result_modal_detail">
           <div className="result_modal_between_wrapper">
-            <div className="result_modal_after_title">매수 체결</div>
+            <div className="result_modal_detail_title">매수 체결</div>
+            <div>즉시</div> {/* 예약 진입 활성화 시 변경예정 */}
+          </div>
+          <div className="result_modal_between_wrapper">
+            <div className="result_modal_detail_title">포지션 종료</div>
             <div>{ConvertSeconds(state.elapsed_time)}</div>
+            {/* <div>{ConvertSeconds(score.after_score.closed_time)}</div> */}
           </div>
           <div className="result_modal_between_wrapper">
-            <div className="result_modal_after_title">포지션 종료</div>
-            <div>{ConvertSeconds(score.after_score.closed_time)}</div>
-          </div>
-          <div className="result_modal_between_wrapper">
-            <div className="result_modal_after_title">진입 후 최대 손익률</div>
-            <div>{`${getPosNegMark(
-              Math.round(
-                score.current_score.leverage * score.after_score.max_roe * 100
-              )
-            )}% / ${getPosNegMark(
-              Math.round(
-                score.current_score.leverage * score.after_score.min_roe * 100
-              )
+            <div className="result_modal_detail_title">진입 후 최대 손익률</div>
+            <div>{`${FormatPosNeg(
+              Math.round(GetMinMaxRoe(state.roe_array).min_roe)
+            )}% / ${FormatPosNeg(
+              Math.round(GetMinMaxRoe(state.roe_array).max_roe)
             )}%`}</div>
           </div>
         </div>
@@ -117,7 +115,7 @@ function ResultModal() {
 
 function getIbr(roe: number): infoByRoe {
   const info: infoByRoe = { imageUrl: "", comment: [] };
-  if (roe > 0) {
+  if (roe >= 0) {
     if (roe <= 15) {
       return {
         imageUrl: "/images/profit-1.gif",

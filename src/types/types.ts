@@ -51,14 +51,12 @@ export type OrderInit = {
   mode: string;
   user_id: string;
   name: string;
-  stage: number;
   is_long: boolean;
   entry_price: number;
   quantity: number;
   profit_price: number;
   loss_price: number;
   leverage: number;
-  balance: number;
   identifier: string;
   score_id: string;
 };
@@ -67,14 +65,12 @@ export type Order = {
   mode: string;
   user_id: string;
   name: string;
-  stage: number;
   is_long: boolean;
   entry_price: number;
   quantity: number;
   profit_price: number;
   loss_price: number;
   leverage: number;
-  balance: number;
   identifier: string;
   score_id: string;
   reqinterval: string;
@@ -119,14 +115,6 @@ export type ScoreHistory = {
   commission: number;
   is_liquidated: boolean;
   created_at: string;
-};
-
-export type StageState = {
-  name: string;
-  btcratio: number;
-  entrytime: number;
-  titleArray: string[];
-  elapsed_time: number;
 };
 
 export type Position = {

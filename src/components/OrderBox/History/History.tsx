@@ -4,7 +4,7 @@ import axiosClient from "../../../utils/axiosClient";
 import { ScoreHistory } from "../../../types/types";
 import { Timeformatter } from "../../../utils/Timestamp";
 import { useAppSelector } from "../../../hooks/hooks";
-import { getPosNegMark } from "../../../utils/priceUtil";
+import { FormatPosNeg } from "../../../utils/PriceStyler";
 
 type Summary = {
   total: number;
@@ -140,7 +140,7 @@ export const History = () => {
             <div className="history_row_box" style={{ paddingTop: "17px" }}>
               <div>수익금</div>
               <div className="history_score_pnl">
-                <span style={{ color: "#191919" }}>{`${getPosNegMark(
+                <span style={{ color: "#191919" }}>{`${FormatPosNeg(
                   Math.round(score.pnl)
                 )}`}</span>{" "}
                 USDT
@@ -152,7 +152,7 @@ export const History = () => {
                 className={`history_score_roe ${
                   score.roe > 0 ? "roe_pos" : "roe_neg"
                 }`}
-              >{`${getPosNegMark(Math.round(score.roe))}%`}</div>
+              >{`${FormatPosNeg(Math.round(score.roe))}%`}</div>
             </div>
           </div>
         );

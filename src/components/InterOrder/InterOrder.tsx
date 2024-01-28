@@ -17,7 +17,7 @@ import { fifM, fourH, oneD, oneH } from "../../types/const";
 import { setCurrentChart } from "../../store/currentChart";
 import { setPositionClosed } from "../../store/positionClosed";
 import { setCurrentScore, setScore } from "../../store/score";
-import { setElapsedTime } from "../../store/stageState";
+import { setAppendRoeArray, setElapsedTime } from "../../store/stageState";
 
 type stepInfo = {
   elapsedTime: number;
@@ -38,8 +38,8 @@ export const InterOrder = () => {
     let max_reqTime = getLatestTimestamp(intervalCharts);
     const orderReq: Order = {
       ...orderState,
-      reqinterval: fifM,
-      min_timestamp: max_reqTime - 1,
+      reqinterval: intervalInfo.interval,
+      min_timestamp: max_reqTime - GetIntervalStep(intervalInfo.interval), // 현재 interval의 1 step만큼 빼주면 된다. -> 작은단위와 큰단위 시간이 겹칠경우 : 작은단위가 큰단위보다 몇 칸 앞선경우
       max_timestamp: max_reqTime,
     };
     const res = await axiosClient.post("/intermediate/close", orderReq);
@@ -80,12 +80,13 @@ export const InterOrder = () => {
       ...orderState,
       reqinterval: intv,
       min_timestamp: min_timestamp,
-      max_timestamp: getLatestTimestamp(intervalCharts) + GetIntervalStep(intv),
+      max_timestamp: getLatestTimestamp(intervalCharts) + GetIntervalStep(intv), // (현재 Interval의 마지막 Timestamp, 가장 최근까지 할당된 Interval의 마지막 Timestamp + 요청한 Interval의 step]
     };
 
     try {
       const interResponse = await axiosClient.post("/intermediate", orderReq);
 
+      dispatch(setAppendRoeArray(interResponse.data.score.roe));
       if (interResponse.data.score.out_time > 0) {
         dispatch(setPositionClosed(true));
         dispatch(setCurrentScore(interResponse.data.score));

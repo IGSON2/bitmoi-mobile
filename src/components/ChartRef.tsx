@@ -167,7 +167,12 @@ export const ChartRef = () => {
     }
   }, [submit]);
 
-  return <div style={{ width: "100%" }} ref={chartContainerRef} />;
+  return (
+    <div
+      style={{ width: "100%", touchAction: "auto" }}
+      ref={chartContainerRef}
+    />
+  );
 };
 
 function getDecimal(pdata: PData): number {

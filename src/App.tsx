@@ -13,6 +13,7 @@ import Competition from "./pages/invest/competition/Competition";
 import { Login } from "./pages/Login";
 import { Welcome } from "./pages/Welcome";
 import { transform } from "@babel/core";
+import React from "react";
 
 const router = createBrowserRouter([
   {
@@ -56,8 +57,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      document.documentElement.style.transform = "scale(1)";
+    }
+  };
   return (
-    <div className="App" style={{ transform: "scale(1)" }}>
+    <div className="App" onTouchStart={handleTouchStart}>
       <RouterProvider router={router} />
     </div>
   );

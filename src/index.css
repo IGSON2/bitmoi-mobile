@@ -11,6 +11,11 @@ body {
   touch-action: pan-x pan-y;
 }
 
+.fixed-component {
+  position: fixed;
+  touch-action: pan-x pan-y;
+}
+
 @media only screen and (max-width: 768px) {
   body {
     width: 100%;

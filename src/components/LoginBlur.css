@@ -1,7 +1,6 @@
-.login_blur {
+.login_modal {
   width: inherit;
   height: 100%;
-  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -9,16 +8,15 @@
   z-index: 97;
 }
 
-.login_blur_blur {
+.login_modal_blur {
   width: inherit;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(2px);
-  position: fixed;
   z-index: 97;
 }
 
-.login_blur_login {
+.login_modal_login {
   width: inherit;
   height: 210px;
   padding-top: 45px;
@@ -27,7 +25,6 @@
   justify-content: start;
   align-items: center;
   row-gap: 25px;
-  position: fixed;
   bottom: 0%;
   background-color: #f6f6f6;
   border-radius: 40px 40px 0 0;
@@ -35,14 +32,14 @@
   z-index: 98;
 }
 
-.login_blur_login_title {
+.login_modal_login_title {
   font-weight: 700;
   font-size: large;
   text-align: center;
   width: 90%;
 }
 
-.login_blur_buttons {
+.login_modal_buttons {
   width: 90%;
   height: 40px;
   display: flex;
@@ -52,20 +49,20 @@
   column-gap: 10px;
 }
 
-.login_blur_buttons > button {
+.login_modal_buttons > button {
   height: 100%;
   border: none;
   border-radius: 50px;
   font-weight: 700;
 }
 
-.login_blur_cancel {
+.login_modal_cancel {
   width: 40%;
   background-color: #e1e1e1;
   color: #f6f6f6;
 }
 
-.login_blur_signin {
+.login_modal_signin {
   width: 60%;
   background-color: #000000;
   color: #f3f3f3;

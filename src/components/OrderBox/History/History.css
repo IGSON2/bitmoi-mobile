@@ -55,15 +55,24 @@
 .history_score_position,
 .history_score_leverage {
   border: 1px solid #d0d0d0;
-  border-radius: 30px;
-  padding: 0px 5px;
   font-size: small;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .history_score_position {
   color: #ffffff;
   border: none;
   font-weight: 600;
+  border-radius: 30px;
+  padding: 2px 5px;
+}
+
+.history_score_leverage {
+  border-radius: 20px;
+  padding-top: 1px;
+  width: 30px;
 }
 
 .history_score_created_at {

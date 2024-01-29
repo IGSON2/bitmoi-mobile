@@ -32,8 +32,8 @@ function ResultModal() {
   }, [score]);
 
   return (
-    <div className="result_modal">
-      <div className="result_modal_blank"></div>
+    <div className={`result_modal fixed-component`}>
+      <div className={`result_modal_blank fixed-component`}></div>
       <div className="result_modal_score">
         <img
           className={`result_modal_close`}
@@ -104,8 +104,8 @@ function ResultModal() {
           </div>
         </div>
         <div className="result_modal_comment">
-          {ibr.comment.map((c) => {
-            return <p>{c}</p>;
+          {ibr.comment.map((c, idx) => {
+            return <p key={idx}>{c}</p>;
           })}
         </div>
       </div>

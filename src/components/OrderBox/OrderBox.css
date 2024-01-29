@@ -12,7 +12,6 @@
 }
 
 .orderBox_blank {
-  position: fixed;
   top: 0px;
   width: inherit;
   height: 80%;
@@ -40,7 +39,6 @@
 }
 
 .orderBox_router {
-  position: fixed;
   bottom: 20px;
   width: inherit;
   height: 80%;

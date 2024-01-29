@@ -2,14 +2,12 @@
   width: inherit;
   height: 100%;
   z-index: 15;
-  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .result_modal_blank {
-  position: fixed;
   top: 0px;
   width: inherit;
   height: 100%;

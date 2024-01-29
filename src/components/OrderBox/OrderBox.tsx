@@ -40,7 +40,10 @@ export function OrderBox() {
   return (
     <div className="orderBox">
       {orderBoxMenu !== OrderBox_Menu.None ? (
-        <div className="orderBox_blank" onClick={OnBlankClick}></div>
+        <div
+          className={`orderBox_blank fixed-component`}
+          onClick={OnBlankClick}
+        ></div>
       ) : null}
       <div className="orderBox_menu_box">
         <div
@@ -57,7 +60,7 @@ export function OrderBox() {
         >{`거래내역`}</div>
       </div>
       {orderBoxMenu !== OrderBox_Menu.None ? (
-        <div className="orderBox_router">
+        <div className={`orderBox_router fixed-component`}>
           <div className="orderBox_menu_box">
             <div
               className={

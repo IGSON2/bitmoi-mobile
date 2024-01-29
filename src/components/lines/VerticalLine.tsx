@@ -5,7 +5,7 @@ const VerticalLine = () => {
         height: "80%",
         width: "1px",
         textAlign: "left",
-        borderLeft: "2px solid #D9D9D9;",
+        borderLeft: "2px solid #D9D9D9",
         lineHeight: "0.1em",
       }}
     >

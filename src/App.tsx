@@ -5,8 +5,6 @@ import {
   redirect,
 } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import { Invest } from "./pages/invest/Invest";
 import { Rank } from "./pages/Rank";
 import { Mypage } from "./pages/Mypage";

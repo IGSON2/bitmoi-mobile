@@ -202,12 +202,12 @@ export function OrderInput({ isLong }: Position) {
         >{`X${leverage}`}</div>
       </div>
       {levClick ? (
-        <div className={`orderInput_leverage_modal`}>
+        <div className={`orderInput_leverage_modal fixed-component`}>
+          <div className={`orderInput_leverage_blank fixed-component`}></div>
           <div
-            className={`orderInput_leverage_blank fixed-component`}
+            className={`orderInput_leverage_range fixed-component`}
             onTouchStart={handleTouchStart}
-          ></div>
-          <div className={`orderInput_leverage_range`}>
+          >
             <div className="orderInput_leverage_range_value">{`X${leverage}`}</div>
             <input
               type={"range"}

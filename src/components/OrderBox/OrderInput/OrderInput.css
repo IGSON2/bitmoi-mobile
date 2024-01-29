@@ -51,7 +51,6 @@
   z-index: 12;
   display: flex;
   justify-content: center;
-  position: absolute;
 }
 
 .orderInput_leverage_blank {
@@ -76,7 +75,6 @@
   justify-content: center;
   align-items: center;
   row-gap: 28px;
-  position: relative;
 }
 
 .orderInput_leverage_range > div,

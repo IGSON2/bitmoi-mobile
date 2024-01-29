@@ -41,7 +41,10 @@ export function OrderBox() {
   return (
     <div className="orderBox">
       {orderBoxMenu !== OrderBox_Menu.None ? (
-        <div className={`orderBox_blank`} onClick={OnBlankClick}></div>
+        <div
+          className={`orderBox_blank fixed-component`}
+          onClick={OnBlankClick}
+        ></div>
       ) : null}
       <div className="orderBox_menu_box">
         <div

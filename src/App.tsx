@@ -55,9 +55,26 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      document.documentElement.style.transform = "scale(1)";
+    }
+  };
   return (
-    <div className="App">
+    <div className="App" onTouchStart={handleTouchStart}>
       <RouterProvider router={router} />
+      <div
+        style={{
+          position: "fixed",
+          zIndex: 200,
+          top: "10px",
+          right: "10px",
+          width: "100px",
+          height: "70px",
+        }}
+      >
+        {window.devicePixelRatio}
+      </div>
     </div>
   );
 }

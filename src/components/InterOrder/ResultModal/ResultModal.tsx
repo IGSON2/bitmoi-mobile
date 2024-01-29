@@ -8,7 +8,6 @@ import { ConvertSeconds } from "../../../utils/Timestamp";
 import { FormatPosNeg } from "../../../utils/PriceStyler";
 import { GetMinMaxRoe } from "../../../types/stageState";
 import { setAddRefreshCnt } from "../../../store/stageState";
-import { handleTouchStart } from "../../../utils/FixedComponent";
 
 type infoByRoe = {
   imageUrl: string;
@@ -33,10 +32,7 @@ function ResultModal() {
   }, [score]);
 
   return (
-    <div
-      className={`result_modal fixed-component`}
-      onTouchStart={handleTouchStart}
-    >
+    <div className={`result_modal fixed-component`}>
       <div className={`result_modal_blank fixed-component`}></div>
       <div className="result_modal_score">
         <img

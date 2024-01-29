@@ -7,7 +7,7 @@
   align-items: center;
   padding-top: 3%;
   padding-bottom: 15px;
-  touch-action: pan-x pan-y;
+  touch-action: pan-x pan-y; /* 주문창 확대 방지 */
 }
 
 .orderInput_leverage {

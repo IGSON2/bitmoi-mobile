@@ -17,7 +17,6 @@ import {
 } from "../../../store/order";
 import { ModePrac } from "../../../types/const";
 import { setSubmit } from "../../../store/submit";
-import { handleTouchStart } from "../../../utils/FixedComponent";
 
 interface Position {
   isLong: boolean;
@@ -25,8 +24,6 @@ interface Position {
 
 export function OrderInput({ isLong }: Position) {
   const [levClick, setLevClick] = useState(false);
-
-  const entryTimestamp = useAppSelector((state) => state.stageState.entrytime);
 
   const order = useAppSelector((state) => state.order);
   const leverage = order.leverage;
@@ -204,10 +201,7 @@ export function OrderInput({ isLong }: Position) {
       {levClick ? (
         <div className={`orderInput_leverage_modal fixed-component`}>
           <div className={`orderInput_leverage_blank fixed-component`}></div>
-          <div
-            className={`orderInput_leverage_range fixed-component`}
-            onTouchStart={handleTouchStart}
-          >
+          <div className={`orderInput_leverage_range fixed-component`}>
             <div className="orderInput_leverage_range_value">{`X${leverage}`}</div>
             <input
               type={"range"}

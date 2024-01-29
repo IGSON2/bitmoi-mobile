@@ -4,7 +4,6 @@ import { OrderBox_Menu } from "../../types/types";
 import { History } from "./History/History";
 import { OrderInput } from "./OrderInput/OrderInput";
 import { useAppSelector } from "../../hooks/hooks";
-import { handleTouchStart } from "../../utils/FixedComponent";
 
 export function OrderBox() {
   const closed = useAppSelector((state) => state.positionClosed.closed);

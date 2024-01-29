@@ -4,6 +4,7 @@ import { OrderBox_Menu } from "../../types/types";
 import { History } from "./History/History";
 import { OrderInput } from "./OrderInput/OrderInput";
 import { useAppSelector } from "../../hooks/hooks";
+import { handleTouchStart } from "../../utils/FixedComponent";
 
 export function OrderBox() {
   const closed = useAppSelector((state) => state.positionClosed.closed);
@@ -60,7 +61,10 @@ export function OrderBox() {
         >{`거래내역`}</div>
       </div>
       {orderBoxMenu !== OrderBox_Menu.None ? (
-        <div className={`orderBox_router fixed-component`}>
+        <div
+          className={`orderBox_router fixed-component`}
+          onTouchStart={handleTouchStart}
+        >
           <div className="orderBox_menu_box">
             <div
               className={

@@ -20,6 +20,7 @@ import {
 } from "../../../store/order";
 import { ModePrac, oneH } from "../../../types/const";
 import { setSubmit } from "../../../store/submit";
+import { handleTouchStart } from "../../../utils/FixedComponent";
 
 interface Position {
   isLong: boolean;
@@ -204,7 +205,10 @@ export function OrderInput({ isLong }: Position) {
         >{`X${leverage}`}</div>
       </div>
       {levClick ? (
-        <div className={`orderInput_leverage_modal fixed-component`}>
+        <div
+          className={`orderInput_leverage_modal fixed-component`}
+          onTouchStart={handleTouchStart}
+        >
           <div
             className={`orderInput_leverage_blank fixed-component`}
             // onClick={() => {

@@ -1,8 +1,12 @@
+import { handleTouchStart } from "../utils/FixedComponent";
 import "./LoginBlur.css";
 
 export function LoginBlur() {
   return (
-    <div className={`login_modal fixed-component`}>
+    <div
+      className={`login_modal fixed-component`}
+      onTouchStart={handleTouchStart}
+    >
       <div className={`login_modal_blur fixed-component`}></div>
       <div className={`login_modal_login fixed-component`}>
         <div className="login_modal_login_title">

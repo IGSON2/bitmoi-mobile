@@ -72,9 +72,7 @@ axiosClient.interceptors.response.use(
       }
     }
     // TODO: status === 429일 때, response가 undefined로 반환되는 문제 해결 필요
-    else if (error.response.status === 429) {
-      alert("요청이 너무 잦습니다. 잠시 후 다시 시도해주세요.");
-    }
+
     return Promise.reject(error);
   }
 );

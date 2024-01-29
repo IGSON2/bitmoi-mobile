@@ -12,6 +12,7 @@ import { Practice } from "./pages/invest/practice/Practice";
 import Competition from "./pages/invest/competition/Competition";
 import { Login } from "./pages/Login";
 import { Welcome } from "./pages/Welcome";
+import { transform } from "@babel/core";
 
 const router = createBrowserRouter([
   {
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ transform: "scale(1)" }}>
       <RouterProvider router={router} />
     </div>
   );

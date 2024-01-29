@@ -12,13 +12,10 @@ import {
   setOrderIsLong,
   setOrderLeverage,
   setOrderLossPrice,
-  setOrderMaxTimestamp,
-  setOrderMinTimestamp,
   setOrderProfitPrice,
   setOrderQuantity,
-  setOrderReqInterval,
 } from "../../../store/order";
-import { ModePrac, oneH } from "../../../types/const";
+import { ModePrac } from "../../../types/const";
 import { setSubmit } from "../../../store/submit";
 import { handleTouchStart } from "../../../utils/FixedComponent";
 
@@ -209,12 +206,7 @@ export function OrderInput({ isLong }: Position) {
           className={`orderInput_leverage_modal fixed-component`}
           onTouchStart={handleTouchStart}
         >
-          <div
-            className={`orderInput_leverage_blank fixed-component`}
-            // onClick={() => {
-            //   setLevClick(false);
-            // }}
-          ></div>
+          <div className={`orderInput_leverage_blank fixed-component`}></div>
           <div className={`orderInput_leverage_range fixed-component`}>
             <div className="orderInput_leverage_range_value">{`X${leverage}`}</div>
             <input

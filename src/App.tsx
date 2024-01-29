@@ -58,18 +58,6 @@ function App() {
   return (
     <div className="App">
       <RouterProvider router={router} />
-      <div
-        style={{
-          position: "fixed",
-          zIndex: 200,
-          top: "10px",
-          right: "10px",
-          width: "100px",
-          height: "70px",
-        }}
-      >
-        {window.devicePixelRatio}
-      </div>
     </div>
   );
 }

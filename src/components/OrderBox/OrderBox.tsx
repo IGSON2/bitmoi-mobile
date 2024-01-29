@@ -61,10 +61,7 @@ export function OrderBox() {
         >{`거래내역`}</div>
       </div>
       {orderBoxMenu !== OrderBox_Menu.None ? (
-        <div
-          className={`orderBox_router fixed-component`}
-          onTouchStart={handleTouchStart}
-        >
+        <div className={`orderBox_router fixed-component`}>
           <div className="orderBox_menu_box">
             <div
               className={

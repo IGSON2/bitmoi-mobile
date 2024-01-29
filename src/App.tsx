@@ -60,6 +60,7 @@ function App() {
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
       document.documentElement.style.transform = "scale(1)";
+      alert("확대 감지");
     }
   };
   return (

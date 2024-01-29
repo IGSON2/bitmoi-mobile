@@ -3,12 +3,12 @@ import "./LoginBlur.css";
 
 export function LoginBlur() {
   return (
-    <div
-      className={`login_modal fixed-component`}
-      onTouchStart={handleTouchStart}
-    >
+    <div className={`login_modal fixed-component`}>
       <div className={`login_modal_blur fixed-component`}></div>
-      <div className={`login_modal_login fixed-component`}>
+      <div
+        className={`login_modal_login fixed-component`}
+        onTouchStart={handleTouchStart}
+      >
         <div className="login_modal_login_title">
           회원만 할 수 있는 기능입니다.
           <br />

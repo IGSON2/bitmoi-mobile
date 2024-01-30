@@ -5,12 +5,12 @@ import axiosClient from "../utils/axiosClient";
 import { setIntervalCharts } from "../store/intervalCharts";
 import { setCurrentChart } from "../store/currentChart";
 import { IntervalType } from "../types/types";
-import { useState } from "react";
 
 export function Interval() {
   const orderState = useAppSelector((state) => state.order);
   const intervalChart = useAppSelector((state) => state.intervalCharts);
   const currentIntv = useAppSelector((state) => state.currentChart.interval);
+  const stageState = useAppSelector((state) => state.stageState);
   const dispatch = useAppDispatch();
 
   const checkInterval = (intv: IntervalType) => {
@@ -59,7 +59,7 @@ export function Interval() {
 
   async function getAnotherInterval(intv: IntervalType) {
     const fIdentifier = encodeURIComponent(orderState.identifier);
-    const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
+    const reqURL = `/intermediate/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}&min_timestamp=${stageState.min_timestamp}&max_timestamp=${stageState.max_timestamp}`;
     try {
       const response = await axiosClient.get(reqURL);
       response.data.onechart.pdata.reverse();

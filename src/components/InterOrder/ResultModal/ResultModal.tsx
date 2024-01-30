@@ -7,7 +7,7 @@ import VerticalLine from "../../lines/VerticalLine";
 import { ConvertSeconds } from "../../../utils/Timestamp";
 import { FormatPosNeg } from "../../../utils/PriceStyler";
 import { GetMinMaxRoe } from "../../../types/stageState";
-import { setAddRefreshCnt } from "../../../store/stageState";
+import { setStageAddRefreshCnt } from "../../../store/stageState";
 
 type infoByRoe = {
   imageUrl: string;
@@ -24,7 +24,7 @@ function ResultModal() {
   function close() {
     dispatch(setSubmit(false));
     dispatch(setPositionClosed(false));
-    dispatch(setAddRefreshCnt());
+    dispatch(setStageAddRefreshCnt());
   }
 
   useEffect(() => {

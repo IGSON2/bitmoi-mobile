@@ -15,7 +15,11 @@ import {
   initIntervalCharts,
   setIntervalCharts,
 } from "../../../store/intervalCharts";
-import { setAddRefreshCnt, setStageState } from "../../../store/stageState";
+import {
+  setStageAddRefreshCnt,
+  setStageMaxTimestamp,
+  setStageState,
+} from "../../../store/stageState";
 import {
   initOrder,
   setOrderEntryPrice,
@@ -65,6 +69,7 @@ export function Practice() {
         const response = await axiosClient.get(`/${ModePrac}`);
 
         dispatch(setOrderEntryPrice(response.data.onechart.pdata[0].close));
+        dispatch(setStageMaxTimestamp(response.data.onechart.pdata[0].time)); // before reversed
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
         dispatch(
@@ -85,10 +90,9 @@ export function Practice() {
               response.data.onechart.pdata[
                 response.data.onechart.pdata.length - 1
               ].time,
+            min_timestamp: response.data.onechart.pdata[0].time, // reversed
           } as StageState)
         );
-        // dispatch(setStateTitleArray(response.data.name)) //TODO : 최종 스코어 반환 시 배열 추가
-
         dispatch(setOrderName(response.data.name));
         dispatch(setOrderIdentifier(response.data.identifier));
         dispatch(setOrderScoreId(Date.now().toString()));
@@ -138,7 +142,7 @@ export function Practice() {
               src={"/images/refresh.png"}
               alt=""
               onClick={() => {
-                dispatch(setAddRefreshCnt());
+                dispatch(setStageAddRefreshCnt());
               }}
             />
           </div>

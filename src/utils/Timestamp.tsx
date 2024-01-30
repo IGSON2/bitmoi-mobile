@@ -23,22 +23,6 @@ export function Timeformatter(unixTime: string, isChart: boolean): string {
   return formattedTime;
 }
 
-export function GetIntervalStep(intv: IntervalType): number {
-  switch (intv) {
-    case fifM:
-      return 15 * 60;
-    case oneH:
-      return 60 * 60;
-    case fourH:
-      return 4 * 60 * 60;
-    case oneD:
-      return 24 * 60 * 60;
-    default:
-      console.error("Invalid interval type");
-  }
-  return 1;
-}
-
 export function ConvertSeconds(sec: number): string {
   const day = Math.floor(sec / 86400);
   const hour = Math.floor((sec % 86400) / 3600);

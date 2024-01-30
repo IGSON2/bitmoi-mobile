@@ -6,6 +6,8 @@ export type StageState = {
   elapsed_time: number;
   roe_array: number[];
   refresh_cnt: number;
+  min_timestamp: number;
+  max_timestamp: number;
 };
 
 export type MinMaxRoe = {

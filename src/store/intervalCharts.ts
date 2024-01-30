@@ -58,14 +58,8 @@ const intervalChartsSlice = createSlice({
           ) {
             break;
           }
-          state.oneDay.pdata = [
-            ...state.oneDay.pdata,
-            ...action.payload.oneChart.pdata,
-          ];
-          state.oneDay.vdata = [
-            ...state.oneDay.vdata,
-            ...action.payload.oneChart.vdata,
-          ];
+          state.oneDay.pdata.push(...action.payload.oneChart.pdata);
+          state.oneDay.vdata.push(...action.payload.oneChart.vdata);
           break;
         case fourH:
           if (
@@ -76,14 +70,8 @@ const intervalChartsSlice = createSlice({
           ) {
             break;
           }
-          state.fourHours.pdata = [
-            ...state.fourHours.pdata,
-            ...action.payload.oneChart.pdata,
-          ];
-          state.fourHours.vdata = [
-            ...state.fourHours.vdata,
-            ...action.payload.oneChart.vdata,
-          ];
+          state.fourHours.pdata.push(...action.payload.oneChart.pdata);
+          state.fourHours.vdata.push(...action.payload.oneChart.vdata);
           break;
         case oneH:
           if (
@@ -94,14 +82,8 @@ const intervalChartsSlice = createSlice({
           ) {
             break;
           }
-          state.oneHour.pdata = [
-            ...state.oneHour.pdata,
-            ...action.payload.oneChart.pdata,
-          ];
-          state.oneHour.vdata = [
-            ...state.oneHour.vdata,
-            ...action.payload.oneChart.vdata,
-          ];
+          state.oneHour.pdata.push(...action.payload.oneChart.pdata);
+          state.oneHour.vdata.push(...action.payload.oneChart.vdata);
           break;
         case fifM:
           if (
@@ -112,14 +94,8 @@ const intervalChartsSlice = createSlice({
           ) {
             break;
           }
-          state.fifteenMinutes.pdata = [
-            ...state.fifteenMinutes.pdata,
-            ...action.payload.oneChart.pdata,
-          ];
-          state.fifteenMinutes.vdata = [
-            ...state.fifteenMinutes.vdata,
-            ...action.payload.oneChart.vdata,
-          ];
+          state.fifteenMinutes.pdata.push(...action.payload.oneChart.pdata);
+          state.fifteenMinutes.vdata.push(...action.payload.oneChart.vdata);
           break;
         default:
           console.error(`invalid interval : ${action.payload.interval}`);
@@ -130,8 +106,7 @@ const intervalChartsSlice = createSlice({
 });
 
 function checkLatestTimestamp(op: PData[], np: PData[]): boolean {
-  if (op[op.length - 1].time === np[np.length - 1].time) return false;
-  return true;
+  return Number(op[op.length - 1].time) < Number(np[0].time);
 }
 
 export const { initIntervalCharts, setIntervalCharts, appendIntervalChart } =

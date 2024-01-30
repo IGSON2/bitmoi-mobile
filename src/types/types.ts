@@ -1,3 +1,5 @@
+import { Time } from "lightweight-charts";
+
 export enum PageId {
   Home,
   Invest,
@@ -21,12 +23,12 @@ export type PData = {
   high: number;
   low: number;
   open: number;
-  time: string;
+  time: Time;
 };
 
-type VData = {
+export type VData = {
   value: number;
-  time: string;
+  time: Time;
   color: string;
 };
 

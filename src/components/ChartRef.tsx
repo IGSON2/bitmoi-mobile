@@ -9,6 +9,7 @@ import {
   Range,
   Time,
   UTCTimestamp,
+  TrackingModeExitMode,
 } from "lightweight-charts";
 import { PData } from "../types/types";
 import { useAppSelector } from "../hooks/hooks";
@@ -20,11 +21,15 @@ export const ChartRef = () => {
   const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
 
   const submit = useAppSelector((state) => state.submit);
+  const positionClosed = useAppSelector((state) => state.positionClosed);
   const order = useAppSelector((state) => state.order);
   const etnryTime = useAppSelector((state) => state.stageState.entrytime);
   const oneChart = useAppSelector((state) => state.currentChart.oneChart);
 
-  const [visibleRange, setVisibleRange] = useState<Range<Time> | null>(null);
+  const [visibleRange, setVisibleRange] = useState<Range<Time> | null>({
+    from: "0",
+    to: "0",
+  });
 
   const handleResize = () => {
     if (chartContainerRef.current && chartApiRef.current) {
@@ -67,7 +72,8 @@ export const ChartRef = () => {
           },
         },
         timeScale: {
-          visible: false,
+          // visible: false,
+          visible: true,
           timeVisible: true,
         },
         localization: {
@@ -79,6 +85,7 @@ export const ChartRef = () => {
             bottom: 0,
           },
         },
+        // trackingMode: { exitMode: TrackingModeExitMode.OnTouchEnd },
       });
     }
 
@@ -101,29 +108,44 @@ export const ChartRef = () => {
       });
     }
     window.addEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (oneChart.pdata.length === 0) {
-      return;
-    }
-    candleSeriesRef.current?.setData([...oneChart.pdata]);
-    volumeSeriesRef.current?.setData([...oneChart.vdata]);
-    var range = 100;
-    const length = oneChart.pdata.length;
-    if (length < range) {
-      range = length;
-    }
-    chartApiRef.current?.timeScale().setVisibleRange({
-      from: oneChart.pdata[length - range].time,
-      to: oneChart.pdata[length - 1].time,
-    });
 
     chartApiRef.current
       ?.timeScale()
       .subscribeVisibleTimeRangeChange((param) => {
         setVisibleRange(param);
       });
+  }, []);
+
+  useEffect(() => {
+    const length = oneChart.pdata.length;
+
+    if (length <= 2) {
+      return;
+    }
+    candleSeriesRef.current?.setData([...oneChart.pdata]);
+    volumeSeriesRef.current?.setData([...oneChart.vdata]);
+
+    let from = visibleRange!.from;
+
+    if (length < 100) {
+      from = oneChart.pdata[0].time;
+    } else if (from === "0") {
+      from = oneChart.pdata[length - 100].time;
+    } else if (from !== "0") {
+      const step =
+        Number(oneChart.pdata[1].time) - Number(oneChart.pdata[0].time);
+      const visibleCandles = Math.floor(
+        (Number(visibleRange!.to) - Number(from)) / step
+      );
+      if (visibleCandles < 100) {
+        from = oneChart.pdata[length - 100].time;
+      }
+    }
+
+    chartApiRef.current?.timeScale().setVisibleRange({
+      from: from,
+      to: oneChart.pdata[length - 1].time,
+    });
   }, [oneChart]);
 
   useEffect(() => {
@@ -131,14 +153,14 @@ export const ChartRef = () => {
       return;
     }
     if (submit.check) {
-      // candleSeriesRef.current.createPriceLine({
-      //     price: order.entry_price,
-      //     color: "rgb(51, 61, 121)",
-      //     lineWidth: 2,
-      //     lineStyle: LineStyle.Dotted,
-      //     axisLabelVisible: true,
-      //     title: "Entry price",
-      // });
+      candleSeriesRef.current.createPriceLine({
+        price: order.entry_price,
+        color: "rgb(51, 61, 121)",
+        lineWidth: 2,
+        lineStyle: LineStyle.Dotted,
+        axisLabelVisible: true,
+        title: order.is_long ? "Long entry" : "Short entry",
+      });
       candleSeriesRef.current.createPriceLine({
         price: order.profit_price,
         color: "rgb(53, 182, 169)",
@@ -166,6 +188,15 @@ export const ChartRef = () => {
       ]);
     }
   }, [submit]);
+
+  useEffect(() => {
+    if (positionClosed.closed) {
+      setVisibleRange({
+        from: "0",
+        to: "0",
+      });
+    }
+  }, [positionClosed]);
 
   return (
     <div

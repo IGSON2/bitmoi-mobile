@@ -9,6 +9,8 @@ const defaultInfo: StageState = {
   elapsed_time: 0,
   roe_array: [],
   refresh_cnt: 0,
+  min_timestamp: 0,
+  max_timestamp: 0,
 };
 
 const initialState = defaultInfo;
@@ -22,30 +24,43 @@ const stageStateSlice = createSlice({
       state.btcratio = action.payload.btcratio;
       state.entrytime = action.payload.entrytime;
       state.roe_array = [];
+      state.min_timestamp = action.payload.min_timestamp;
     },
-    setStateTitleArray: (state, action: PayloadAction<string>) => {
+    setStageTitleArray: (state, action: PayloadAction<string>) => {
       state.titleArray = [...state.titleArray, action.payload];
       if (state.titleArray.length > 10) {
         state.titleArray = [action.payload];
       }
     },
-    setElapsedTime: (state, action: PayloadAction<number>) => {
+    setStageElapsedTime: (state, action: PayloadAction<number>) => {
       state.elapsed_time = action.payload;
     },
-    setAppendRoeArray: (state, action: PayloadAction<number>) => {
+    setStageAppendRoeArray: (state, action: PayloadAction<number>) => {
       state.roe_array = [...state.roe_array, action.payload];
     },
-    setAddRefreshCnt: (state) => {
+    setStageAddRefreshCnt: (state) => {
       state.refresh_cnt += 1;
+    },
+    setStageMinTimestamp: (state, action: PayloadAction<number>) => {
+      if (action.payload < state.min_timestamp) {
+        state.min_timestamp = action.payload;
+      }
+    },
+    setStageMaxTimestamp: (state, action: PayloadAction<number>) => {
+      if (action.payload > state.max_timestamp) {
+        state.max_timestamp = action.payload;
+      }
     },
   },
 });
 
 export const {
   setStageState,
-  setStateTitleArray,
-  setElapsedTime,
-  setAppendRoeArray,
-  setAddRefreshCnt,
+  setStageTitleArray,
+  setStageElapsedTime,
+  setStageAppendRoeArray,
+  setStageAddRefreshCnt,
+  setStageMinTimestamp,
+  setStageMaxTimestamp,
 } = stageStateSlice.actions;
 export default stageStateSlice.reducer;

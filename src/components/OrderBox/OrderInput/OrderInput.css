@@ -7,7 +7,27 @@
   align-items: center;
   padding-top: 3%;
   padding-bottom: 15px;
+  row-gap: 8px;
+  overflow: scroll;
   touch-action: pan-x pan-y; /* 주문창 확대 방지 */
+}
+
+.orderInput_area_top {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 16px;
+}
+
+.orderInput_area_bottom {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  row-gap: 16px;
 }
 
 .orderInput_leverage {
@@ -124,11 +144,12 @@
 
 .orderInput_balance {
   width: 90%;
-  height: 3%;
+  height: 13px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  column-gap: 16px;
   font-size: 13px;
 }
 
@@ -138,7 +159,6 @@
 
 .orderInput_balance2,
 .orderInput_balance3 {
-  width: 12.5%;
   font-weight: 600;
   color: #191919;
   text-align: end;
@@ -239,7 +259,7 @@
 
 .error_message {
   width: 90%;
-  height: 5%;
+  height: 16px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -251,7 +271,7 @@
 
 .commission {
   width: 90%;
-  height: 3%;
+  height: 12px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

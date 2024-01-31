@@ -132,14 +132,12 @@ export const ChartRef = () => {
     } else if (from === "0") {
       from = oneChart.pdata[length - 100].time;
     } else if (from !== "0") {
-      const step =
-        Number(oneChart.pdata[1].time) - Number(oneChart.pdata[0].time);
-      const visibleCandles = Math.floor(
-        (Number(visibleRange!.to) - Number(from)) / step
-      );
-      if (visibleCandles < 100) {
-        from = oneChart.pdata[length - 100].time;
-      }
+      // TODO: 높은 단위의 차트 캔들 개수가 낮을 경우 대비 필요
+      // const step =
+      //   Number(oneChart.pdata[1].time) - Number(oneChart.pdata[0].time);
+      // const visibleCandles = Math.floor(
+      //   (Number(visibleRange!.to) - Number(from)) / step
+      // );
     }
 
     chartApiRef.current?.timeScale().setVisibleRange({

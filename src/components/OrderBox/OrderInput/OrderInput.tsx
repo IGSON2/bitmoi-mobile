@@ -453,11 +453,12 @@ export function OrderInput({ isLong }: Position) {
           </button>
         </div>
 
-        <div className="commission">
-          <div>수수료</div>
-          <div>0.02%</div>
-        </div>
-        {order.mode === ModePrac ? null : <div></div>}
+        {order.mode === ModePrac ? null : (
+          <div className="commission">
+            <div>수수료</div>
+            <div>0.02%</div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -24,8 +24,10 @@ const currentChartSlice = createSlice({
       state.oneChart.vdata = action.payload.oneChart.vdata;
     },
     setAppendTempCandle: (state, action: PayloadAction<OneChart>) => {
-      const nextTime = (Number(
-        // TODO: 무조건 다음 캔들이 추가됨, 다음 캔들이 추가되지 않을 경우를 고려해야함
+      const currentLatestPdata =
+        state.oneChart.pdata[state.oneChart.pdata.length - 1];
+      const currentLatestTime = currentLatestPdata.time;
+      let nextTime = (Number(
         state.oneChart.pdata[state.oneChart.pdata.length - 1].time
       ) + GetIntervalStep(state.interval)) as UTCTimestamp;
 
@@ -43,6 +45,22 @@ const currentChartSlice = createSlice({
         color: "rgba(239,83,80,0.5)",
       };
 
+      // TODO: 1H 에서 15M 추가시, 캔들 가격이 이상하게 변함.
+      if (
+        action.payload.pdata[action.payload.pdata.length - 1].time <=
+        currentLatestTime
+      ) {
+        nextTime = currentLatestTime as UTCTimestamp;
+        tempPdata.high = currentLatestPdata.high;
+        tempPdata.low = currentLatestPdata.low;
+        tempPdata.open = currentLatestPdata.open;
+        tempPdata.time = currentLatestTime;
+
+        tempVdata.value =
+          state.oneChart.vdata[state.oneChart.vdata.length - 1].value;
+        tempVdata.time = currentLatestTime;
+      }
+
       for (let i = 0; i < action.payload.pdata.length; i++) {
         const reqPdata = action.payload.pdata[i];
         if (reqPdata.high > tempPdata.high) {
@@ -58,9 +76,13 @@ const currentChartSlice = createSlice({
       if (tempPdata.open < tempPdata.close) {
         tempVdata.color = "rgba(38,166,154,0.5)";
       }
-
-      state.oneChart.pdata.push(tempPdata);
-      state.oneChart.vdata.push(tempVdata);
+      if (currentLatestTime === nextTime) {
+        state.oneChart.pdata[state.oneChart.pdata.length - 1] = tempPdata;
+        state.oneChart.vdata[state.oneChart.vdata.length - 1] = tempVdata;
+      } else {
+        state.oneChart.pdata.push(tempPdata);
+        state.oneChart.vdata.push(tempVdata);
+      }
     },
   },
 });

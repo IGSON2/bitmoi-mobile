@@ -1,6 +1,3 @@
-import { fifM, fourH, oneD, oneH } from "../types/const";
-import { IntervalType } from "../types/types";
-
 export function Timeformatter(unixTime: string, isChart: boolean): string {
   var scoreTime = new Date(unixTime);
   var timeGap = 9;

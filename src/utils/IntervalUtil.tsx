@@ -100,9 +100,9 @@ export function CompareInterval(
       return CompareIntervalRes.NEG;
     case fourH:
       if (target === oneD) {
-        return CompareIntervalRes.POS;
+        return CompareIntervalRes.NEG;
       }
-      return CompareIntervalRes.NEG;
+      return CompareIntervalRes.POS;
     case oneD:
       return CompareIntervalRes.POS;
     default:

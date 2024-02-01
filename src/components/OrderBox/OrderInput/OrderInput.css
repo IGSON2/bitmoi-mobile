@@ -8,7 +8,7 @@
   padding-top: 3%;
   padding-bottom: 15px;
   row-gap: 8px;
-  overflow: scroll;
+  /* overflow: scroll; */
   touch-action: pan-x pan-y; /* 주문창 확대 방지 */
 }
 

@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CurrentChart, OneChart, PData, VData } from "../types/types";
 import { oneH } from "../types/const";
 import { GetIntervalStep } from "../utils/IntervalUtil";
-import { UTCTimestamp } from "lightweight-charts";
+import { Time, UTCTimestamp } from "lightweight-charts";
 
 const defaultInfo: CurrentChart = {
   interval: oneH,
@@ -27,9 +27,8 @@ const currentChartSlice = createSlice({
       const currentLatestPdata =
         state.oneChart.pdata[state.oneChart.pdata.length - 1];
       const currentLatestTime = currentLatestPdata.time;
-      let nextTime = (Number(
-        state.oneChart.pdata[state.oneChart.pdata.length - 1].time
-      ) + GetIntervalStep(state.interval)) as UTCTimestamp;
+      let nextTime = (Number(currentLatestPdata.time) +
+        GetIntervalStep(state.interval)) as Time;
 
       let tempPdata: PData = {
         close: action.payload.pdata[action.payload.pdata.length - 1].close,
@@ -45,12 +44,14 @@ const currentChartSlice = createSlice({
         color: "rgba(239,83,80,0.5)",
       };
 
-      // TODO: 1H 에서 15M 추가시, 캔들 가격이 이상하게 변함.
+      const reqLatestPdata =
+        action.payload.pdata[action.payload.pdata.length - 1];
+
       if (
-        action.payload.pdata[action.payload.pdata.length - 1].time <=
-        currentLatestTime
+        // 현재 마지막 캔들값을 변화시켜야 하는 경우
+        currentLatestTime <= reqLatestPdata.time &&
+        reqLatestPdata.time < nextTime
       ) {
-        nextTime = currentLatestTime as UTCTimestamp;
         tempPdata.high = currentLatestPdata.high;
         tempPdata.low = currentLatestPdata.low;
         tempPdata.open = currentLatestPdata.open;
@@ -76,7 +77,8 @@ const currentChartSlice = createSlice({
       if (tempPdata.open < tempPdata.close) {
         tempVdata.color = "rgba(38,166,154,0.5)";
       }
-      if (currentLatestTime === nextTime) {
+
+      if (tempPdata.time === currentLatestTime) {
         state.oneChart.pdata[state.oneChart.pdata.length - 1] = tempPdata;
         state.oneChart.vdata[state.oneChart.vdata.length - 1] = tempVdata;
       } else {

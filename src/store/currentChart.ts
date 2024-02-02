@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CurrentChart, OneChart, PData, VData } from "../types/types";
 import { oneH } from "../types/const";
 import { GetIntervalStep } from "../utils/IntervalUtil";
-import { Time, UTCTimestamp } from "lightweight-charts";
+import { Time } from "lightweight-charts";
 
 const defaultInfo: CurrentChart = {
   interval: oneH,
@@ -23,56 +23,59 @@ const currentChartSlice = createSlice({
       state.oneChart.pdata = action.payload.oneChart.pdata;
       state.oneChart.vdata = action.payload.oneChart.vdata;
     },
-    setAppendTempCandle: (state, action: PayloadAction<OneChart>) => {
+    setCurrentChartAppend: (state, action: PayloadAction<OneChart>) => {
       const currentLatestPdata =
         state.oneChart.pdata[state.oneChart.pdata.length - 1];
       const currentLatestTime = currentLatestPdata.time;
-      let nextTime = (Number(currentLatestPdata.time) +
+
+      let nextTime = (Number(currentLatestTime) +
         GetIntervalStep(state.interval)) as Time;
 
       let tempPdata: PData = {
-        close: action.payload.pdata[action.payload.pdata.length - 1].close,
+        close: action.payload.pdata[0].close,
         high: 0,
         low: 100000,
         open: action.payload.pdata[0].open,
-        time: nextTime,
+        time: currentLatestTime,
       };
 
       let tempVdata: VData = {
         value: 0,
-        time: nextTime,
+        time: currentLatestTime,
         color: "rgba(239,83,80,0.5)",
       };
 
-      const reqLatestPdata =
-        action.payload.pdata[action.payload.pdata.length - 1];
+      const reqLatestPdata = action.payload.pdata[0];
 
-      if (
-        // 현재 마지막 캔들값을 변화시켜야 하는 경우
+      // 캔들을 추가해야 하는 경우
+      if (reqLatestPdata.time >= nextTime) {
+        tempPdata.time = nextTime;
+        tempVdata.time = nextTime;
+      } else if (
+        // 마지막 캔들에 값을 더해야 하는 경우
         currentLatestTime <= reqLatestPdata.time &&
         reqLatestPdata.time < nextTime
       ) {
         tempPdata.high = currentLatestPdata.high;
         tempPdata.low = currentLatestPdata.low;
         tempPdata.open = currentLatestPdata.open;
-        tempPdata.time = currentLatestTime;
 
         tempVdata.value =
           state.oneChart.vdata[state.oneChart.vdata.length - 1].value;
-        tempVdata.time = currentLatestTime;
+      } else {
+        console.log("invalid req latest time.");
       }
 
-      for (let i = 0; i < action.payload.pdata.length; i++) {
-        const reqPdata = action.payload.pdata[i];
-        if (reqPdata.high > tempPdata.high) {
-          tempPdata.high = reqPdata.high;
-        }
-        if (reqPdata.low < tempPdata.low) {
-          tempPdata.low = reqPdata.low;
-        }
-
-        tempVdata.value += action.payload.vdata[i].value;
+      const reqPdata = action.payload.pdata[0];
+      if (reqPdata.high > tempPdata.high) {
+        tempPdata.high = reqPdata.high;
       }
+      if (reqPdata.low < tempPdata.low) {
+        tempPdata.low = reqPdata.low;
+      }
+      tempPdata.close = reqPdata.close;
+
+      tempVdata.value += action.payload.vdata[0].value;
 
       if (tempPdata.open < tempPdata.close) {
         tempVdata.color = "rgba(38,166,154,0.5)";
@@ -89,6 +92,6 @@ const currentChartSlice = createSlice({
   },
 });
 
-export const { setCurrentChart, setAppendTempCandle } =
+export const { setCurrentChart, setCurrentChartAppend } =
   currentChartSlice.actions;
 export default currentChartSlice.reducer;

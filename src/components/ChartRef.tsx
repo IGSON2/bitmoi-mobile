@@ -126,23 +126,21 @@ export const ChartRef = () => {
     volumeSeriesRef.current?.setData([...oneChart.vdata]);
 
     let from = visibleRange!.from;
+    let to = oneChart.pdata[length - 1].time;
 
     if (length < 100) {
       from = oneChart.pdata[0].time;
     } else if (from === "0") {
       from = oneChart.pdata[length - 100].time;
     } else if (from !== "0") {
-      // TODO: 높은 단위의 차트 캔들 개수가 낮을 경우 대비 필요
-      // const step =
-      //   Number(oneChart.pdata[1].time) - Number(oneChart.pdata[0].time);
-      // const visibleCandles = Math.floor(
-      //   (Number(visibleRange!.to) - Number(from)) / step
-      // );
+    }
+    if (Math.abs(Number(visibleRange?.to) - Number(to)) <= 86400) {
+      return;
     }
 
     chartApiRef.current?.timeScale().setVisibleRange({
       from: from,
-      to: oneChart.pdata[length - 1].time,
+      to: to as Time,
     });
   }, [oneChart]);
 

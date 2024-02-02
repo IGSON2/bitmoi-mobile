@@ -60,7 +60,7 @@ const intervalChartsSlice = createSlice({
           }
           state.oneDay.pdata.push(...action.payload.oneChart.pdata);
           state.oneDay.vdata.push(...action.payload.oneChart.vdata);
-          break;
+          return;
         case fourH:
           if (
             !checkLatestTimestamp(
@@ -72,7 +72,7 @@ const intervalChartsSlice = createSlice({
           }
           state.fourHours.pdata.push(...action.payload.oneChart.pdata);
           state.fourHours.vdata.push(...action.payload.oneChart.vdata);
-          break;
+          return;
         case oneH:
           if (
             !checkLatestTimestamp(
@@ -84,7 +84,7 @@ const intervalChartsSlice = createSlice({
           }
           state.oneHour.pdata.push(...action.payload.oneChart.pdata);
           state.oneHour.vdata.push(...action.payload.oneChart.vdata);
-          break;
+          return;
         case fifM:
           if (
             !checkLatestTimestamp(
@@ -96,11 +96,12 @@ const intervalChartsSlice = createSlice({
           }
           state.fifteenMinutes.pdata.push(...action.payload.oneChart.pdata);
           state.fifteenMinutes.vdata.push(...action.payload.oneChart.vdata);
-          break;
+          return;
         default:
           console.error(`invalid interval : ${action.payload.interval}`);
           break;
       }
+      console.error("invalid append interval chart");
     },
   },
 });

@@ -41,16 +41,6 @@ const stageStateSlice = createSlice({
     setStageAddRefreshCnt: (state) => {
       state.refresh_cnt += 1;
     },
-    setStageMinTimestamp: (state, action: PayloadAction<number>) => {
-      if (action.payload < state.min_timestamp) {
-        state.min_timestamp = action.payload;
-      }
-    },
-    setStageMaxTimestamp: (state, action: PayloadAction<number>) => {
-      if (action.payload > state.max_timestamp) {
-        state.max_timestamp = action.payload;
-      }
-    },
   },
 });
 
@@ -60,7 +50,5 @@ export const {
   setStageElapsedTime,
   setStageAppendRoeArray,
   setStageAddRefreshCnt,
-  setStageMinTimestamp,
-  setStageMaxTimestamp,
 } = stageStateSlice.actions;
 export default stageStateSlice.reducer;

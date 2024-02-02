@@ -17,7 +17,6 @@ import {
 } from "../../../store/intervalCharts";
 import {
   setStageAddRefreshCnt,
-  setStageMaxTimestamp,
   setStageState,
 } from "../../../store/stageState";
 import {
@@ -69,7 +68,6 @@ export function Practice() {
         const response = await axiosClient.get(`/${ModePrac}`);
 
         dispatch(setOrderEntryPrice(response.data.onechart.pdata[0].close));
-        dispatch(setStageMaxTimestamp(response.data.onechart.pdata[0].time)); // before reversed
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
         dispatch(

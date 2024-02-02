@@ -1,10 +1,5 @@
 import { fifM, fourH, oneD, oneH } from "../types/const";
-import {
-  CurrentChart,
-  IntervalCharts,
-  IntervalType,
-  OneChart,
-} from "../types/types";
+import { CurrentChart, IntervalCharts, IntervalType } from "../types/types";
 
 export function CheckIntervalCharts(
   intv: IntervalType,
@@ -128,4 +123,9 @@ export function GetChartFromIntv(
       console.error("Invalid interval type");
   }
   return null;
+}
+
+export function GetAnotherIntervalTypes(intv: IntervalType): IntervalType[] {
+  const intervalTypes = [fifM, oneH, fourH, oneD];
+  return intervalTypes.filter((item) => item !== intv);
 }

@@ -8,19 +8,22 @@ import { IntervalType, OneChart, Order } from "../../types/types";
 import {
   CompareInterval,
   CompareIntervalRes,
+  GetAnotherIntervalTypes,
   GetChartFromIntv,
   GetIntervalStep,
 } from "../../utils/IntervalUtil";
 import axiosClient from "../../utils/axiosClient";
 import "./InterOrder.css";
 import { fifM, fourH, oneD, oneH } from "../../types/const";
-import { setAppendTempCandle, setCurrentChart } from "../../store/currentChart";
+import {
+  setCurrentChartAppend,
+  setCurrentChart,
+} from "../../store/currentChart";
 import { setPositionClosed } from "../../store/positionClosed";
 import { setCurrentScore, setScore } from "../../store/score";
 import {
   setStageAppendRoeArray,
   setStageElapsedTime,
-  setStageMaxTimestamp,
 } from "../../store/stageState";
 import {
   CheckIntervalCharts,
@@ -41,6 +44,8 @@ export const InterOrder = () => {
   const intervalCharts = useAppSelector((state) => state.intervalCharts);
   const orderState = useAppSelector((state) => state.order);
   const currentChart = useAppSelector((state) => state.currentChart);
+
+  const [modified, setModified] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -64,9 +69,12 @@ export const InterOrder = () => {
 
   async function GetMediateChart(intv: IntervalType) {
     let min_timestamp = GetLastIdxTimeFromIntv(intv, intervalCharts);
+    let max_timestamp = GetLatestTimestamp(intervalCharts);
+    const reqStep = GetIntervalStep(intv);
+
     if (min_timestamp === 0) {
       const fIdentifier = encodeURIComponent(orderState.identifier);
-      const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`; // TODO: Req URL 변경
+      const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
       try {
         const response = await axiosClient.get(reqURL);
         min_timestamp = response.data.onechart.pdata[0].time;
@@ -86,11 +94,28 @@ export const InterOrder = () => {
       }
     }
 
+    if (min_timestamp > max_timestamp) {
+      max_timestamp = min_timestamp;
+    }
+
+    // 첫 주문 시, 작은단위의 캔들이 현재 차트의 다음 캔들부터 시작하도록 한다.
+    if (
+      intervalInfo.elapsedTime === 0 &&
+      CompareInterval(intv, currentChart.interval) === CompareIntervalRes.NEG
+    ) {
+      const currentNext =
+        Number(
+          currentChart.oneChart.pdata[currentChart.oneChart.pdata.length - 1]
+            .time
+        ) + GetIntervalStep(currentChart.interval);
+      max_timestamp = currentNext - reqStep;
+    }
+
     const orderReq: Order = {
       ...orderState,
       reqinterval: intv,
       min_timestamp: min_timestamp,
-      max_timestamp: GetLatestTimestamp(intervalCharts) + GetIntervalStep(intv), // (현재 Interval의 마지막 Timestamp, 가장 최근까지 할당된 Interval의 마지막 Timestamp + 요청한 Interval의 step]
+      max_timestamp: max_timestamp + reqStep,
     };
 
     try {
@@ -120,7 +145,6 @@ export const InterOrder = () => {
           !interResponse.data.another_charts[key].pdata ||
           !CheckIntervalCharts(key as IntervalType, intervalCharts)
         ) {
-          // 차트가 존재하지 않으면 Fetching 하고 붙여주어야 interval component에서 append된 기간까지 렌더링됨
           continue;
         }
 
@@ -140,9 +164,10 @@ export const InterOrder = () => {
           );
         }
       }
+
       setIntervalInfo((prev) => ({
         interval: intv,
-        elapsedTime: prev.elapsedTime + GetIntervalStep(intv),
+        elapsedTime: prev.elapsedTime + reqStep,
       }));
     } catch (error) {
       console.error(error);
@@ -151,7 +176,6 @@ export const InterOrder = () => {
 
   useEffect(() => {
     dispatch(setStageElapsedTime(intervalInfo.elapsedTime));
-    dispatch(setStageMaxTimestamp(GetLatestTimestamp(intervalCharts)));
 
     const currentC = GetChartFromIntv(currentChart.interval, intervalCharts);
     if (!currentC) {
@@ -164,48 +188,66 @@ export const InterOrder = () => {
 
     switch (CompareInterval(intervalInfo.interval, currentChart.interval)) {
       case CompareIntervalRes.SAME:
-      case CompareIntervalRes.POS: // 요청 interval이 같거나 더 큰 경우 -> append, 이미 위에서 append된 현재 interval chart를 최신화 하기만 하면 됨.
+      case CompareIntervalRes.POS:
         dispatch(setCurrentChart(currentC));
-        return;
-      case CompareIntervalRes.NEG: // 요청 interval이 더 작은 경우 -> 최신화 또는 modify
-        // 항상 interChart 요청 후 추가된 다른 interval chart의 latest timestamp는 current chart의 latest timestamp와
-        // current chart의 1 step을 초과할 일이 없기 때문에 modify 하거나, 최신화 하기만 하면 됨
+        break;
+      case CompareIntervalRes.NEG:
         const reqLatest = GetLastIdxTimeFromIntv(
           intervalInfo.interval,
           intervalCharts
         );
-        if (Number(currentLatest) === reqLatest) {
-          dispatch(setCurrentChart(currentC)); // 최신화
-        } else if (Number(currentLatest) < reqLatest) {
+        if (Number(currentLatest) <= reqLatest) {
           const reqC = GetChartFromIntv(intervalInfo.interval, intervalCharts);
           if (!reqC) {
             console.error("reqC must be valid");
-            return;
+            break;
           }
-          const slicedReqC = sliceOnechart(
-            reqC.oneChart,
-            Number(currentLatest) // currentLatest보다 큰 timestamp를 가진 Req 차트 반환
-          );
-          if (!slicedReqC) {
-            console.error("slicedReqC's length must be greater than 0");
-            return;
-          }
-          dispatch(setAppendTempCandle(slicedReqC)); // modify
+          const slicedReqC: OneChart = {
+            pdata: reqC.oneChart.pdata.slice(reqC.oneChart.pdata.length - 1),
+            vdata: reqC.oneChart.vdata.slice(reqC.oneChart.vdata.length - 1),
+          };
+
+          dispatch(setCurrentChartAppend(slicedReqC));
+
+          // TODO: 다른 인터벌도 변경해주기
+          // const another_req = GetAnotherIntervalTypes(intervalInfo.interval);
+          // const another_cur = GetAnotherIntervalTypes(currentChart.interval);
+          // const non_dupl = another_req.filter((intv) =>
+          //   another_cur.includes(intv)
+          // );
+          // non_dupl.forEach((intv) => {
+          //   if (CheckIntervalCharts(intv, intervalCharts)) {
+          //   }
+          // });
+          setModified(true);
         } else {
-          // 요청한 작은 단위의 interval이 무조건 더 근래여야 함.
           console.error(
             `Invalid interval chart. req: ${intervalInfo.interval}, current: ${currentChart.interval}`
           );
         }
-        return;
-      // current chart의 마지막 캔들에 새로운 캔들을 만들어 작은 단위가 앞서나간 캔들 수 만큼 반복하여 고,저,종가를 갱신해주고 볼륨값을 더해주면 된다.
+        break;
       case CompareIntervalRes.ERROR:
         console.error(
           `cannot compare interval. req: ${intervalInfo.interval}, current: ${currentChart.interval}`
         );
+        break;
     }
     return;
   }, [intervalInfo]);
+
+  useEffect(() => {
+    if (modified) {
+      console.log("modifying");
+      // 현재 current chart에서 변경중인 사항 적용
+      dispatch(
+        setIntervalCharts({
+          interval: currentChart.interval,
+          oneChart: currentChart.oneChart,
+        })
+      );
+      setModified(false);
+    }
+  }, [modified]);
 
   return (
     <div className="inter_order">

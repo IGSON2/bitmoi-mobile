@@ -8,7 +8,7 @@ const initialState: ScoreHistory = {
   leverage: 0,
   entryprice: 0,
   endprice: 0,
-  out_time: 0,
+  outtime: 0,
   roe: 0,
   pnl: 0,
   commission: 0,

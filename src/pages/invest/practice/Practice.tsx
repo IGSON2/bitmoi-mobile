@@ -61,6 +61,7 @@ export function Practice() {
         dispatch(setUserInfo(userRes as UserInfo));
         dispatch(setOrderUserId(userRes.user_id));
         setIsLogined(true);
+        // 유저의 미 종료 포지션 진입기록 정산
       }
 
       setIsChartLoaded(false);

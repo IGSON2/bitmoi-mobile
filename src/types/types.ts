@@ -111,7 +111,7 @@ export type ScoreHistory = {
   leverage: number;
   entryprice: number;
   endprice: number;
-  out_time: number;
+  outtime: number;
   roe: number;
   pnl: number;
   commission: number;

@@ -36,12 +36,13 @@ export const History = () => {
 
   const handleScroll = () => {
     const container = historyRef.current;
+
     if (container) {
       const scrollTop = container.scrollTop;
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight === scrollHeight - 0.5) {
+      if (scrollTop + clientHeight === scrollHeight) {
         setPage((prevPage) => prevPage + 1);
       }
     }
@@ -51,9 +52,7 @@ export const History = () => {
     async function GetHistory() {
       const res = await axiosClient.get(`/myscore?mode=${mode}&page=${page}`);
       if (res.data.length === 0) {
-        if (historyRef.current) {
-          historyRef.current?.removeEventListener("scroll", handleScroll); //TODO: 적용안됨
-        }
+        // TODO: remove event listener
         return;
       }
       setScores((prev) => [...prev, ...res.data]);
@@ -124,6 +123,9 @@ export const History = () => {
             <div className="history_row_box">
               <div className="history_score_title">{score.pairname}</div>
               <div className="history_score_prices">
+                {score.outtime === 0 ? (
+                  <div className="history_score_adjust">정산 예정</div>
+                ) : null}
                 <div className="history_score_entry_price">
                   {score.entryprice}
                 </div>

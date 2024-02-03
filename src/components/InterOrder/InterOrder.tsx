@@ -237,8 +237,7 @@ export const InterOrder = () => {
 
   useEffect(() => {
     if (modified) {
-      console.log("modifying");
-      // 현재 current chart에서 변경중인 사항 적용
+      // req interval chart에 현재 current chart에서 변경중인 사항 적용
       dispatch(
         setIntervalCharts({
           interval: currentChart.interval,

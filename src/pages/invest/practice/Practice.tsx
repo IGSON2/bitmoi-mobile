@@ -3,14 +3,14 @@ import "./Practice.css";
 import { ChartRef } from "../../../components/ChartRef";
 import { ModePrac, oneH } from "../../../types/const";
 import axiosClient from "../../../utils/axiosClient";
-import { StageState } from "../../../types/stageState";
+import { StageState, SubmitState } from "../../../types/stageState";
 import { UserInfo } from "../../../types/types";
 import { Interval } from "../../../components/Interval";
 import { OrderBox } from "../../../components/OrderBox/OrderBox";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import checkAccessTokenValidity from "../../../utils/checkAccessTokenValidity";
-import { setUserInfo } from "../../../store/userInfo";
-import { LoginBlur } from "../../../components/LoginBlur";
+import { checkAccessTokenValidity } from "../../../utils/checkAccessTokenValidity";
+import { setUserInfo, setUserPracBalance } from "../../../store/userInfo";
+import { LoginModal } from "../../../components/modals/LoginModal";
 import {
   initIntervalCharts,
   setIntervalCharts,
@@ -29,19 +29,21 @@ import {
   setOrderUserId,
 } from "../../../store/order";
 import { setCurrentChart } from "../../../store/currentChart";
-import { InterOrder } from "../../../components/InterOrder/InterOrder";
-import { setSubmit } from "../../../store/submit";
-import ResultModal from "../../../components/InterOrder/ResultModal/ResultModal";
+import { InterOrder } from "../../../components/OrderBox/InterOrder/InterOrder";
+import ResultModal from "../../../components/modals/ResultModal";
 import { initScore } from "../../../store/score";
+import { SettleModal } from "../../../components/modals/SettleModal";
+import { Review } from "../../../components/OrderBox/Review/Review";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
   const [isLogined, setIsLogined] = useState<boolean>(false);
+  const [settledPnl, setSettledPnl] = useState<number>(0);
 
   const currentChart = useAppSelector((state) => state.currentChart.oneChart);
   const currentState = useAppSelector((state) => state.stageState);
   const refreshCnt = useAppSelector((state) => state.stageState.refresh_cnt);
-  const submit = useAppSelector((state) => state.submit.check);
+  const submitState = useAppSelector((state) => state.stageState.submitState);
   const position_closed = useAppSelector(
     (state) => state.positionClosed.closed
   );
@@ -53,7 +55,6 @@ export function Practice() {
       dispatch(initOrder());
       dispatch(initScore());
       dispatch(initIntervalCharts());
-      dispatch(setSubmit(false));
       const userRes = await checkAccessTokenValidity();
       if (!userRes) {
         setIsLogined(false);
@@ -61,7 +62,17 @@ export function Practice() {
         dispatch(setUserInfo(userRes as UserInfo));
         dispatch(setOrderUserId(userRes.user_id));
         setIsLogined(true);
-        // 유저의 미 종료 포지션 진입기록 정산
+        try {
+          const res = await axiosClient.put("/intermediate/settle");
+          if (res.data.total_pnl !== 0) {
+            dispatch(
+              setUserPracBalance(userRes.prac_balance + res.data.total_pnl)
+            );
+            setSettledPnl(res.data.total_pnl);
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
 
       setIsChartLoaded(false);
@@ -107,6 +118,17 @@ export function Practice() {
   useEffect(() => {
     dispatch(setOrderMode(ModePrac));
   }, []);
+
+  useEffect(() => {
+    if (settledPnl) {
+      const timer = setTimeout(() => {
+        setSettledPnl(0);
+      }, 3000);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [settledPnl]);
 
   return (
     <div className="practice">
@@ -166,8 +188,15 @@ export function Practice() {
           </div>
           <ChartRef />
           {position_closed ? <ResultModal /> : null}
-          {submit ? <InterOrder /> : <OrderBox />}
-          {isLogined ? null : <LoginBlur />}
+          {submitState === SubmitState.NotSubmit ? (
+            <OrderBox />
+          ) : submitState === SubmitState.Submit ? (
+            <InterOrder />
+          ) : submitState === SubmitState.Review ? (
+            <Review />
+          ) : null}
+          {isLogined ? null : <LoginModal />}
+          {settledPnl ? <SettleModal total_pnl={settledPnl} /> : null}
         </div>
       ) : (
         <h3>Loading...</h3>

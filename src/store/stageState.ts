@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { StageState } from "../types/stageState";
+import { StageState, SubmitState } from "../types/stageState";
 
 const defaultInfo: StageState = {
   name: "",
@@ -11,6 +11,7 @@ const defaultInfo: StageState = {
   refresh_cnt: 0,
   min_timestamp: 0,
   max_timestamp: 0,
+  submitState: SubmitState.NotSubmit,
 };
 
 const initialState = defaultInfo;
@@ -25,6 +26,7 @@ const stageStateSlice = createSlice({
       state.entrytime = action.payload.entrytime;
       state.roe_array = [];
       state.min_timestamp = action.payload.min_timestamp;
+      state.submitState = SubmitState.NotSubmit;
     },
     setStageTitleArray: (state, action: PayloadAction<string>) => {
       state.titleArray = [...state.titleArray, action.payload];
@@ -41,6 +43,9 @@ const stageStateSlice = createSlice({
     setStageAddRefreshCnt: (state) => {
       state.refresh_cnt += 1;
     },
+    setStageSubmitState: (state, action: PayloadAction<SubmitState>) => {
+      state.submitState = action.payload;
+    },
   },
 });
 
@@ -50,5 +55,6 @@ export const {
   setStageElapsedTime,
   setStageAppendRoeArray,
   setStageAddRefreshCnt,
+  setStageSubmitState,
 } = stageStateSlice.actions;
 export default stageStateSlice.reducer;

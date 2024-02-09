@@ -1,35 +1,34 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import {
   appendIntervalChart,
   setIntervalCharts,
-} from "../../store/intervalCharts";
-import { IntervalType, OneChart, Order } from "../../types/types";
+} from "../../../store/intervalCharts";
+import { IntervalType, OneChart, Order } from "../../../types/types";
 import {
   CompareInterval,
   CompareIntervalRes,
-  GetAnotherIntervalTypes,
   GetChartFromIntv,
   GetIntervalStep,
-} from "../../utils/IntervalUtil";
-import axiosClient from "../../utils/axiosClient";
+} from "../../../utils/IntervalUtil";
+import axiosClient from "../../../utils/axiosClient";
 import "./InterOrder.css";
-import { fifM, fourH, oneD, oneH } from "../../types/const";
+import { fifM, fourH, oneD, oneH } from "../../../types/const";
 import {
   setCurrentChartAppend,
   setCurrentChart,
-} from "../../store/currentChart";
-import { setPositionClosed } from "../../store/positionClosed";
-import { setCurrentScore, setScore } from "../../store/score";
+} from "../../../store/currentChart";
+import { setPositionClosed } from "../../../store/positionClosed";
+import { setCurrentScore, setScore } from "../../../store/score";
 import {
   setStageAppendRoeArray,
   setStageElapsedTime,
-} from "../../store/stageState";
+} from "../../../store/stageState";
 import {
   CheckIntervalCharts,
   GetLastIdxTimeFromChart as GetLastIdxTimeFromIntv,
   GetLatestTimestamp,
-} from "../../utils/IntervalUtil";
+} from "../../../utils/IntervalUtil";
 
 type stepInfo = {
   elapsedTime: number;

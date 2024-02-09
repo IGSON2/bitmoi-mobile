@@ -16,7 +16,8 @@ import {
   setOrderQuantity,
 } from "../../../store/order";
 import { ModePrac } from "../../../types/const";
-import { setSubmit } from "../../../store/submit";
+import { setStageSubmitState } from "../../../store/stageState";
+import { SubmitState } from "../../../types/stageState";
 
 interface Position {
   isLong: boolean;
@@ -171,7 +172,7 @@ export function OrderInput({ isLong }: Position) {
     } catch (error) {
       console.error(error);
     }
-    dispatch(setSubmit(true));
+    dispatch(setStageSubmitState(SubmitState.Submit));
   };
 
   const resetInput = () => {
@@ -282,7 +283,10 @@ export function OrderInput({ isLong }: Position) {
           className="orderInput_balance"
           style={{ fontSize: "11px" }}
         >{`주문 총액 : ${
-          (order.quantity * order.entry_price).toLocaleString("en-US", {
+          (
+            (order.quantity * order.entry_price) /
+            order.leverage
+          ).toLocaleString("en-US", {
             maximumFractionDigits: 2,
           }) + " USDT"
         }`}</div>

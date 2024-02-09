@@ -30,8 +30,11 @@ const userInfoSlice = createSlice({
       state.recommender_code = action.payload.recommender_code;
       state.created_at = action.payload.created_at;
     },
+    setUserPracBalance: (state, action: PayloadAction<number>) => {
+      state.prac_balance = action.payload;
+    },
   },
 });
 
-export const { setUserInfo } = userInfoSlice.actions;
+export const { setUserInfo, setUserPracBalance } = userInfoSlice.actions;
 export default userInfoSlice.reducer;

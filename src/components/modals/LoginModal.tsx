@@ -1,6 +1,6 @@
-import "./LoginBlur.css";
+import "./LoginModal.css";
 
-export function LoginBlur() {
+export function LoginModal() {
   return (
     <div className={`login_modal fixed-component`}>
       <div className={`login_modal_blur fixed-component`}></div>

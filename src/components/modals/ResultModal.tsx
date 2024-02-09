@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { setPositionClosed } from "../../../store/positionClosed";
-import { setSubmit } from "../../../store/submit";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { setPositionClosed } from "../../store/positionClosed";
 import "./ResultModal.css";
-import VerticalLine from "../../lines/VerticalLine";
-import { ConvertSeconds } from "../../../utils/Timestamp";
-import { FormatPosNeg } from "../../../utils/PriceStyler";
-import { GetMinMaxRoe } from "../../../types/stageState";
-import { setStageAddRefreshCnt } from "../../../store/stageState";
+import VerticalLine from "../lines/VerticalLine";
+import { ConvertSeconds } from "../../utils/Timestamp";
+import { FormatPosNeg } from "../../utils/PriceStyler";
+import { GetMinMaxRoe, SubmitState } from "../../types/stageState";
+import { setStageSubmitState } from "../../store/stageState";
 
 type infoByRoe = {
   imageUrl: string;
@@ -22,9 +21,8 @@ function ResultModal() {
   const [ibr, setIbr] = useState<infoByRoe>({ imageUrl: "", comment: [] });
 
   function close() {
-    dispatch(setSubmit(false));
+    dispatch(setStageSubmitState(SubmitState.Review));
     dispatch(setPositionClosed(false));
-    dispatch(setStageAddRefreshCnt());
   }
 
   useEffect(() => {

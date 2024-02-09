@@ -1,3 +1,9 @@
+export enum SubmitState {
+  Submit,
+  NotSubmit,
+  Review,
+}
+
 export type StageState = {
   name: string;
   btcratio: number;
@@ -8,6 +14,7 @@ export type StageState = {
   refresh_cnt: number;
   min_timestamp: number;
   max_timestamp: number;
+  submitState: SubmitState;
 };
 
 export type MinMaxRoe = {

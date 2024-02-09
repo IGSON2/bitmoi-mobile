@@ -9,10 +9,10 @@ import {
   Range,
   Time,
   UTCTimestamp,
-  TrackingModeExitMode,
 } from "lightweight-charts";
 import { PData } from "../types/types";
 import { useAppSelector } from "../hooks/hooks";
+import { SubmitState } from "../types/stageState";
 
 export const ChartRef = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ export const ChartRef = () => {
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
 
-  const submit = useAppSelector((state) => state.submit);
+  const submitState = useAppSelector((state) => state.stageState.submitState);
   const positionClosed = useAppSelector((state) => state.positionClosed);
   const order = useAppSelector((state) => state.order);
   const etnryTime = useAppSelector((state) => state.stageState.entrytime);
@@ -148,7 +148,7 @@ export const ChartRef = () => {
     if (!candleSeriesRef.current) {
       return;
     }
-    if (submit.check) {
+    if (submitState === SubmitState.Submit) {
       candleSeriesRef.current.createPriceLine({
         price: order.entry_price,
         color: "rgb(51, 61, 121)",
@@ -183,7 +183,7 @@ export const ChartRef = () => {
         },
       ]);
     }
-  }, [submit]);
+  }, [submitState]);
 
   useEffect(() => {
     if (positionClosed.closed) {

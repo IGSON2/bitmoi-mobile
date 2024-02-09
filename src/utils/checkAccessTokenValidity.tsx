@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-const checkAccessTokenValidity = async () => {
+export async function checkAccessTokenValidity() {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
 
@@ -34,6 +34,4 @@ const checkAccessTokenValidity = async () => {
       return null;
     }
   }
-};
-
-export default checkAccessTokenValidity;
+}

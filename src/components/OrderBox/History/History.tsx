@@ -123,9 +123,25 @@ export const History = () => {
             <div className="history_row_box">
               <div className="history_score_title">{score.pairname}</div>
               <div className="history_score_prices">
-                {score.outtime === 0 ? (
-                  <div className="history_score_adjust">정산 예정</div>
-                ) : null}
+                {/* {score.outtime === 0 ? (
+                  score.settled_at.Valid ? (
+                    <div
+                      className="history_score_adjust"
+                      style={{
+                        color: "#1409A0",
+                      }}
+                    >
+                      정산 완료
+                    </div>
+                  ) : (
+                    <div
+                      className="history_score_adjust"
+                      style={{ color: "#ff0000" }}
+                    >
+                      정산 예정
+                    </div>
+                  )
+                ) : null} */}
                 <div className="history_score_entry_price">
                   {score.entryprice}
                 </div>

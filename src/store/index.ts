@@ -8,7 +8,6 @@ import stageStateReducer from "./stageState";
 import userInfoReducer from "./userInfo";
 import intervalChartsReducer from "./intervalCharts";
 import orderReducer from "./order";
-import submitReducer from "./submit";
 import positionClosedReducer from "./positionClosed";
 
 export const store = configureStore({
@@ -22,7 +21,6 @@ export const store = configureStore({
     userInfo: userInfoReducer,
     intervalCharts: intervalChartsReducer,
     order: orderReducer,
-    submit: submitReducer,
     positionClosed: positionClosedReducer,
   },
   // middleware: (getDefaultMiddleware) =>

@@ -104,6 +104,11 @@ export type Score = {
   after_score: AfterScore;
 };
 
+export type NullTime = {
+  Time: string;
+  Valid: boolean;
+};
+
 export type ScoreHistory = {
   stage: number;
   pairname: string;
@@ -117,6 +122,7 @@ export type ScoreHistory = {
   commission: number;
   is_liquidated: boolean;
   created_at: string;
+  settled_at: NullTime;
 };
 
 export type Position = {

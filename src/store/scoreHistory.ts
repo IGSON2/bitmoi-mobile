@@ -14,6 +14,7 @@ const initialState: ScoreHistory = {
   commission: 0,
   is_liquidated: false,
   created_at: "",
+  settled_at: { Time: "", Valid: false },
 };
 
 const scoreHistorySlice = createSlice({

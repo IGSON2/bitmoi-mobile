@@ -42,7 +42,7 @@ export const History = () => {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight === scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight - 0.5) {
         setPage((prevPage) => prevPage + 1);
       }
     }
@@ -56,8 +56,20 @@ export const History = () => {
         return;
       }
       setScores((prev) => [...prev, ...res.data]);
-      const summary = calcSummary(res.data);
-      setSummary(summary);
+      const calc_summary = calcSummary(res.data);
+      setSummary(
+        (prev) =>
+          ({
+            total: prev.total + calc_summary.total,
+            total_win: prev.total_win + calc_summary.total_win,
+            total_lose: prev.total_lose + calc_summary.total_lose,
+            total_pnl: prev.total_pnl + calc_summary.total_pnl,
+            month: prev.month + calc_summary.month,
+            month_win: prev.month_win + calc_summary.month_win,
+            month_lose: prev.month_lose + calc_summary.month_lose,
+            month_pnl: prev.month_pnl + calc_summary.month_pnl,
+          } as Summary)
+      );
     }
     GetHistory();
   }, [page]);
@@ -190,6 +202,11 @@ function calcSummary(scores: ScoreHistory[]) {
     month_lose: 0,
     month_pnl: 0,
   };
+
+  if (scores.length === 0) {
+    return summary;
+  }
+
   scores.forEach((score) => {
     summary.total_pnl += score.pnl;
     score.pnl > 0 ? (summary.total_win += 1) : (summary.total_lose += 1);

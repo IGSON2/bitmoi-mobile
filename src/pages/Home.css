@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  row-gap: 50px;
+  row-gap: 26px;
 }
 
 .home_logo {
@@ -15,22 +15,25 @@
 
 .home_title {
   width: inherit;
-  min-height: 50px;
+  min-height: 90px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
+  row-gap: 16px;
 }
 
 .home_title_service {
-  font-size: 20px;
+  font-size: 14px;
   color: #00a1fc;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 .home_title_phrase {
+  font-size: 10px;
   color: #999999;
-  letter-spacing: -2px;
+  letter-spacing: 0px;
+  font-weight: 600;
 }
 
 .home_service_feature_wrapper {
@@ -39,7 +42,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  row-gap: 20px;
+  row-gap: 24px;
+  letter-spacing: -0.5px;
 }
 
 .home_service_feature {
@@ -47,6 +51,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  row-gap: 8px;
+  padding-bottom: 8px;
 }
 
 .home_service_feature_title_wrapper {
@@ -57,12 +63,86 @@
   column-gap: 10px;
 }
 
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
+.home_service_feature_title {
+  font-size: 14px;
+  font-weight: 700;
+}
 
-  100% {
-    opacity: 1;
-  }
+.home_service_feature_description {
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+.home_tip_wrapper {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 24px;
+  background-color: #f6faff;
+}
+
+.home_tip {
+  font-size: 14px;
+  color: #00a1fc;
+}
+
+.home_tip_description {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.home_tip_toggle {
+  width: 170px;
+  height: 30px;
+  border: 1px solid #00a1fc;
+  font-weight: 600;
+  font-size: 14px;
+  color: #00a1fc;
+}
+
+.home_tip_detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 50px;
+}
+
+.home_tip_url {
+  font-size: 12px;
+  color: #00a1fc;
+  font-weight: 600;
+}
+
+.home_tip_detail ol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.home_tip_detail li {
+  font-size: 12px;
+  letter-spacing: -0.5px;
+  font-weight: 600;
+}
+
+.home_tip_detail_ol img {
+  margin-bottom: 24px;
+}
+
+.home_tip_arrow {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #999999;
+  position: relative;
+  right: -50%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1px;
 }

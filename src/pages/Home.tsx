@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import Pagination from "../components/Pagination";
 import { PageId, PageInfo } from "../types/types";
 import "./Home.css";
@@ -19,8 +20,15 @@ export const Home = () => {
       title: "빠른 경험을 위한",
       description: [
         "투자의 두려움, 경험이 부족해도 걱정하지 마세요.",
-        "모의투자 플랫폼에서는 실패 없는",
-        "투자 여정을 체험하세요.",
+        "모과거 특정 시간의 상황으로 돌아가 진입하여 빠른 결과를 도출하는",
+        "백테스팅형태의 모의투자 서비스",
+      ],
+    },
+    {
+      title: "다양한 프랙탈, 페어",
+      description: [
+        "현물 투자자의 투자 한계를 벗어난 선물 기반 오더를 통해",
+        "다양한 진입으로 연습의 기회를 제공",
       ],
     },
     {
@@ -32,6 +40,8 @@ export const Home = () => {
       ],
     },
   ];
+
+  const [isTipOpen, setIsTipOpen] = useState(false);
   return (
     <div className="home">
       <div
@@ -75,11 +85,47 @@ export const Home = () => {
           );
         })}
       </div>
-      <div className="home_tip">TIP</div>
-      <div className="home_tip_description">
-        비트모이 쉽고 편하게 이용하기!!!
+      <div className="home_tip_wrapper">
+        <div className="home_tip">TIP</div>
+        <div className="home_tip_description">
+          비트모이 쉽고 편하게 이용하기!!!
+        </div>
+        {isTipOpen ? null : (
+          <button
+            className="home_tip_toggle"
+            onClick={() => {
+              setIsTipOpen(true);
+            }}
+          >
+            펼치기
+          </button>
+        )}
+
+        {!isTipOpen ? null : (
+          <div className="home_tip_detail">
+            <ol className="home_tip_detail_ol">
+              <li>
+                Chrome으로 비트모이 사이트를 열어주세요.
+                <p className="home_tip_url">m.bitmoi.co.kr</p>
+              </li>
+              <li>주소 표시줄 오른쪽 상단에서 공유아이콘 클릭!</li>
+              <img src="/images/home_tip_1.png" alt="tip_1" />
+              <li>홈 화면에 추가 클릭!</li>
+              <img src="/images/home_tip_2.png" alt="tip_2" />
+            </ol>
+            <img src="/images/home_tip_3.png" alt="tip_3" />
+            <div
+              className="home_tip_arrow"
+              onClick={() => {
+                setIsTipOpen(false);
+              }}
+            >
+              <img src="/images/upper_arrow.png" alt="top" />
+            </div>
+          </div>
+        )}
       </div>
-      <button className="home_tip_toggle">펼치기</button>
+      <div className="home_terms_wrapper"></div>
       <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
     </div>
   );

@@ -95,7 +95,10 @@ export const History = () => {
         </div>
         <div className="history_row_box">
           <div>{`이번 달 승률 (${
-            (100 * Math.floor((100 * summary.month_win) / summary.month)) / 100
+            summary.month > 0
+              ? (100 * Math.floor((100 * summary.month_win) / summary.month)) /
+                100
+              : 0
           })`}</div>
           <div>{`${summary.month}전 ${summary.month_win}승 ${summary.month_lose}패`}</div>
         </div>

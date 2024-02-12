@@ -12,6 +12,7 @@ import { Practice } from "./pages/invest/practice/Practice";
 import Competition from "./pages/invest/competition/Competition";
 import { Login } from "./pages/Login";
 import { Welcome } from "./pages/Welcome";
+import { Auth } from "./pages/Auth";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,11 @@ const router = createBrowserRouter([
     element: <Mypage />,
   },
   {
-    path: "/login",
+    path: "/auth",
+    element: <Auth />,
+  },
+  {
+    path: "/login/:req_url",
     element: <Login />,
   },
   {

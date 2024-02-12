@@ -113,7 +113,6 @@ export const Home = () => {
               <li>홈 화면에 추가 클릭!</li>
               <img src="/images/home_tip_2.png" alt="tip_2" />
             </ol>
-            <img src="/images/home_tip_3.png" alt="tip_3" />
             <div
               className="home_tip_arrow"
               onClick={() => {
@@ -125,7 +124,16 @@ export const Home = () => {
           </div>
         )}
       </div>
-      <div className="home_terms_wrapper"></div>
+      <img src="/images/kakao_support.png" alt="tip_3" />
+      <div className="home_terms_wrapper">
+        <h5>이용약관 개인정보 취급방침</h5>
+        <div className="home_terms_company_info">
+          <div>회사명 : 비트모이</div>
+          <div>사업장 주소 : 서울 강남</div>
+          <div>광고 및 문의 메일 : support@bitmoi.co.kr</div>
+          <div>Copyright &copy; BITMOI All right reserved.</div>
+        </div>
+      </div>
       <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
     </div>
   );

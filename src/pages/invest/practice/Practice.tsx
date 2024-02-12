@@ -34,6 +34,7 @@ import ResultModal from "../../../components/modals/ResultModal";
 import { initScore } from "../../../store/score";
 import { SettleModal } from "../../../components/modals/SettleModal";
 import { Review } from "../../../components/OrderBox/Review/Review";
+import Loader from "../../../components/loader/Loader";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
@@ -55,7 +56,7 @@ export function Practice() {
       dispatch(initOrder());
       dispatch(initScore());
       dispatch(initIntervalCharts());
-      const userRes = await checkAccessTokenValidity();
+      const userRes = await checkAccessTokenValidity("practice");
       if (!userRes) {
         setIsLogined(false);
       } else {
@@ -195,11 +196,11 @@ export function Practice() {
           ) : submitState === SubmitState.Review ? (
             <Review />
           ) : null}
-          {isLogined ? null : <LoginModal />}
+          {isLogined ? null : <LoginModal reqUrl="practice" />}
           {settledPnl ? <SettleModal total_pnl={settledPnl} /> : null}
         </div>
       ) : (
-        <h3>Loading...</h3>
+        <Loader />
       )}
     </div>
   );

@@ -1,9 +1,12 @@
+import { useParams } from "react-router-dom";
 import "./Login.css";
 
 export const Login = () => {
+  const { req_url } = useParams();
+
   function login() {
     const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
-    window.location.href = `${apiURL}/oauth`;
+    window.location.href = `${apiURL}/oauth/${req_url}`;
   }
   return (
     <div className="login">

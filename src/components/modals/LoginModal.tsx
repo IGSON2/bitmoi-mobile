@@ -1,6 +1,10 @@
 import "./LoginModal.css";
 
-export function LoginModal() {
+interface LoginModalProps {
+  reqUrl: string;
+}
+
+export function LoginModal(lmp: LoginModalProps) {
   return (
     <div className={`login_modal fixed-component`}>
       <div className={`login_modal_blur fixed-component`}></div>
@@ -22,7 +26,7 @@ export function LoginModal() {
           <button
             className="login_modal_signin"
             onClick={() => {
-              window.location.href = "/login";
+              window.location.href = `/login/${lmp.reqUrl}`;
             }}
           >
             로그인 및 회원가입

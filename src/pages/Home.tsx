@@ -41,9 +41,11 @@ export const Home = () => {
     },
   ];
 
+  const homeDiv = document.getElementById("home_div");
+
   const [isTipOpen, setIsTipOpen] = useState(false);
   return (
-    <div className="home">
+    <div className="home" id="home_div">
       <div
         style={{
           position: "fixed",
@@ -117,6 +119,7 @@ export const Home = () => {
               className="home_tip_arrow"
               onClick={() => {
                 setIsTipOpen(false);
+                homeDiv?.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
               <img src="/images/upper_arrow.png" alt="top" />

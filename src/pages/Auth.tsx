@@ -23,7 +23,10 @@ export function Auth() {
         ).toLocaleString()} USDT가 지급되었습니다.`
       );
     }
-    const originPath = new URLSearchParams(loc.search).get("path")!;
+    let originPath = new URLSearchParams(loc.search).get("path")!;
+    if (originPath === "practice" || originPath === "competition/") {
+      originPath = "invest/" + originPath;
+    }
 
     window.location.href = `/${originPath}`;
   }, []);

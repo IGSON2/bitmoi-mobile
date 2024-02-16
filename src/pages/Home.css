@@ -1,5 +1,5 @@
 .home {
-  width: 100%;
+  width: inherit;
   height: 100%;
   padding-top: 40px;
   padding-bottom: 10px;
@@ -9,7 +9,8 @@
   justify-content: space-between;
   align-items: center;
   row-gap: 26px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .home_logo {

@@ -20,7 +20,7 @@ export const Mypage = () => {
 
   useEffect(() => {
     async function GetUserInfo() {
-      const userRes = await checkAccessTokenValidity("mypage");
+      const userRes = await checkAccessTokenValidity();
       if (!userRes) {
         setIsLogined(false);
       } else {

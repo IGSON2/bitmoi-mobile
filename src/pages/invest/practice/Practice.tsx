@@ -56,7 +56,7 @@ export function Practice() {
       dispatch(initOrder());
       dispatch(initScore());
       dispatch(initIntervalCharts());
-      const userRes = await checkAccessTokenValidity("practice");
+      const userRes = await checkAccessTokenValidity();
       if (!userRes) {
         setIsLogined(false);
       } else {

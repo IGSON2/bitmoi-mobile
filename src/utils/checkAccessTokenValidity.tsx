@@ -1,6 +1,6 @@
-import axiosClient, { reqUrlKey } from "./axiosClient";
+import axiosClient from "./axiosClient";
 
-export async function checkAccessTokenValidity(reqUrl: string) {
+export async function checkAccessTokenValidity() {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
 
@@ -18,17 +18,9 @@ export async function checkAccessTokenValidity(reqUrl: string) {
     }
   } catch (error) {
     try {
-      const refResponse = await axiosClient.post(
-        "/reissueAccess",
-        {
-          refresh_token: refreshToken,
-        },
-        {
-          headers: {
-            "Req-Url": reqUrl,
-          },
-        }
-      );
+      const refResponse = await axiosClient.post("/reissueAccess", {
+        refresh_token: refreshToken,
+      });
       if (refResponse.status === 200) {
         localStorage.removeItem("accessToken");
         localStorage.setItem("accessToken", refResponse.data.access_token);

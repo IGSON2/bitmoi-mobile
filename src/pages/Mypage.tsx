@@ -53,11 +53,11 @@ export const Mypage = () => {
         </div>
         <div className="mypage_icon_wrapper">
           <div className="mypage_icon">
-            <img src="/images/profile.png" />
+            <img src="/images/mypage_profile.png" />
             <div>회원정보</div>
           </div>
           <div className="mypage_icon">
-            <img src="/images/setting.png" />
+            <img src="/images/mypage_setting.png" />
             <div>설정</div>
           </div>
         </div>

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import Pagination from "../components/Pagination";
-import { PageId, PageInfo, UserInfo } from "../types/types";
+import Pagination from "../../components/Pagination";
+import { PageId, PageInfo, UserInfo } from "../../types/types";
 import "./Mypage.css";
-import { checkAccessTokenValidity } from "../utils/checkAccessTokenValidity";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { setUserInfo } from "../store/userInfo";
-import { LoginModal } from "../components/modals/LoginModal";
+import { checkAccessTokenValidity } from "../../utils/checkAccessTokenValidity";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { setUserInfo } from "../../store/userInfo";
+import { LoginModal } from "../../components/modals/LoginModal";
+import { useNavigate } from "react-router-dom";
 
 export const Mypage = () => {
   const pageInfo: PageInfo = {
@@ -16,6 +17,7 @@ export const Mypage = () => {
   const [tokenBal, setTokenBal] = useState<number>(0);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const userInfo = useAppSelector((state) => state.userInfo);
 
   useEffect(() => {
@@ -52,7 +54,12 @@ export const Mypage = () => {
           </div>
         </div>
         <div className="mypage_icon_wrapper">
-          <div className="mypage_icon">
+          <div
+            className="mypage_icon"
+            onClick={() => {
+              navigate("/mypage/info");
+            }}
+          >
             <img src="/images/mypage_profile.png" />
             <div>회원정보</div>
           </div>

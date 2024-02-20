@@ -136,6 +136,7 @@ export function Practice() {
 
   return (
     <div className="practice">
+      <meta name="theme-color" content="#f6f6f6" />
       {isChartLoaded ? (
         <div className="prac_body">
           <div className="prac_header">
@@ -189,7 +190,9 @@ export function Practice() {
               <span className="current_price_type">C</span>
               {currentChart.pdata[currentChart.pdata.length - 1].close}
             </div>
-            <Timer timeMilliStamp={timer} />
+            {submitState === SubmitState.NotSubmit ? (
+              <Timer timeMilliStamp={timer} />
+            ) : null}
           </div>
           <ChartRef />
           {position_closed ? <ResultModal /> : null}

@@ -1,0 +1,21 @@
+.mypage_info {
+  width: inherit;
+  height: 100%;
+  padding: 40px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 50px;
+}
+
+.mypage_info_profile_image {
+}
+
+.mypage_info_profile_image img {
+  border-radius: 20px;
+}
+
+.mypage_info_nickname {
+  font-weight: 600;
+}

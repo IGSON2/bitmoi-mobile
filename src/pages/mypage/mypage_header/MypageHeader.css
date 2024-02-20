@@ -1,0 +1,26 @@
+.mypage_header {
+  width: inherit;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  position: relative;
+}
+
+.mypage_header_back {
+  height: 50px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+}
+
+.mypage__header_title {
+  width: inherit;
+  text-align: center;
+  font-weight: 600;
+}

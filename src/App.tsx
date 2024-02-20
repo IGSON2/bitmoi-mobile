@@ -7,12 +7,13 @@ import {
 import { Home } from "./pages/Home";
 import { Invest } from "./pages/invest/Invest";
 import { Rank } from "./pages/Rank";
-import { Mypage } from "./pages/Mypage";
+import { Mypage } from "./pages/mypage/Mypage";
 import { Practice } from "./pages/invest/practice/Practice";
 import Competition from "./pages/invest/competition/Competition";
 import { Login } from "./pages/Login";
 import { Welcome } from "./pages/Welcome";
 import { Auth } from "./pages/Auth";
+import { MypageInfo } from "./pages/mypage/mypage_info/MypageInfo";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/mypage",
     element: <Mypage />,
+  },
+  {
+    path: "/mypage/info",
+    element: <MypageInfo />,
   },
   {
     path: "/auth",

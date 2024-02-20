@@ -35,11 +35,13 @@ import { initScore } from "../../../store/score";
 import { SettleModal } from "../../../components/modals/SettleModal";
 import { Review } from "../../../components/OrderBox/Review/Review";
 import Loader from "../../../components/loader/Loader";
+import { Timer } from "../../../components/Timer/Timer";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
-  const [isLogined, setIsLogined] = useState<boolean>(false);
+  const [isLogined, setIsLogined] = useState<boolean>(true);
   const [settledPnl, setSettledPnl] = useState<number>(0);
+  const [timer, setTimer] = useState<number>(0);
 
   const currentChart = useAppSelector((state) => state.currentChart.oneChart);
   const currentState = useAppSelector((state) => state.stageState);
@@ -56,7 +58,7 @@ export function Practice() {
       dispatch(initOrder());
       dispatch(initScore());
       dispatch(initIntervalCharts());
-      const userRes = await checkAccessTokenValidity();
+      const userRes = await checkAccessTokenValidity("practice");
       if (!userRes) {
         setIsLogined(false);
       } else {
@@ -114,6 +116,7 @@ export function Practice() {
       }
     }
     GetChart();
+    setTimer(Date.now() + 5 * 60 * 1000);
   }, [refreshCnt]);
 
   useEffect(() => {
@@ -186,6 +189,7 @@ export function Practice() {
               <span className="current_price_type">C</span>
               {currentChart.pdata[currentChart.pdata.length - 1].close}
             </div>
+            <Timer timeMilliStamp={timer} />
           </div>
           <ChartRef />
           {position_closed ? <ResultModal /> : null}

@@ -106,13 +106,13 @@ export const History = () => {
           <div>전체 수익금</div>
           <div>{`${(
             Math.floor(100000 * summary.total_pnl) / 100000
-          ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDT`}</div>
+          ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDP`}</div>
         </div>
         <div className="history_row_box">
           <div>이번 달 수익금</div>
           <div>{`${(
             Math.floor(100000 * summary.month_pnl) / 100000
-          ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDT`}</div>
+          ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDP`}</div>
         </div>
       </div>
       {scores.map((score, index) => {
@@ -176,7 +176,7 @@ export const History = () => {
                 <span style={{ color: "#191919" }}>{`${FormatPosNeg(
                   Math.round(score.pnl)
                 )}`}</span>{" "}
-                USDT
+                USDP
               </div>
             </div>
             <div className="history_row_box" style={{ paddingBottom: "21px" }}>

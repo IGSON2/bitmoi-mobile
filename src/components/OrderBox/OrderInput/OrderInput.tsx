@@ -243,11 +243,11 @@ export function OrderInput({ isLong }: Position) {
               maximumFractionDigits: 2,
             })}
           </div>
-          <div className="orderInput_balance3">USDT</div>
+          <div className="orderInput_balance3">USDP</div>
         </div>
         <div className="input_wrapper">
           <div className="input_wrapper_1">
-            <div className="input_label">{"가격(USDT)"}</div>
+            <div className="input_label">{"가격(USDP)"}</div>
             <div style={{ color: "#191919" }}>{entryPrice}</div>
           </div>
           <select className="input_wrapper_2">
@@ -288,7 +288,7 @@ export function OrderInput({ isLong }: Position) {
             order.leverage
           ).toLocaleString("en-US", {
             maximumFractionDigits: 2,
-          }) + " USDT"
+          }) + " USDP"
         }`}</div>
 
         <HorizontalLine />
@@ -310,7 +310,7 @@ export function OrderInput({ isLong }: Position) {
           <div className="input_title_wrapper">
             <div className="input_wrapper_1">
               <label className="input_label" htmlFor="profitPrice">
-                {"익절 가격(USDT)"}
+                {"익절 가격(USDP)"}
               </label>
               <input
                 id="profitPrice"
@@ -382,7 +382,7 @@ export function OrderInput({ isLong }: Position) {
           <div className="input_title_wrapper">
             <div className="input_wrapper_1">
               <label className="input_label" htmlFor="stoplossprice">
-                {"손절 가격(USDT)"}
+                {"손절 가격(USDP)"}
               </label>
               <input
                 id="stoplossprice"

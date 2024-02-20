@@ -13,7 +13,7 @@ export function SettleModal(total_pnl: SettleModalProps) {
         <span style={pnl < 0 ? { color: "red" } : { color: "blue" }}>
           {pnl}
         </span>{" "}
-        USDT가 정산되었습니다.
+        USDP가 정산되었습니다.
       </p>
     </div>
   );

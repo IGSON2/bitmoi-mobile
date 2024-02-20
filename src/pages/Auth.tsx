@@ -20,7 +20,7 @@ export function Auth() {
       alert(
         `출석 체크 완료!\n연습모드 계좌로 ${Number(
           attendanceReward
-        ).toLocaleString()} USDT가 지급되었습니다.`
+        ).toLocaleString()} USDP가 지급되었습니다.`
       );
     }
     let originPath = new URLSearchParams(loc.search).get("path")!;

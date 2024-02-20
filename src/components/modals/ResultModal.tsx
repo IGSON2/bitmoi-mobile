@@ -78,7 +78,7 @@ function ResultModal() {
             </div>
             <div className="result_modal_pnl">
               {FormatPosNeg(Math.round(100 * score.current_score.pnl) / 100)}{" "}
-              USDT
+              USDP
             </div>
           </div>
         </div>

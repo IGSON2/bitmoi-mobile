@@ -12,7 +12,7 @@ export const Mypage = () => {
     pageId: PageId.MyPage,
   };
 
-  const [isLogined, setIsLogined] = useState<boolean>(false);
+  const [isLogined, setIsLogined] = useState<boolean>(true);
   const [tokenBal, setTokenBal] = useState<number>(0);
 
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export const Mypage = () => {
 
   useEffect(() => {
     async function GetUserInfo() {
-      const userRes = await checkAccessTokenValidity();
+      const userRes = await checkAccessTokenValidity("mypage");
       if (!userRes) {
         setIsLogined(false);
       } else {

@@ -4,7 +4,6 @@ import "./MypageInfo.css";
 
 export function MypageInfo() {
   const userInfo = useAppSelector((state) => state.userInfo);
-  console.log(userInfo);
   return (
     <div className="mypage_info">
       <MypageHeader title="회원정보" />

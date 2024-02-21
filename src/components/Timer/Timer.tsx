@@ -32,12 +32,13 @@ export function Timer(props: TimerProps) {
 
   return (
     <div className="timer">
+      <img src="/images/timer.png" alt="timer" />
       <div>{`${days > 0 ? days.toString().padStart(2, "0") + ":" : ""}`}</div>
       <div>{`${hours > 0 ? hours.toString().padStart(2, "0") + ":" : ""}`}</div>
       <div>{`${
-        minutes > 0 ? minutes.toString().padStart(2, "0") + ":" : ""
+        minutes > 0 ? minutes.toString().padStart(2, "0") + ":" : "00:"
       }`}</div>
-      <div>{`${seconds > 0 ? seconds.toString().padStart(2, "0") : ""}`}</div>
+      <div>{`${seconds > 0 ? seconds.toString().padStart(2, "0") : "00"}`}</div>
     </div>
   );
 }

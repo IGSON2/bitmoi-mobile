@@ -192,6 +192,7 @@ export function OrderInput({ isLong }: Position) {
           <div className="orderInput_leverage_title">
             <div>{"레버리지 (Leverage)"}</div>
             <img
+              className="orderInput_help_button"
               src="/images/help.png"
               alt="?"
               onClick={() => {
@@ -297,6 +298,7 @@ export function OrderInput({ isLong }: Position) {
           <div className="orderInput_title_help">
             <div>{"수익 실현 가격 (Take Profit)"}</div>
             <img
+              className="orderInput_help_button"
               src="/images/help.png"
               alt="?"
               onClick={() => {
@@ -370,6 +372,7 @@ export function OrderInput({ isLong }: Position) {
           <div className="orderInput_title_help">
             <div>{"손실 감수 가격 (Stop loss)"}</div>
             <img
+              className="orderInput_help_button"
               src="/images/help.png"
               alt="?"
               onClick={() => {

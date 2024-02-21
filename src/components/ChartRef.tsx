@@ -196,7 +196,11 @@ export const ChartRef = () => {
 
   return (
     <div
-      style={{ width: "100%", touchAction: "auto" }}
+      style={{
+        width: "100%",
+        touchAction: "auto",
+        borderTop: "1px solid #e7eaf3",
+      }}
       ref={chartContainerRef}
     />
   );

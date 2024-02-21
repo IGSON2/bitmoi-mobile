@@ -120,7 +120,12 @@ export function Practice() {
   }, [refreshCnt]);
 
   useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    meta?.setAttribute("content", "#f6f6f6");
     dispatch(setOrderMode(ModePrac));
+    return () => {
+      meta?.setAttribute("content", "#ffffff");
+    };
   }, []);
 
   useEffect(() => {
@@ -136,7 +141,6 @@ export function Practice() {
 
   return (
     <div className="practice">
-      <meta name="theme-color" content="#f6f6f6" />
       {isChartLoaded ? (
         <div className="prac_body">
           <div className="prac_header">

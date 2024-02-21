@@ -32,7 +32,6 @@ export async function checkAccessTokenValidity(reqUrl: string) {
       if (refResponse.status === 200) {
         localStorage.removeItem("accessToken");
         localStorage.setItem("accessToken", refResponse.data.access_token);
-        console.log("access token updated by refresh token.");
         return refResponse.data.user;
       } else {
         return null;

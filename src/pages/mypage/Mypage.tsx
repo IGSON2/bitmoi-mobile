@@ -35,18 +35,18 @@ export const Mypage = () => {
 
   return (
     <div className="mypage">
-      <h3>Mypage</h3>
+      <h1>Mypage</h1>
       <div className="mypage_body">
         <div className="mypage_point_wrapper">
           <div className="mypage_point">
-            <div>Point</div>
+            <div style={{ fontWeight: "600" }}>Point</div>
             <div>
               {`${userInfo.prac_balance.toFixed(2)} `}
               <span>USDP</span>
             </div>
           </div>
           <div className="mypage_point">
-            <div>Token</div>
+            <div style={{ fontWeight: "600" }}>Token</div>
             <div>
               {`${tokenBal} `}
               <span>MOI</span>
@@ -74,16 +74,16 @@ export const Mypage = () => {
             <div>거래내역</div>
           </div>
           <div className="mypage_menu">
-            <img src="/images/mypage_list.png" />
+            <img src="/images/mypage_list_2.png" />
             <div>적립내역</div>
           </div>
           <div className="mypage_menu">
             <img src="/images/mypage_list.png" />
-            <div>고객센터</div>
-          </div>
-          <div className="mypage_menu" style={{ marginTop: "50px" }}>
-            <img src="/images/mypage_list.png" />
             <div>추천인</div>
+          </div>
+          <div className="mypage_menu">
+            <img src="/images/mypage_list_2.png" />
+            <div>고객센터</div>
           </div>
         </div>
       </div>

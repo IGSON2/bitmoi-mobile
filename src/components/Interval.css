@@ -1,11 +1,12 @@
 .interval {
-  width: 96%;
+  width: inherit;
   height: 5%;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  padding-left: 3%;
+  padding-left: 18px;
+  font-size: 16px;
 }
 
 .interval_unit_active,

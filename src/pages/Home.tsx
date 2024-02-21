@@ -122,7 +122,11 @@ export const Home = () => {
                 homeDiv?.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              <img src="/images/upper_arrow.png" alt="top" />
+              <img
+                src="/images/upper_arrow.png"
+                alt="top"
+                style={{ width: "45px", height: "45px" }}
+              />
             </div>
           </div>
         )}

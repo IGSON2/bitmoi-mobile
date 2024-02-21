@@ -1,21 +1,52 @@
 .mypage_info {
   width: inherit;
   height: 100%;
-  padding: 40px 20px 0px 20px;
+  padding: 20px 20px 0px 20px;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  row-gap: 50px;
-}
-
-.mypage_info_profile_image {
+  row-gap: 32px;
 }
 
 .mypage_info_profile_image img {
+  width: 85px;
+  height: 85px;
   border-radius: 20px;
 }
 
 .mypage_info_nickname {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+}
+
+.mypage_info_nickname input {
+  border: none;
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.mypage_info_nickname_cancel {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 0px;
+  z-index: 1;
+}
+
+.mypage_info_nickname_save {
+  position: fixed;
+  top: 35px;
+  right: 20px;
+  z-index: 1;
+  font-size: 12px;
+  color: #999999;
   font-weight: 600;
 }

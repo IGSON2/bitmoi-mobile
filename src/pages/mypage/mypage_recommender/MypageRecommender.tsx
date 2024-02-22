@@ -26,6 +26,14 @@ const tempHistory: HistoryInfo[] = [
 export function MypageRecommender() {
   const userInfo = useAppSelector((state) => state.userInfo);
   const referrals = 7;
+
+  function shareLink() {
+    navigator.share({
+      title: "Bitmoi",
+      text: "시뮬레이션 모의투자 비트모이에 초대합니다.",
+      url: `https://m.bitmoi.co.kr/login/welcome?recommender=${userInfo.recommender_code}`,
+    });
+  }
   return (
     <div className="mypage_recommender">
       <MypageHeader title="추천인" />
@@ -43,7 +51,7 @@ export function MypageRecommender() {
         <div className="mypage_recommender_code_value">
           {userInfo.recommender_code}
         </div>
-        <img src="/images/share.png" alt="share" />
+        <img src="/images/share.png" alt="share" onClick={shareLink} />
       </div>
       <div className="mypage_recommender_history_wrapper">
         <div className="mypage_recommender_history_header">

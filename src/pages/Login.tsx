@@ -1,8 +1,17 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import "./Login.css";
+import { useEffect } from "react";
 
 export const Login = () => {
   const { req_url } = useParams();
+  const loc = useLocation();
+
+  useEffect(() => {
+    localStorage.setItem(
+      "recommender",
+      new URLSearchParams(loc.search).get("recommender")!
+    );
+  }, []);
 
   function login() {
     const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";

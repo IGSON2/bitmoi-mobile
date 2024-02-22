@@ -1,0 +1,139 @@
+.mypage_recommender {
+  width: inherit;
+  height: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 28px;
+  background-color: #f6f6f6;
+}
+
+.mypage_recommender_header {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 15px;
+}
+
+.mypage_recommender_header img {
+  width: 50px;
+  height: 50px;
+  z-index: 1;
+  position: relative;
+  top: 8px;
+}
+
+.mypage_recommender_header_reward_wrapper {
+  width: 204px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 0px;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  padding: 0px 15px;
+}
+
+.mypage_recommender_header_reward_tri {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-left: 23.094px solid transparent;
+  border-right: 23.094px solid transparent;
+  border-bottom: 40px solid #fff545;
+  z-index: 1;
+  position: absolute;
+}
+.tri_left {
+  left: -22.4px;
+}
+.tri_right {
+  right: -22.4px;
+}
+
+.mypage_recommender_header_reward_body {
+  background-color: #fff545;
+  width: 204px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  position: absolute;
+}
+
+.mypage_recommender_header_referrals {
+  width: inherit;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 5px;
+  background-color: #5989ff;
+}
+
+.mypage_recommender_code_wrapper {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0px 15px;
+}
+
+.mypage_recommender_code_title {
+  flex: 1;
+  color: #999999;
+}
+
+.mypage_recommender_code_wrapper img {
+  width: 16px;
+  height: 16px;
+}
+
+.mypage_recommender_history_wrapper {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 8px;
+  background-color: #ffffff;
+  padding-top: 12px;
+  font-weight: 600;
+}
+
+.mypage_recommender_history_header {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding: 0px 15px;
+}
+
+.mypage_recommender_history_row {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 15px;
+  font-size: 14px;
+  color: #999999;
+  border-bottom: 1px solid #e7eaf3;
+}

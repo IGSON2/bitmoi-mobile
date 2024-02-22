@@ -77,7 +77,12 @@ export const Mypage = () => {
             <img src="/images/mypage_list_2.png" />
             <div>적립내역</div>
           </div>
-          <div className="mypage_menu">
+          <div
+            className="mypage_menu"
+            onClick={() => {
+              navigate("/mypage/recommender");
+            }}
+          >
             <img src="/images/mypage_list.png" />
             <div>추천인</div>
           </div>

@@ -14,6 +14,7 @@ import { Login } from "./pages/Login";
 import { Welcome } from "./pages/Welcome";
 import { Auth } from "./pages/Auth";
 import { MypageInfo } from "./pages/mypage/mypage_info/MypageInfo";
+import { MypageRecommender } from "./pages/mypage/mypage_recommender/MypageRecommender";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: "/mypage/info",
     element: <MypageInfo />,
+  },
+  {
+    path: "/mypage/recommender",
+    element: <MypageRecommender />,
   },
   {
     path: "/auth",

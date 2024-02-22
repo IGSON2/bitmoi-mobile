@@ -25,19 +25,13 @@ export function ConvertSeconds(sec: number): string {
   const hour = Math.floor((sec % 86400) / 3600);
   const min = Math.floor((sec % 3600) / 60);
   if (day === 0) {
-    return (
-      hour.toString().padStart(2, "0") +
-      "시간 " +
-      min.toString().padStart(2, "0") +
-      "분"
-    );
+    return hour.toString() + "시간 " + min.toString() + "분";
   }
   return (
     day.toString() +
     "일 " +
-    hour.toString().padStart(2, "0") +
+    hour.toString() +
     "시간 " +
-    min.toString().padStart(2, "0") +
-    "분"
+    `${min > 0 ? min.toString() + "분" : ""}`
   );
 }

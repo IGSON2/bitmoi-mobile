@@ -7,8 +7,8 @@ export const Login = () => {
   const loc = useLocation();
 
   useEffect(() => {
-    const recommender = localStorage.getItem("recommender");
-    if (recommender) {
+    const recommender = new URLSearchParams(loc.search).get("recommender")!;
+    if (recommender !== "") {
       localStorage.setItem("recommender", recommender);
     }
   }, []);
@@ -20,13 +20,14 @@ export const Login = () => {
   return (
     <div className="login">
       <h3 className="login_title">Bitmoi</h3>
-      <img className="login_logo" src="/images/bitmoi.png" />
+      <img className="login_logo" alt="logo" src="/images/bitmoi.png" />
       <div className="login_info">
         {"비트모이는 구글 이메일이 있어야 서비스 이용이 가능합니다."}
       </div>
       <img
         className="login_oauth"
         src="/images/google_login.png"
+        alt="google_login"
         onClick={login}
       />
     </div>

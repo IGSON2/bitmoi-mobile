@@ -1,0 +1,27 @@
+.mock_invest_warning {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mock_invest_warning_title {
+  color: #ff2020;
+}
+
+.mock_invest_warning p {
+  width: inherit;
+  text-align: center;
+}
+
+.mock_invest_warning button {
+  width: 120px;
+  height: 30px;
+  border: none;
+  font-weight: 600;
+  background-color: #5989ff;
+  color: #ffffff;
+}

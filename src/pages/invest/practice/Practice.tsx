@@ -36,6 +36,11 @@ import { SettleModal } from "../../../components/modals/SettleModal";
 import { Review } from "../../../components/OrderBox/Review/Review";
 import Loader from "../../../components/loader/Loader";
 import { Timer } from "../../../components/Timer/Timer";
+import {
+  LimitedTimeModal,
+  MockInvestWarningKey,
+} from "../../../components/modals/LimitedTimeModal";
+import { MockInvestWarning } from "../../../components/modals/LimitedElements/MockInvestWarning";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
@@ -199,6 +204,7 @@ export function Practice() {
             ) : null}
           </div>
           <ChartRef />
+          <LimitedTimeModal storageKey={MockInvestWarningKey} />
           {position_closed ? <ResultModal /> : null}
           {submitState === SubmitState.NotSubmit ? (
             <OrderBox />

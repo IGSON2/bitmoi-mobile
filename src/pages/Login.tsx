@@ -7,10 +7,10 @@ export const Login = () => {
   const loc = useLocation();
 
   useEffect(() => {
-    localStorage.setItem(
-      "recommender",
-      new URLSearchParams(loc.search).get("recommender")!
-    );
+    const recommender = localStorage.getItem("recommender");
+    if (recommender) {
+      localStorage.setItem("recommender", recommender);
+    }
   }, []);
 
   function login() {

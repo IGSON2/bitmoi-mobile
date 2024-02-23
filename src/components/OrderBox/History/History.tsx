@@ -52,6 +52,7 @@ export const History = () => {
       const res = await axiosClient.get(`/myscore?mode=${mode}&page=${page}`);
       if (res.data.length === 0) {
         // TODO: remove event listener
+        console.log("no more data");
         return;
       }
       setScores((prev) => [...prev, ...res.data]);
@@ -69,11 +70,12 @@ export const History = () => {
       }
     }
 
+    GetHistorySummary();
+
     const container = historyRef.current;
     if (container) {
       container.addEventListener("scroll", handleScroll);
     }
-    GetHistorySummary();
 
     return () => {
       if (container) {

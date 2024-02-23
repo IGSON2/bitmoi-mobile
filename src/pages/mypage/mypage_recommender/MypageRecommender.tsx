@@ -1,39 +1,86 @@
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../hooks/hooks";
 import { FormatPosNeg } from "../../../utils/PriceStyler";
 import { MypageHeader } from "../mypage_header/MypageHeader";
 import "./MypageRecommender.css";
+import axiosClient from "../../../utils/axiosClient";
+import { Timeformatter } from "../../../utils/Timestamp";
 
 const cur_reward = 10;
 
 type HistoryInfo = {
-  date: string;
-  earned: number;
+  id: number;
+  to_user: string;
+  amount: number;
+  title: string;
+  created_at: string;
 };
 
-const tempHistory: HistoryInfo[] = [
-  { date: "2021-10-01", earned: 10 },
-  { date: "2021-10-02", earned: 10 },
-  { date: "2021-10-03", earned: 10 },
-  { date: "2021-10-04", earned: 10 },
-  { date: "2021-10-05", earned: 10 },
-  { date: "2021-10-06", earned: 10 },
-  { date: "2021-10-07", earned: 10 },
-  { date: "2021-10-08", earned: 10 },
-  { date: "2021-10-09", earned: 10 },
-  { date: "2021-10-10", earned: 10 },
-];
-
 export function MypageRecommender() {
+  const rewardRef = useRef<HTMLDivElement>(null);
+  const [histories, setHistories] = useState<HistoryInfo[]>([]);
+  const [page, setPage] = useState<number>(1);
+
   const userInfo = useAppSelector((state) => state.userInfo);
   const referrals = 7;
 
   function shareLink() {
-    navigator.share({
+    const shareData = {
       title: "Bitmoi",
       text: "시뮬레이션 모의투자 비트모이에 초대합니다.",
       url: `https://m.bitmoi.co.kr/login/welcome?recommender=${userInfo.recommender_code}`,
-    });
+    };
+    if (navigator.share && navigator.canShare(shareData)) {
+      navigator.share(shareData);
+    } else {
+      alert("공유하기 기능을 지원하지 않는 브라우저입니다.");
+    }
   }
+
+  const handleScroll = () => {
+    const container = rewardRef.current;
+
+    if (container) {
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+
+      if (scrollTop + clientHeight >= scrollHeight - 0.5) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    async function getHistory() {
+      const res = await axiosClient.get(`/wmoi-transactions?page=${page}`);
+      const data = res.data;
+      if (data.length === 0) {
+        console.log("no more data");
+        rewardRef.current?.removeEventListener("scroll", handleScroll);
+        return;
+      }
+      setHistories((prev) => [...prev, ...data]);
+    }
+    getHistory();
+  }, [page]);
+
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    meta?.setAttribute("content", "#f6f6f6");
+
+    const container = rewardRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      meta?.setAttribute("content", "#ffffff");
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <div className="mypage_recommender">
       <MypageHeader title="추천인" />
@@ -53,24 +100,30 @@ export function MypageRecommender() {
         </div>
         <img src="/images/share.png" alt="share" onClick={shareLink} />
       </div>
-      <div className="mypage_recommender_history_wrapper">
-        <div className="mypage_recommender_history_header">
-          <div>Date</div>
-          <div>Earned Token</div>
+      {histories.length > 0 ? (
+        <div
+          className="mypage_recommender_history_wrapper"
+          ref={rewardRef}
+          onScroll={handleScroll}
+        >
+          <div className="mypage_recommender_history_header">
+            <div>Date</div>
+            <div>Earned Token</div>
+          </div>
+          {histories.map((his, idx) => {
+            return (
+              <div className="mypage_recommender_history_row" key={idx}>
+                <div className="mypage_recommender_history_row_date">
+                  {Timeformatter(his.created_at, false)}
+                </div>
+                <div className="mypage_recommender_history_row_earned">
+                  {FormatPosNeg(his.amount)}
+                </div>
+              </div>
+            );
+          })}
         </div>
-        {tempHistory.map((his) => {
-          return (
-            <div className="mypage_recommender_history_row">
-              <div className="mypage_recommender_history_row_date">
-                {his.date}
-              </div>
-              <div className="mypage_recommender_history_row_earned">
-                {FormatPosNeg(his.earned)}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      ) : null}
     </div>
   );
 }

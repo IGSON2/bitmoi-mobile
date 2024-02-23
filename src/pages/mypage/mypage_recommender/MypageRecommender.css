@@ -106,6 +106,7 @@
 
 .mypage_recommender_history_wrapper {
   width: inherit;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -114,6 +115,7 @@
   background-color: #ffffff;
   padding-top: 12px;
   font-weight: 600;
+  overflow: scroll;
 }
 
 .mypage_recommender_history_header {

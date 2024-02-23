@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Pagination from "../components/Pagination";
 import { PageId, PageInfo } from "../types/types";
 import "./Home.css";

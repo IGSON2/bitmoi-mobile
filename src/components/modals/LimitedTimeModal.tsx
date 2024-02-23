@@ -15,15 +15,13 @@ export function LimitedTimeModal(porps: LimitedTimeModalProps) {
 
   useEffect(() => {
     const current = new Date();
-    const storedTime = localStorage.getItem(porps.storageKey);
+    const storedTime = Number(localStorage.getItem(porps.storageKey));
 
     if (storedTime) {
-      const stored = new Date(storedTime);
-      if (current.getTime() - stored.getTime() < 1000 * 60 * 60 * 24) {
+      if (current.getTime() - storedTime < 1000 * 60 * 60 * 24) {
         return;
       }
     }
-    console.log(storedTime);
     setIsShow(true);
     localStorage.setItem(porps.storageKey, current.getTime().toString());
 

@@ -35,7 +35,7 @@ import { initScore } from "../../../store/score";
 import { SettleModal } from "../../../components/modals/SettleModal";
 import { Review } from "../../../components/OrderBox/Review/Review";
 import Loader from "../../../components/loader/Loader";
-import { Timer } from "../../../components/Timer/Timer";
+import { Timer, expiringMinute } from "../../../components/Timer/Timer";
 import {
   LimitedTimeModal,
   MockInvestWarningKey,
@@ -121,7 +121,7 @@ export function Practice() {
       }
     }
     GetChart();
-    setTimer(Date.now() + 5 * 60 * 1000);
+    setTimer(Date.now() + expiringMinute * 60 * 1000);
   }, [refreshCnt]);
 
   useEffect(() => {
@@ -206,6 +206,7 @@ export function Practice() {
           <ChartRef />
           <LimitedTimeModal storageKey={MockInvestWarningKey} />
           {position_closed ? <ResultModal /> : null}
+          
           {submitState === SubmitState.NotSubmit ? (
             <OrderBox />
           ) : submitState === SubmitState.Submit ? (

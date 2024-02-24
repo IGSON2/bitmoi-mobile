@@ -116,6 +116,7 @@
   padding-top: 12px;
   font-weight: 600;
   overflow: scroll;
+  touch-action: auto;
 }
 
 .mypage_recommender_history_header {

@@ -33,6 +33,16 @@ export const Mypage = () => {
     GetUserInfo();
   }, []);
 
+  function logout (){
+    if(window.confirm("로그아웃 하시겠습니까?")){
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/";
+    }else{
+      return;
+    }
+  }
+
   return (
     <div className="mypage">
       <h1>Mypage</h1>
@@ -66,6 +76,10 @@ export const Mypage = () => {
           <div className="mypage_icon">
             <img src="/images/mypage_setting.png" />
             <div>설정</div>
+          </div>
+          <div className="mypage_icon" onClick={logout}>
+            <img src="/images/close.png" />
+            <div>로그아웃</div>
           </div>
         </div>
         <div className="mypage_menu_wrapper">

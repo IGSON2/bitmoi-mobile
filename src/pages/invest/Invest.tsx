@@ -8,8 +8,7 @@ export const Invest = () => {
   };
 
   const goCompetition = async () => {
-    alert("경쟁 모드는 준비중입니다.");
-    // window.location.href = "/invest/competition";
+    window.location.href = "/invest/competition";
   };
 
   const pageInfo: PageInfo = {

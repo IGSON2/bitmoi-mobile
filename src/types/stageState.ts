@@ -27,6 +27,9 @@ export function GetMinMaxRoe(roe_array: number[]): MinMaxRoe {
   let max = 0;
   if (roe_array.length > 0) {
     min = Math.min(...roe_array);
+    if (min === roe_array[0]) {
+      min = 0;
+    }
     max = Math.max(...roe_array);
   }
   return { min_roe: min, max_roe: max };

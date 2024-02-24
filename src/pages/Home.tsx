@@ -46,16 +46,6 @@ export const Home = () => {
   const [isTipOpen, setIsTipOpen] = useState(false);
   return (
     <div className="home" id="home_div">
-      <div
-        style={{
-          position: "fixed",
-          top: "20px",
-          right: "30px",
-          color: "#999999",
-        }}
-      >
-        {`v${appVersion}`}
-      </div>
       <img className="home_logo" src="/images/bitmoi.png" />
       <div className="home_title">
         <div className="home_title_service">OUR SERVICE</div>
@@ -143,6 +133,7 @@ export const Home = () => {
           <div>사업장 주소 : 서울 강남</div>
           <div>광고 및 문의 메일 : support@bitmoi.co.kr</div>
           <div>Copyright &copy; BITMOI All right reserved.</div>
+          <div>{`v${appVersion}`}</div>
         </div>
       </div>
       <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}

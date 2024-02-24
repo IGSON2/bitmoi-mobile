@@ -35,7 +35,7 @@ export const ChartRef = () => {
     if (chartContainerRef.current && chartApiRef.current) {
       chartApiRef.current.applyOptions({
         width: chartContainerRef.current.clientWidth,
-        height: document.body.clientHeight * 0.75,
+        height: window.innerHeight * 0.75,
       });
     }
   };
@@ -44,7 +44,7 @@ export const ChartRef = () => {
     if (chartContainerRef.current) {
       chartApiRef.current = createChart(chartContainerRef.current, {
         width: chartContainerRef.current.clientWidth,
-        height: document.body.clientHeight * 0.75,
+        height: window.innerHeight * 0.75,
         crosshair: {
           mode: CrosshairMode.Normal,
           vertLine: {

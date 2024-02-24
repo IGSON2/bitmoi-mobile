@@ -1,5 +1,4 @@
 .pagination {
-  width: inherit;
   height: 70px;
   background: #fff;
   position: fixed;
@@ -10,4 +9,16 @@
   align-items: center;
   border-top: 1px solid #e7e7e7;
   margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .pagination {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .pagination {
+    width: 768px;
+  }
 }

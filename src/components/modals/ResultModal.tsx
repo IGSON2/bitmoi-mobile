@@ -24,7 +24,8 @@ function ResultModal() {
     dispatch(setStageSubmitState(SubmitState.Review));
     dispatch(setPositionClosed(false));
   }
-
+  const roeLen = (Math.round(100 * score.current_score.roe) / 100).toString().length;
+  
   useEffect(() => {
     setIbr(getIbr(score.current_score.roe));
   }, [score]);
@@ -73,9 +74,10 @@ function ResultModal() {
                 : { color: "#EF5350" }
             }
           >
-            <div className="result_modal_roe">
+            <div className="result_modal_roe" style={roeLen > 5?{fontSize:`${32-roeLen*1.2}px`}:{fontSize:"32px"}}>
               {FormatPosNeg(Math.round(100 * score.current_score.roe) / 100)}%
             </div>
+
             <div className="result_modal_pnl">
               {FormatPosNeg(Math.round(100 * score.current_score.pnl) / 100)}{" "}
               USDP

@@ -288,7 +288,7 @@ export function OrderInput({ isLong }: Position) {
             (order.quantity * order.entry_price) /
             order.leverage
           ).toLocaleString("en-US", {
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 4,
           }) + " USDP"
         }`}</div>
 

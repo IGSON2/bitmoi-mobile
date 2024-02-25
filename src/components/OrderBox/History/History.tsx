@@ -41,7 +41,7 @@ export const History = () => {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight >= scrollHeight - 0.5) {
+      if (scrollTop + clientHeight === scrollHeight - 0.5) {
         setPage((prevPage) => prevPage + 1);
       }
     }

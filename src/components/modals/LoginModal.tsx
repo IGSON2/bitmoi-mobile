@@ -2,9 +2,10 @@ import "./LoginModal.css";
 
 interface LoginModalProps {
   reqUrl: string;
+  balckLink: string;
 }
 
-export function LoginModal(lmp: LoginModalProps) {
+export function LoginModal(props: LoginModalProps) {
   return (
     <div className={`login_modal fixed-component`}>
       <div className={`login_modal_blur fixed-component`}></div>
@@ -18,7 +19,7 @@ export function LoginModal(lmp: LoginModalProps) {
           <button
             className="login_modal_cancel"
             onClick={() => {
-              window.location.href = "/invest";
+              window.location.href = `${props.balckLink}`;
             }}
           >
             취소
@@ -26,7 +27,7 @@ export function LoginModal(lmp: LoginModalProps) {
           <button
             className="login_modal_signin"
             onClick={() => {
-              window.location.href = `/login/${lmp.reqUrl}`;
+              window.location.href = `/login/${props.reqUrl}`;
             }}
           >
             로그인 및 회원가입

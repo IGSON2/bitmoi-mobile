@@ -81,7 +81,7 @@ export const Welcome = () => {
         추천인을 적지 않아도 가입 완료가 가능합니다.
       </p>
       <button onClick={submitCode}>가입완료</button>
-      {isLogined ? null : <LoginModal reqUrl="welcome" />}
+      {isLogined ? null : <LoginModal reqUrl="welcome" balckLink="/" />}
     </div>
   );
 };

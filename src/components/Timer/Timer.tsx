@@ -5,7 +5,7 @@ export interface TimerProps {
   timeMilliStamp: number;
 }
 
-export const expiringMinute = 5;
+export const expiringMinute = Number(process.env.REACT_APP_TIMER);
 
 export function Timer(props: TimerProps) {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
@@ -30,7 +30,9 @@ export function Timer(props: TimerProps) {
 
   useEffect(() => {
     if (isReload) {
-      alert(`${expiringMinute}분 동안 포지션 진입이 감지되지 않아 페이지를 새로고침합니다.`);
+      alert(
+        `${expiringMinute}분 동안 포지션 진입이 감지되지 않아 페이지를 새로고침합니다.`
+      );
       window.location.reload();
     }
   }, [isReload]);

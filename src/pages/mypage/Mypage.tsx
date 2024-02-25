@@ -33,19 +33,19 @@ export const Mypage = () => {
     GetUserInfo();
   }, []);
 
-  function logout (){
-    if(window.confirm("로그아웃 하시겠습니까?")){
+  function logout() {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       window.location.href = "/";
-    }else{
+    } else {
       return;
     }
   }
 
   return (
     <div className="mypage">
-      <h1>Mypage</h1>
+      <h1>마이 페이지</h1>
       <div className="mypage_body">
         <div className="mypage_point_wrapper">
           <div className="mypage_point">
@@ -77,10 +77,6 @@ export const Mypage = () => {
             <img src="/images/mypage_setting.png" />
             <div>설정</div>
           </div>
-          <div className="mypage_icon" onClick={logout}>
-            <img src="/images/close.png" />
-            <div>로그아웃</div>
-          </div>
         </div>
         <div className="mypage_menu_wrapper">
           <div className="mypage_menu">
@@ -105,9 +101,12 @@ export const Mypage = () => {
             <div>고객센터</div>
           </div>
         </div>
+        <div className="mypage_logout" onClick={logout}>
+          로그아웃
+        </div>
       </div>
       <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
-      {isLogined ? null : <LoginModal reqUrl="mypage" />}
+      {isLogined ? null : <LoginModal reqUrl="mypage" balckLink="/" />}
     </div>
   );
 };

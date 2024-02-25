@@ -120,12 +120,15 @@ export const Home = () => {
             </div>
           </div>
         )}
+        <img
+          src="/images/kakao_support.png"
+          alt="tip_3"
+          style={{ marginTop: "30px" }}
+          onClick={() => {
+            window.open("https://open.kakao.com/o/gu5jaTHd", "_blank");
+          }}
+        />
       </div>
-      <img
-        src="/images/kakao_support.png"
-        alt="tip_3"
-        style={{ marginTop: "30px" }}
-      />
       <div className="home_terms_wrapper">
         <h5>이용약관 개인정보 취급방침</h5>
         <div className="home_terms_company_info">

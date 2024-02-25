@@ -4,7 +4,7 @@
   /* flex: 1; */
   background-color: #f6f6f6;
   z-index: 1;
-  padding: 0px 0 20px 0;
+  padding: 10px 0 20px 0;
 }
 
 .prac_body {
@@ -23,7 +23,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 0 10px 0 10px;
 }
 
 .prac_header_back {
@@ -47,9 +47,8 @@
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  padding-left: 10px;
   column-gap: 8px;
-  width: 70%;
+  width: 75%;
 }
 
 .title_img {

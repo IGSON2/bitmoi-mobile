@@ -44,21 +44,23 @@ export function OrderBox() {
           className={`orderBox_blank fixed-component`}
           onClick={OnBlankClick}
         ></div>
-      ) : null}
-      <div className="orderBox_menu_box">
-        <div
-          className="orderBox_menu"
-          onClick={OnLongClick}
-        >{`매수 (Long)`}</div>
-        <div
-          className="orderBox_menu"
-          onClick={OnShortClick}
-        >{`매도 (Short)`}</div>
-        <div
-          className="orderBox_menu"
-          onClick={OnHistoryClick}
-        >{`거래내역`}</div>
-      </div>
+      ) : (
+        <div className="orderBox_menu_box">
+          <div
+            className="orderBox_menu"
+            onClick={OnLongClick}
+          >{`매수 (Long)`}</div>
+          <div
+            className="orderBox_menu"
+            onClick={OnShortClick}
+          >{`매도 (Short)`}</div>
+          <div
+            className="orderBox_menu"
+            onClick={OnHistoryClick}
+          >{`거래내역`}</div>
+        </div>
+      )}
+
       {orderBoxMenu !== OrderBox_Menu.None ? (
         <div className={`orderBox_router fixed-component`}>
           <div className="orderBox_menu_box">

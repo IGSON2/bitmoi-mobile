@@ -9,6 +9,7 @@ import userInfoReducer from "./userInfo";
 import intervalChartsReducer from "./intervalCharts";
 import orderReducer from "./order";
 import positionClosedReducer from "./positionClosed";
+import lastCandleReducer from "./lastCandle";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     intervalCharts: intervalChartsReducer,
     order: orderReducer,
     positionClosed: positionClosedReducer,
+    lastCandle: lastCandleReducer,
   },
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({

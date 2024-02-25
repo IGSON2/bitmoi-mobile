@@ -1,11 +1,9 @@
 .mypage_header {
   width: inherit;
-  height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  position: relative;
 }
 
 .mypage_header_back {
@@ -16,7 +14,6 @@
   align-items: center;
   position: absolute;
   z-index: 1;
-  top: 2px;
 }
 
 .mypage__header_title {

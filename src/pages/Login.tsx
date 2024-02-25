@@ -8,7 +8,7 @@ export const Login = () => {
 
   useEffect(() => {
     const recommender = new URLSearchParams(loc.search).get("recommender")!;
-    if (recommender !== "") {
+    if (recommender) {
       localStorage.setItem("recommender", recommender);
     }
   }, []);

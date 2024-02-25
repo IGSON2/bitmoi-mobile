@@ -41,6 +41,7 @@ import {
   MockInvestWarningKey,
 } from "../../../components/modals/LimitedTimeModal";
 import { MockInvestWarning } from "../../../components/modals/LimitedElements/MockInvestWarning";
+import { setLastCandle } from "../../../store/lastCandle";
 
 export function Practice() {
   const [isChartLoaded, setIsChartLoaded] = useState<boolean>(false);
@@ -50,6 +51,7 @@ export function Practice() {
 
   const currentChart = useAppSelector((state) => state.currentChart.oneChart);
   const currentState = useAppSelector((state) => state.stageState);
+  const lastCandle = useAppSelector((state) => state.lastCandle);
   const refreshCnt = useAppSelector((state) => state.stageState.refresh_cnt);
   const submitState = useAppSelector((state) => state.stageState.submitState);
   const position_closed = useAppSelector(
@@ -87,7 +89,10 @@ export function Practice() {
       try {
         const response = await axiosClient.get(`/${ModePrac}`);
 
-        dispatch(setOrderEntryPrice(response.data.onechart.pdata[0].close));
+        const latestPdata = response.data.onechart.pdata[0];
+        dispatch(setOrderEntryPrice(latestPdata.close));
+        dispatch(setLastCandle(latestPdata));
+
         response.data.onechart.pdata.reverse();
         response.data.onechart.vdata.reverse();
         dispatch(
@@ -185,19 +190,19 @@ export function Practice() {
           <div className="current_price">
             <div>
               <span className="current_price_type">O</span>
-              {currentChart.pdata[currentChart.pdata.length - 1].open}
+              {lastCandle.open}
             </div>
             <div>
               <span className="current_price_type">H</span>
-              {currentChart.pdata[currentChart.pdata.length - 1].high}
+              {lastCandle.high}
             </div>
             <div>
               <span className="current_price_type">L</span>
-              {currentChart.pdata[currentChart.pdata.length - 1].low}
+              {lastCandle.low}
             </div>
             <div>
               <span className="current_price_type">C</span>
-              {currentChart.pdata[currentChart.pdata.length - 1].close}
+              {lastCandle.close}
             </div>
             {submitState === SubmitState.NotSubmit ? (
               <Timer timeMilliStamp={timer} />
@@ -206,7 +211,7 @@ export function Practice() {
           <ChartRef />
           <LimitedTimeModal storageKey={MockInvestWarningKey} />
           {position_closed ? <ResultModal /> : null}
-          
+
           {submitState === SubmitState.NotSubmit ? (
             <OrderBox />
           ) : submitState === SubmitState.Submit ? (
@@ -214,7 +219,9 @@ export function Practice() {
           ) : submitState === SubmitState.Review ? (
             <Review />
           ) : null}
-          {isLogined ? null : <LoginModal reqUrl="practice" />}
+          {isLogined ? null : (
+            <LoginModal reqUrl="practice" balckLink="/invest" />
+          )}
           {settledPnl ? <SettleModal total_pnl={settledPnl} /> : null}
         </div>
       ) : (

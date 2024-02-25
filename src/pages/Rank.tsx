@@ -8,7 +8,7 @@ export const Rank = () => {
   };
   return (
     <div className="rank">
-      <h1>Rank</h1>
+      <h1>랭킹</h1>
       <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
     </div>
   );

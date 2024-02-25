@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import "./OrderInput.css";
 import HorizontalLine from "../../lines/HorizontalLine";
@@ -22,6 +22,11 @@ import { SubmitState } from "../../../types/stageState";
 interface Position {
   isLong: boolean;
 }
+
+const optionArray = [
+  -100, -90, -80, -70, -60, -50, -40, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15,
+  20, 25, 30, 40, 50, 60, 70, 80, 90, 100,
+];
 
 export function OrderInput({ isLong }: Position) {
   const [levClick, setLevClick] = useState(false);
@@ -247,13 +252,28 @@ export function OrderInput({ isLong }: Position) {
           <div className="orderInput_balance3">USDP</div>
         </div>
         <div className="input_wrapper">
-          <div className="input_wrapper_1">
+          <div
+            className="input_wrapper_1"
+            onClick={() => {
+              alert("연습모드에서는 진입 시점 가격으로만 주문이 가능합니다.");
+            }}
+          >
             <div className="input_label">{"가격(USDP)"}</div>
             <div style={{ color: "#191919" }}>{entryPrice}</div>
           </div>
-          <select className="input_wrapper_2">
+          {/* <select className="input_wrapper_2">
             <option>현재가</option>
-          </select>
+          </select> */}
+          <div
+            className="input_wrapper_2"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            현재가
+          </div>
         </div>
 
         <div className="input_wrapper">
@@ -326,45 +346,23 @@ export function OrderInput({ isLong }: Position) {
               className="input_wrapper_2"
               value={profitRate}
               onChange={profitRateChange}
+              defaultValue={0}
+              id={"focus_profit"}
             >
               <option value={0}>현재가 대비%</option>
-              <option className="option_pos" value={30}>
-                30%
-              </option>
-              <option className="option_pos" value={25}>
-                25%
-              </option>
-              <option className="option_pos" value={20}>
-                20%
-              </option>
-              <option className="option_pos" value={15}>
-                15%
-              </option>
-              <option className="option_pos" value={10}>
-                10%
-              </option>
-              <option className="option_pos" value={5}>
-                5%
-              </option>
-              <option value={0}>0%</option>
-              <option className="option_neg" value={-5}>
-                -5%
-              </option>
-              <option className="option_neg" value={-10}>
-                -10%
-              </option>
-              <option className="option_neg" value={-15}>
-                -15%
-              </option>
-              <option className="option_neg" value={-20}>
-                -20%
-              </option>
-              <option className="option_neg" value={-25}>
-                -25%
-              </option>
-              <option className="option_neg" value={-30}>
-                -30%
-              </option>
+              {optionArray.map((i) => {
+                return (
+                  <option
+                    className={
+                      i > 0 ? "option_pos" : i === 0 ? "" : "option_neg"
+                    }
+                    value={i}
+                    key={i}
+                  >
+                    {i}%
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -399,45 +397,22 @@ export function OrderInput({ isLong }: Position) {
               className="input_wrapper_2"
               value={lossRate}
               onChange={lossRateChange}
+              id={"focus_loss"}
             >
               <option value={0}>현재가 대비%</option>
-              <option className="option_pos" value={30}>
-                30%
-              </option>
-              <option className="option_pos" value={25}>
-                25%
-              </option>
-              <option className="option_pos" value={20}>
-                20%
-              </option>
-              <option className="option_pos" value={15}>
-                15%
-              </option>
-              <option className="option_pos" value={10}>
-                10%
-              </option>
-              <option className="option_pos" value={5}>
-                5%
-              </option>
-              <option value={0}>0%</option>
-              <option className="option_neg" value={-5}>
-                -5%
-              </option>
-              <option className="option_neg" value={-10}>
-                -10%
-              </option>
-              <option className="option_neg" value={-15}>
-                -15%
-              </option>
-              <option className="option_neg" value={-20}>
-                -20%
-              </option>
-              <option className="option_neg" value={-25}>
-                -25%
-              </option>
-              <option className="option_neg" value={-30}>
-                -30%
-              </option>
+              {optionArray.map((i) => {
+                return (
+                  <option
+                    className={
+                      i > 0 ? "option_pos" : i === 0 ? "" : "option_neg"
+                    }
+                    value={i}
+                    key={i}
+                  >
+                    {i}%
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>

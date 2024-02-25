@@ -4,7 +4,7 @@ import { MypageHeader } from "../mypage_header/MypageHeader";
 import "./MypageInfo.css";
 import axiosClient from "../../../utils/axiosClient";
 import { setUserInfo } from "../../../store/userInfo";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 enum EditingFlag {
   Idle,
@@ -138,13 +138,16 @@ export function MypageInfo() {
           />
         </div>
       ) : (
-        <div
-          className="mypage_info_nickname"
-          onClick={() => {
-            setEditFlag(EditingFlag.Nickname);
-          }}
-        >
+        <div className="mypage_info_nickname">
           {userInfo.nickname}
+          <img
+            className="mypage_info_edit"
+            src="/images/edit.png"
+            alt="edit"
+            onClick={() => {
+              setEditFlag(EditingFlag.Nickname);
+            }}
+          />
         </div>
       )}
       {editFlag !== EditingFlag.Idle ? (

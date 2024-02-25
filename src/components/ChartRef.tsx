@@ -9,10 +9,12 @@ import {
   Range,
   Time,
   UTCTimestamp,
+  MouseEventParams,
 } from "lightweight-charts";
 import { PData } from "../types/types";
-import { useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { SubmitState } from "../types/stageState";
+import { setLastCandle } from "../store/lastCandle";
 
 export const ChartRef = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -26,15 +28,19 @@ export const ChartRef = () => {
   const etnryTime = useAppSelector((state) => state.stageState.entrytime);
   const oneChart = useAppSelector((state) => state.currentChart.oneChart);
 
+  const dispatch = useAppDispatch();
+
   const [visibleRange, setVisibleRange] = useState<Range<Time> | null>({
     from: "0",
     to: "0",
   });
 
+  const rootWidth = document.getElementById("root")?.clientWidth;
+
   const handleResize = () => {
     if (chartContainerRef.current && chartApiRef.current) {
       chartApiRef.current.applyOptions({
-        width: chartContainerRef.current.clientWidth,
+        width: rootWidth,
         height: window.innerHeight * 0.75,
       });
     }
@@ -43,7 +49,7 @@ export const ChartRef = () => {
   useEffect(() => {
     if (chartContainerRef.current) {
       chartApiRef.current = createChart(chartContainerRef.current, {
-        width: chartContainerRef.current.clientWidth,
+        width: rootWidth,
         height: window.innerHeight * 0.75,
         crosshair: {
           mode: CrosshairMode.Normal,
@@ -114,6 +120,19 @@ export const ChartRef = () => {
       .subscribeVisibleTimeRangeChange((param) => {
         setVisibleRange(param);
       });
+
+    chartApiRef.current?.subscribeCrosshairMove((param) => {
+      const pdata = param.seriesData.values().next().value;
+      if (!pdata) {
+        return;
+      }
+      dispatch(setLastCandle(pdata as PData));
+    });
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      chartApiRef.current?.remove();
+    };
   }, []);
 
   useEffect(() => {

@@ -111,7 +111,7 @@
 .result_modal_profit_info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   width: 145px;
   height: 100%;

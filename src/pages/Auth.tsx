@@ -3,17 +3,18 @@ import { useLocation } from "react-router-dom";
 
 export function Auth() {
   const loc = useLocation();
-  const [info, setInfo] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   useEffect(() => {
-    localStorage.setItem(
-      "accessToken",
-      new URLSearchParams(loc.search).get("accessToken")!
-    );
-    localStorage.setItem(
-      "refreshToken",
-      new URLSearchParams(loc.search).get("refreshToken")!
-    );
+    const act = new URLSearchParams(loc.search).get("accessToken");
+    const ret = new URLSearchParams(loc.search).get("refreshToken");
+    if (act === null || ret === null) {
+      setErrorMsg("인증에 실패했습니다. 다시 로그인해주세요.");
+      return;
+    }
+    localStorage.setItem("accessToken", act);
+    localStorage.setItem("refreshToken", ret);
+
     const attendanceReward = new URLSearchParams(loc.search).get(
       "attendanceReward"
     )!;
@@ -25,19 +26,39 @@ export function Auth() {
       );
     }
     let originPath = new URLSearchParams(loc.search).get("path")!;
+    setErrorMsg(`마지막 접속 페이지: ${originPath}`);
     if (originPath === "practice" || originPath === "competition/") {
       originPath = "invest/" + originPath;
     }
 
-    setInfo(`
+    setErrorMsg(`
       accessToken: ${localStorage.getItem("accessToken")}
       refreshToken: ${localStorage.getItem("refreshToken")}
       originPath: ${originPath}
       attendanceReward: ${attendanceReward}
       `);
 
-    // window.location.href = `/${originPath}`;
+    window.location.href = `/${originPath}`;
   }, []);
 
-  return <div>{info}</div>;
+  return (
+    <div>
+      {errorMsg}
+      <button
+        style={{
+          border: "none",
+          backgroundColor: "white",
+          cursor: "pointer",
+          width: "100px",
+          height: "50px",
+          fontSize: "20px",
+        }}
+        onClick={() => {
+          window.location.href = `/`;
+        }}
+      >
+        홈으로
+      </button>
+    </div>
+  );
 }

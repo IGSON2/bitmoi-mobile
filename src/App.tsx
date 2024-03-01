@@ -15,6 +15,7 @@ import { Welcome } from "./pages/Welcome";
 import { Auth } from "./pages/Auth";
 import { MypageInfo } from "./pages/mypage/mypage_info/MypageInfo";
 import { MypageRecommender } from "./pages/mypage/mypage_recommender/MypageRecommender";
+import { Terms } from "./pages/Terms";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/welcome",
     element: <Welcome />,
+  },
+  {
+    path: "/terms",
+    element: <Terms />,
   },
   {
     path: "*",

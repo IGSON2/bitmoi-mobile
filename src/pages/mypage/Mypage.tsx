@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination";
-import { PageId, PageInfo, UserInfo } from "../../types/types";
+import { PageID, UserInfo } from "../../types/types";
 import "./Mypage.css";
 import { checkAccessTokenValidity } from "../../utils/checkAccessTokenValidity";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
@@ -9,10 +9,6 @@ import { LoginModal } from "../../components/modals/LoginModal";
 import { useNavigate } from "react-router-dom";
 
 export const Mypage = () => {
-  const pageInfo: PageInfo = {
-    pageId: PageId.MyPage,
-  };
-
   const [isLogined, setIsLogined] = useState<boolean>(true);
   const [tokenBal, setTokenBal] = useState<number>(0);
 
@@ -105,7 +101,7 @@ export const Mypage = () => {
           로그아웃
         </div>
       </div>
-      <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
+      <Pagination pageID={PageID.MyPage} /> {/* 객체의 전개 연산자 */}
       {isLogined ? null : <LoginModal reqUrl="mypage" balckLink="/" />}
     </div>
   );

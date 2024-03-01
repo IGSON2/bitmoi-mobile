@@ -28,7 +28,7 @@ export function MypageRecommender() {
     const shareData = {
       title: "Bitmoi",
       text: "시뮬레이션 모의투자 비트모이에 초대합니다.",
-      url: `https://m.bitmoi.co.kr/login/welcome?recommender=${userInfo.recommender_code}`,
+      url: `https://m.bitmoi.co.kr/login/welcome?recommender=${userInfo.recommender_code}`, // login 링크 param을 welcome으로 던지면 이미 존재하는 계정도 welcome으로 갈거고, 추천인 입력을 다시 시도할 수 있음.
     };
     if (navigator.share && navigator.canShare(shareData)) {
       navigator.share(shareData);

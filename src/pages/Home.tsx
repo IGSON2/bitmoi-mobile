@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Pagination from "../components/Pagination";
-import { PageId, PageInfo } from "../types/types";
 import "./Home.css";
+import { PageID } from "../types/types";
 
 type ServiceFeature = {
   title: string;
@@ -11,10 +11,6 @@ type ServiceFeature = {
 const appVersion = process.env.REACT_APP_VERSION;
 
 export const Home = () => {
-  const pageInfo: PageInfo = {
-    pageId: PageId.Home,
-  };
-
   const serviceFeature: ServiceFeature[] = [
     {
       title: "빠른 경험을 위한",
@@ -139,7 +135,7 @@ export const Home = () => {
           <div>{`v${appVersion}`}</div>
         </div>
       </div>
-      <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
+      <Pagination pageID={PageID.Home} /> {/* 객체의 전개 연산자 */}
     </div>
   );
 };

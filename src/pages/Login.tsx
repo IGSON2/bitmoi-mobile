@@ -19,6 +19,14 @@ export const Login = () => {
   }
   return (
     <div className="login">
+      <img
+        className="home_back"
+        onClick={() => {
+          window.location.href = "/";
+        }}
+        src="/images/left_arrow.png"
+        alt="back"
+      />
       <h3 className="login_title">Bitmoi</h3>
       <img className="login_logo" alt="logo" src="/images/bitmoi.png" />
       <div className="login_info">

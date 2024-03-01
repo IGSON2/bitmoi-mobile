@@ -1,15 +1,12 @@
 import Pagination from "../components/Pagination";
-import { PageId, PageInfo } from "../types/types";
+import { PageID } from "../types/types";
 import "./Rank.css";
 
 export const Rank = () => {
-  const pageInfo: PageInfo = {
-    pageId: PageId.Rank,
-  };
   return (
     <div className="rank">
       <h1>랭킹</h1>
-      <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
+      <Pagination pageID={PageID.Rank} /> {/* 객체의 전개 연산자 */}
     </div>
   );
 };

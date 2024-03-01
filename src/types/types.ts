@@ -1,6 +1,6 @@
 import { Time } from "lightweight-charts";
 
-export enum PageId {
+export enum PageID {
   Home,
   Invest,
   Rank,
@@ -13,10 +13,6 @@ export enum OrderBox_Menu {
   Short,
   History,
 }
-
-export type PageInfo = {
-  pageId: PageId;
-};
 
 export type PData = {
   close: number;

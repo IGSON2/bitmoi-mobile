@@ -1,5 +1,5 @@
 import Pagination from "../../components/Pagination";
-import { PageId, PageInfo } from "../../types/types";
+import { PageID } from "../../types/types";
 import "./Invest.css";
 
 export const Invest = () => {
@@ -9,10 +9,6 @@ export const Invest = () => {
 
   const goCompetition = async () => {
     window.location.href = "/invest/competition";
-  };
-
-  const pageInfo: PageInfo = {
-    pageId: PageId.Invest,
   };
 
   return (
@@ -26,7 +22,7 @@ export const Invest = () => {
           경쟁 모드
         </div>
       </div>
-      <Pagination {...pageInfo} /> {/* 객체의 전개 연산자 */}
+      <Pagination pageID={PageID.Invest} /> {/* 객체의 전개 연산자 */}
     </div>
   );
 };

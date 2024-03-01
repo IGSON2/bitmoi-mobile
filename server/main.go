@@ -58,10 +58,12 @@ func main() {
 
 	app.Static("/", "./build")
 	app.Static("/invest/*", "./build")
-	app.Static("/mypage/*", "./build")
 	app.Static("/rank", "./build")
+	app.Static("/mypage/*", "./build")
+	app.Static("/auth", "./build")
 	app.Static("/login/*", "./build")
 	app.Static("/welcome", "./build")
+	app.Static("/terms", "./build")
 	log.Fatalln(app.ListenTLS(port, "./server.crt", "./server.key"))
 	// log.Fatalln(app.Listen(port))
 

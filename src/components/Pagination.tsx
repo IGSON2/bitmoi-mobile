@@ -12,7 +12,7 @@ const Pagination = (props: PaginationProps) => {
 
   const goHome = () => {
     if (props.pageID === PageID.Home) return;
-    window.location.href = "/home";
+    window.location.href = "/";
   };
   const goInvest = () => {
     if (props.pageID === PageID.Invest) return;

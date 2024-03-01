@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export function Auth() {
   const loc = useLocation();
+  const [info, setInfo] = useState<string>("");
 
   useEffect(() => {
     localStorage.setItem(
@@ -28,17 +29,15 @@ export function Auth() {
       originPath = "invest/" + originPath;
     }
 
-    alert(
-      `
+    setInfo(`
       accessToken: ${localStorage.getItem("accessToken")}
       refreshToken: ${localStorage.getItem("refreshToken")}
       originPath: ${originPath}
       attendanceReward: ${attendanceReward}
-      `
-    );
+      `);
 
-    window.location.href = `/${originPath}`;
+    // window.location.href = `/${originPath}`;
   }, []);
 
-  return <div></div>;
+  return <div>{info}</div>;
 }

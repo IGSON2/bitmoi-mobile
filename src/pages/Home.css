@@ -1,7 +1,7 @@
 .home {
   width: inherit;
   height: 100%;
-  padding: 20px 0px 90px 0px;
+  padding: 20px 0px 100px 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

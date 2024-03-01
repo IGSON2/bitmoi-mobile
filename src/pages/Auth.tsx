@@ -28,6 +28,15 @@ export function Auth() {
       originPath = "invest/" + originPath;
     }
 
+    alert(
+      `
+      accessToken: ${localStorage.getItem("accessToken")}
+      refreshToken: ${localStorage.getItem("refreshToken")}
+      originPath: ${originPath}
+      attendanceReward: ${attendanceReward}
+      `
+    );
+
     window.location.href = `/${originPath}`;
   }, []);
 

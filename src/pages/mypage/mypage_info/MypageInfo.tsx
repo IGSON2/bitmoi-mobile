@@ -100,7 +100,7 @@ export function MypageInfo() {
 
   return (
     <div className="mypage_info">
-      <MypageHeader title="회원정보" />
+      <MypageHeader title="회원정보" backLink="mypage" />
       <div className="mypage_info_profile_image">
         <img
           src={profilePreview}

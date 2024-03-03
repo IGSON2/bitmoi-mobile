@@ -1,5 +1,6 @@
 .orderBox {
   width: inherit;
+  min-height: 40px;
   height: 7%;
   z-index: 10;
   display: flex;

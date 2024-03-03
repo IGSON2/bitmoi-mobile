@@ -4,7 +4,8 @@
   /* flex: 1; */
   background-color: #f6f6f6;
   z-index: 1;
-  padding: 10px 0 20px 0;
+  /* padding: 10px 0 20px 0; */
+  margin-bottom: 20px;
 }
 
 .prac_body {

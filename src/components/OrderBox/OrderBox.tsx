@@ -7,6 +7,7 @@ import { useAppSelector } from "../../hooks/hooks";
 
 export function OrderBox() {
   const closed = useAppSelector((state) => state.positionClosed.closed);
+  const mode = useAppSelector((state) => state.order.mode);
   const [orderBoxMenu, setOrderBoxMenu] = useState<OrderBox_Menu>(
     OrderBox_Menu.None
   );
@@ -23,7 +24,7 @@ export function OrderBox() {
   };
   const OnHistoryClick = () => {
     setOrderBoxMenu(OrderBox_Menu.History);
-    setComponentToRender(<History />);
+    setComponentToRender(<History mode={mode} />);
   };
 
   const OnBlankClick = () => {

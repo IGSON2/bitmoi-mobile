@@ -69,17 +69,32 @@ export const Mypage = () => {
             <img src="/images/mypage_profile.png" />
             <div>회원정보</div>
           </div>
-          <div className="mypage_icon">
+          <div
+            className="mypage_icon"
+            onClick={() => {
+              navigate("/mypage/settings");
+            }}
+          >
             <img src="/images/mypage_setting.png" />
             <div>설정</div>
           </div>
         </div>
         <div className="mypage_menu_wrapper">
-          <div className="mypage_menu">
+          <div
+            className="mypage_menu"
+            onClick={() => {
+              navigate("/mypage/tradinghistory");
+            }}
+          >
             <img src="/images/mypage_list.png" />
             <div>거래내역</div>
           </div>
-          <div className="mypage_menu">
+          <div
+            className="mypage_menu"
+            onClick={() => {
+              navigate("/mypage/accumulation");
+            }}
+          >
             <img src="/images/mypage_list_2.png" />
             <div>적립내역</div>
           </div>
@@ -92,7 +107,12 @@ export const Mypage = () => {
             <img src="/images/mypage_list.png" />
             <div>추천인</div>
           </div>
-          <div className="mypage_menu">
+          <div
+            className="mypage_menu"
+            onClick={() => {
+              window.open("https://open.kakao.com/o/gu5jaTHd", "_blank");
+            }}
+          >
             <img src="/images/mypage_list_2.png" />
             <div>고객센터</div>
           </div>

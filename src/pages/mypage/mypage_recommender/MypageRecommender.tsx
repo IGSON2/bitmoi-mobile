@@ -22,7 +22,6 @@ export function MypageRecommender() {
   const [page, setPage] = useState<number>(1);
 
   const userInfo = useAppSelector((state) => state.userInfo);
-  const referrals = 7;
 
   function shareLink() {
     const shareData = {
@@ -45,7 +44,7 @@ export function MypageRecommender() {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight >= scrollHeight - 0.5) {
+      if (scrollTop + clientHeight === scrollHeight - 1) {
         setPage((prevPage) => prevPage + 1);
       }
     }
@@ -53,10 +52,9 @@ export function MypageRecommender() {
 
   useEffect(() => {
     async function getHistory() {
-      const res = await axiosClient.get(`/wmoi-transactions?page=${page}`);
+      const res = await axiosClient.get(`/user/wmoi-transactions?page=${page}`);
       const data = res.data;
       if (data.length === 0) {
-        console.log("no more data");
         rewardRef.current?.removeEventListener("scroll", handleScroll);
         return;
       }
@@ -83,7 +81,7 @@ export function MypageRecommender() {
 
   return (
     <div className="mypage_recommender">
-      <MypageHeader title="추천인" />
+      <MypageHeader title="추천인" backLink="mypage" />
       <div className="mypage_recommender_header">
         <img src="/images/bitmoi.png" alt="bitmoi" />
         <div className="mypage_recommender_header_reward_wrapper">
@@ -91,7 +89,7 @@ export function MypageRecommender() {
           <div className="mypage_recommender_header_reward_tri tri_right"></div>
           <div className="mypage_recommender_header_reward_body">{`1 REFERRAL = ${cur_reward} BITMOI`}</div>
         </div>
-        <div className="mypage_recommender_header_referrals">{`You have ${referrals} referrals`}</div>
+        <div className="mypage_recommender_header_referrals">{`You have ${histories.length} referrals`}</div>
       </div>
       <div className="mypage_recommender_code_wrapper">
         <div className="mypage_recommender_code_title">추천코드</div>

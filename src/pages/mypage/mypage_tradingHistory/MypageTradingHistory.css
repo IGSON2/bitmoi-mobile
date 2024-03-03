@@ -1,0 +1,52 @@
+.mypage_trading_history {
+  width: inherit;
+  height: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  touch-action: auto;
+}
+
+.mypage_trading_history_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #999999;
+  padding-top: 16px;
+}
+
+.mypage_trading_history_header div {
+  padding: 8px;
+}
+
+.mypage_trading_history_header_selected {
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.mypage_trading_history_competition {
+  width: inherit;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.mypage_trading_history_competition img {
+  width: 107px;
+  height: 107px;
+}
+
+.mypage_trading_history_competition p {
+  width: inherit;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}

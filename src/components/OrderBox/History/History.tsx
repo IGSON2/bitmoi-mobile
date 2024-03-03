@@ -16,7 +16,11 @@ type Summary = {
   monthly_winrate: number;
 };
 
-export const History = () => {
+interface HistoryProps {
+  mode: string;
+}
+
+export const History = (props: HistoryProps) => {
   const historyRef = useRef<HTMLDivElement>(null);
   const [scores, setScores] = useState<ScoreHistory[]>([]);
   const [summary, setSummary] = useState<Summary>({
@@ -29,7 +33,6 @@ export const History = () => {
     monthly_winrate: 0,
   });
 
-  const mode = useAppSelector((state) => state.order.mode);
   const userInfo = useAppSelector((state) => state.userInfo);
   const [page, setPage] = useState<number>(1);
 
@@ -41,7 +44,7 @@ export const History = () => {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight === scrollHeight - 0.5) {
+      if (scrollTop + clientHeight === scrollHeight - 1) {
         setPage((prevPage) => prevPage + 1);
       }
     }
@@ -49,7 +52,9 @@ export const History = () => {
 
   useEffect(() => {
     async function GetHistory() {
-      const res = await axiosClient.get(`/myscore?mode=${mode}&page=${page}`);
+      const res = await axiosClient.get(
+        `/myscore?mode=${props.mode}&page=${page}`
+      );
       if (res.data.length === 0) {
         // TODO: remove event listener
         console.log("no more data");
@@ -115,7 +120,7 @@ export const History = () => {
       {scores.map((score, index) => {
         return (
           <div className="history_score" key={index}>
-            <div className="history_row_box">
+            <div className="history_row_box" style={{ fontSize: "10px" }}>
               <div className="history_score_position_lev">
                 <div
                   className={`history_score_position ${
@@ -132,28 +137,9 @@ export const History = () => {
                 {Timeformatter(score.created_at, false)}
               </div>
             </div>
-            <div className="history_row_box">
+            <div className={`history_row_box history_score_title_wrapper`}>
               <div className="history_score_title">{score.pairname}</div>
               <div className="history_score_prices">
-                {/* {score.outtime === 0 ? (
-                  score.settled_at.Valid ? (
-                    <div
-                      className="history_score_adjust"
-                      style={{
-                        color: "#1409A0",
-                      }}
-                    >
-                      정산 완료
-                    </div>
-                  ) : (
-                    <div
-                      className="history_score_adjust"
-                      style={{ color: "#ff0000" }}
-                    >
-                      정산 예정
-                    </div>
-                  )
-                ) : null} */}
                 <div className="history_score_entry_price">
                   {score.entryprice}
                 </div>
@@ -167,8 +153,8 @@ export const History = () => {
                 </div>
               </div>
             </div>
-            <div className="history_row_box" style={{ paddingTop: "17px" }}>
-              <div>수익금</div>
+            <div className={`history_row_box history_pnl_roe`}>
+              <div style={{ fontSize: "10px" }}>수익금</div>
               <div className="history_score_pnl">
                 <span style={{ color: "#191919" }}>{`${FormatPosNeg(
                   Math.round(score.pnl)
@@ -176,8 +162,11 @@ export const History = () => {
                 USDP
               </div>
             </div>
-            <div className="history_row_box" style={{ paddingBottom: "21px" }}>
-              <div>수익률</div>
+            <div
+              className={`history_row_box history_pnl_roe`}
+              style={{ paddingTop: "5px", paddingBottom: "17px" }}
+            >
+              <div style={{ fontSize: "10px" }}>수익률</div>
               <div
                 className={`history_score_roe ${
                   score.roe > 0 ? "roe_pos" : "roe_neg"

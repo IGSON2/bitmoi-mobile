@@ -1,0 +1,34 @@
+.mypage_settings {
+  width: inherit;
+  height: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 24px;
+}
+.mypage_settings_list_wrapper {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 24px 16px 0 16px;
+}
+
+.mypage_settings_list {
+  width: inherit;
+  height: 37px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 7px;
+  border-bottom: solid 1px #e7eaf3;
+}
+
+.mypage_settings_list img {
+  width: 7px;
+  height: 10px;
+}

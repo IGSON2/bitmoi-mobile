@@ -14,8 +14,12 @@ import { Login } from "./pages/Login";
 import { Welcome } from "./pages/Welcome";
 import { Auth } from "./pages/Auth";
 import { MypageInfo } from "./pages/mypage/mypage_info/MypageInfo";
+import { MypageSettings } from "./pages/mypage/mypage_settings/MypageSettings";
 import { MypageRecommender } from "./pages/mypage/mypage_recommender/MypageRecommender";
 import { Terms } from "./pages/Terms";
+import { MypageAccumulation } from "./pages/mypage/mypage_accumulation/MypageAccumulation";
+import { MypageTradingHistory } from "./pages/mypage/mypage_tradingHistory/MypageTradingHistory";
+import { MypageSettingsSub } from "./pages/mypage/mypage_settings/mypage_settings_sub/MypageSettingsSub";
 
 const router = createBrowserRouter([
   {
@@ -47,8 +51,24 @@ const router = createBrowserRouter([
     element: <MypageInfo />,
   },
   {
+    path: "/mypage/settings",
+    element: <MypageSettings />,
+  },
+  {
+    path: "/mypage/settings/sub",
+    element: <MypageSettingsSub />,
+  },
+  {
     path: "/mypage/recommender",
     element: <MypageRecommender />,
+  },
+  {
+    path: "/mypage/accumulation",
+    element: <MypageAccumulation />,
+  },
+  {
+    path: "/mypage/tradinghistory",
+    element: <MypageTradingHistory />,
   },
   {
     path: "/auth",

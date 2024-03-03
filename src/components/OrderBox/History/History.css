@@ -1,5 +1,5 @@
 .history {
-  width: 100%;
+  width: inherit;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -7,27 +7,28 @@
   align-items: center;
   color: #999999;
   overflow: scroll;
+  padding: 0px 8px;
 }
 
 .history_summary {
-  width: 90%;
-  padding-top: 24px;
-  padding-bottom: 16px;
+  width: inherit;
+  padding: 24px 8px 16px 8px;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  font-size: 12px;
+  row-gap: 4px;
 }
 
 .history_summary_title {
   font-weight: 700;
-  font-size: large;
+  font-size: 14px;
   color: #191919;
 }
 
 .history_row_box {
-  width: 100%;
-  padding-top: 8px;
+  width: inherit;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -35,13 +36,21 @@
 }
 
 .history_score {
-  width: 90%;
+  width: inherit;
   padding-top: 16px;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   border-top: 1px solid #e7eaf3;
+}
+
+.history_score_title_wrapper {
+  font-size: 12px;
+  font-weight: 600;
+  padding-top: 4px;
+  padding-bottom: 13px;
+  padding-left: 4px;
 }
 
 .history_score_position_lev {
@@ -55,7 +64,6 @@
 .history_score_position,
 .history_score_leverage {
   border: 1px solid #d0d0d0;
-  font-size: small;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,15 +86,12 @@
 .history_score_created_at {
   color: #888;
   text-align: center;
-  font-size: small;
-  font-style: normal;
   font-weight: 400;
 }
 
 .history_score_title {
   color: #191919;
   text-align: center;
-  font-style: normal;
   font-weight: 600;
 }
 
@@ -96,7 +101,7 @@
   justify-content: space-between;
   align-items: center;
   column-gap: 5px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .history_score_adjust {
@@ -114,6 +119,15 @@
 
 .position_short {
   background-color: #e46f6f;
+}
+
+.history_score_roe,
+.history_score_pnl {
+  font-size: 12px;
+}
+
+.history_pnl_roe {
+  padding-left: 8px;
 }
 
 .roe_pos {

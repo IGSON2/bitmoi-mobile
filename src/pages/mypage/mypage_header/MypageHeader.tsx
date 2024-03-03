@@ -2,6 +2,7 @@ import "./MypageHeader.css";
 
 interface MypageHeaderProps {
   title: string;
+  backLink: string;
 }
 export function MypageHeader(props: MypageHeaderProps) {
   return (
@@ -9,7 +10,7 @@ export function MypageHeader(props: MypageHeaderProps) {
       <img
         className="mypage_header_back"
         onClick={() => {
-          window.location.href = "/mypage";
+          window.location.href = `/${props.backLink}`;
         }}
         src="/images/left_arrow.png"
         alt="back"

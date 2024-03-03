@@ -1,0 +1,52 @@
+.mypage_accumulation {
+  width: inherit;
+  height: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  touch-action: auto;
+  row-gap: 24px;
+}
+
+.mypage_accumulation_scroll_wrapper {
+  width: inherit;
+  height: 760px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  overflow: scroll;
+  padding: 0 20px;
+}
+
+.mypage_accumulation_wrapper {
+  width: inherit;
+  height: 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 12px 0;
+  row-gap: 2px;
+  border-bottom: solid 1px #e7eaf3;
+  font-weight: 600;
+}
+
+.mypage_accumulation_date {
+  width: inherit;
+  height: 20px;
+  font-size: 12px;
+  color: #999999;
+}
+
+.mypage_accumulation_title_wrapper {
+  width: inherit;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}

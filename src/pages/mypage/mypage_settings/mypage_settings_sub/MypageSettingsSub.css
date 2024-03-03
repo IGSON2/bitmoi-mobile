@@ -1,0 +1,15 @@
+.mypage_settings_sub {
+  width: inherit;
+  height: 100%;
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 24px;
+}
+
+.mypage_settings_sub_option_wrapper {
+  width: inherit;
+  padding: 24px 16px 0 16px;
+}

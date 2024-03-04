@@ -62,15 +62,14 @@ export const Rank = () => {
           >
             수익금
           </div>
-          <div className="rank_period">
-            {period ? `${period.start} / ${period.end.slice(3)}` : ""}
-          </div>
         </div>
         <div className="rank_list_wrapper">
           <div className="rank_list_header">
             <div className="rank_column_1">순위</div>
             <div className="rank_column_2">닉네임</div>
-            <div className="rank_column_3">%</div>
+            <div className="rank_column_3">
+              {category === "roe" ? "%" : "USDP"}
+            </div>
           </div>
           {rankInfo.length > 0 ? (
             rankInfo.map((info, index) => {
@@ -80,9 +79,9 @@ export const Rank = () => {
                   <div className="rank_column_2">{info.nickname}</div>
                   <div className="rank_column_3">
                     {info.sum.toLocaleString("ko-KR", {
-                      maximumFractionDigits: 2,
+                      maximumFractionDigits: 0,
                     })}
-                    %
+                    {category === "roe" ? "%" : ""}
                   </div>
                 </div>
               );
@@ -97,6 +96,10 @@ export const Rank = () => {
               </p>
             </div>
           )}
+        </div>
+        <div className="rank_period">
+          집계 기간{" : "}
+          {period ? `${period.start.slice(3)} ~ ${period.end.slice(3)}` : ""}
         </div>
       </div>
       <Pagination pageID={PageID.Rank} /> {/* 객체의 전개 연산자 */}

@@ -32,7 +32,6 @@
   justify-content: start;
   align-items: center;
   column-gap: 24px;
-  position: relative;
   font-size: 14px;
   font-weight: 700;
   color: #999999;
@@ -44,11 +43,12 @@
 }
 
 .rank_period {
+  width: 100%;
   font-size: 8px;
-  position: absolute;
-  right: 0px;
+  color: #999999;
   font-weight: 400;
   padding-top: 8px;
+  text-align: end;
 }
 
 .rank_list_wrapper {

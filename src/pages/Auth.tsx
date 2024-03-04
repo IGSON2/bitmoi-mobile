@@ -26,17 +26,9 @@ export function Auth() {
       );
     }
     let originPath = new URLSearchParams(loc.search).get("path")!;
-    setErrorMsg(`마지막 접속 페이지: ${originPath}`);
     if (originPath === "practice" || originPath === "competition/") {
       originPath = "invest/" + originPath;
     }
-
-    setErrorMsg(`
-      accessToken: ${localStorage.getItem("accessToken")}
-      refreshToken: ${localStorage.getItem("refreshToken")}
-      originPath: ${originPath}
-      attendanceReward: ${attendanceReward}
-      `);
 
     window.location.href = `/${originPath}`;
   }, []);

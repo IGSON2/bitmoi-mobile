@@ -13,7 +13,9 @@ const initialState: Order = {
   leverage: 1,
   identifier: "",
   score_id: "",
+  curinterval: "",
   reqinterval: "",
+  cur_timestamp: 0,
   min_timestamp: 0,
   max_timestamp: 0,
 };
@@ -32,7 +34,9 @@ const orderSlice = createSlice({
       state.loss_price = 0;
       state.leverage = 1;
       state.identifier = "";
+      state.curinterval = "";
       state.reqinterval = "";
+      state.cur_timestamp = 0;
       state.min_timestamp = 0;
       state.max_timestamp = 0;
     },
@@ -69,8 +73,14 @@ const orderSlice = createSlice({
     setOrderScoreId: (state, action: PayloadAction<string>) => {
       state.score_id = action.payload;
     },
+    setOrderCurInterval: (state, action: PayloadAction<string>) => {
+      state.curinterval = action.payload;
+    },
     setOrderReqInterval: (state, action: PayloadAction<string>) => {
       state.reqinterval = action.payload;
+    },
+    setOrderCurTimestamp: (state, action: PayloadAction<number>) => {
+      state.cur_timestamp = action.payload;
     },
     setOrderMinTimestamp: (state, action: PayloadAction<number>) => {
       state.min_timestamp = action.payload;
@@ -94,7 +104,9 @@ export const {
   setOrderLeverage,
   setOrderIdentifier,
   setOrderScoreId,
+  setOrderCurInterval,
   setOrderReqInterval,
+  setOrderCurTimestamp,
   setOrderMinTimestamp,
   setOrderMaxTimestamp,
 } = orderSlice.actions;

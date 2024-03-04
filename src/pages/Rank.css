@@ -1,15 +1,97 @@
 .rank {
   width: inherit;
-  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   padding: 20px 0 20px 0;
+  row-gap: 12px;
 }
 
 .rank h1 {
   width: 100%;
   font-size: 16px;
   text-align: center;
+}
+
+.rank_body {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 0 16px;
+  row-gap: 12px;
+}
+
+.rank_category {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  column-gap: 24px;
+  position: relative;
+  font-size: 14px;
+  font-weight: 700;
+  color: #999999;
+}
+
+.rank_category_selected {
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.rank_period {
+  font-size: 8px;
+  position: absolute;
+  right: 0px;
+  font-weight: 400;
+  padding-top: 8px;
+}
+
+.rank_list_wrapper {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  row-gap: 4px;
+}
+
+.rank_list_header {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #999999;
+}
+.rank_list {
+  width: inherit;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rank_column_1 {
+  width: 20%;
+  text-align: start;
+}
+
+.rank_column_2 {
+  width: 50%;
+  text-align: start;
+}
+
+.rank_column_3 {
+  width: 30%;
+  text-align: end;
 }

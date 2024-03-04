@@ -11,7 +11,11 @@ export function ValidateOrderRequest(order: OrderInit): Error | null {
   }
   if (order.quantity <= 0) {
     return new Error("수량은 0보다 커야 합니다.");
-  }else if (Math.ceil(10000*order.entry_price * order.quantity / order.leverage)/10000 < 10){
+  } else if (
+    Math.ceil((10000 * order.entry_price * order.quantity) / order.leverage) /
+      10000 <
+    10
+  ) {
     return new Error("최소 주문가능 금액은 10 USDP입니다.");
   }
 

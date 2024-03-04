@@ -52,7 +52,7 @@ export function MypageAccumulation() {
           return (
             <div key={idx} className="mypage_accumulation_wrapper">
               <div className="mypage_accumulation_date">
-                {Timeformatter(history.created_at, false)}
+                {Timeformatter(history.created_at, true)}
               </div>
               <div className="mypage_accumulation_title_wrapper">
                 <div className="mypage_accumulation_title">{history.title}</div>

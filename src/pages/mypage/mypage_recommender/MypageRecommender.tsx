@@ -112,7 +112,7 @@ export function MypageRecommender() {
             return (
               <div className="mypage_recommender_history_row" key={idx}>
                 <div className="mypage_recommender_history_row_date">
-                  {Timeformatter(his.created_at, false)}
+                  {Timeformatter(his.created_at, true)}
                 </div>
                 <div className="mypage_recommender_history_row_earned">
                   {FormatPosNeg(his.amount)}

@@ -153,7 +153,7 @@ export const ChartRef = () => {
       from = oneChart.pdata[length - 100].time;
     } else if (from !== "0") {
     }
-    if (Math.abs(Number(visibleRange?.to) - Number(to)) <= 86400) {
+    if (Math.abs(Number(visibleRange?.to) - Number(to)) <= 172800) {
       return;
     }
 

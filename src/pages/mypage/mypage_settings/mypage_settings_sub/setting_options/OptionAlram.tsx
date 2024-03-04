@@ -9,25 +9,33 @@ export function OptionAlram() {
   );
 
   useEffect(() => {
-    const permissionStatus = Notification.permission;
-    if (permissionStatus === "granted") {
-      setIsChecked(true);
-      setPermission(true);
-    } else if (permissionStatus === "denied") {
-      setIsChecked(false);
-      setPermission(false);
+    if ("Notification" in window) {
+      const permissionStatus = Notification.permission;
+      if (permissionStatus === "granted") {
+        setIsChecked(true);
+        setPermission(true);
+      } else if (permissionStatus === "denied") {
+        setIsChecked(false);
+        setPermission(false);
+      }
+    } else {
+      setComment("현재 사용중인 브라우저는 알림을 지원하지 않습니다.");
     }
   }, []);
 
   useEffect(() => {
     async function reqPermission() {
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
-        setPermission(true);
-        setIsChecked(true);
+      if ("Notification" in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          setPermission(true);
+          setIsChecked(true);
+        } else if (permission === "denied") {
+          setPermission(false);
+          setIsChecked(false);
+        }
       } else {
-        setPermission(false);
-        setIsChecked(false);
+        setComment("현재 사용중인 브라우저는 알림을 지원하지 않습니다.");
       }
     }
     if (isChecked !== null) {

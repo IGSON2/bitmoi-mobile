@@ -71,7 +71,9 @@ export type Order = {
   leverage: number;
   identifier: string;
   score_id: string;
+  curinterval: string;
   reqinterval: string;
+  cur_timestamp: number;
   min_timestamp: number;
   max_timestamp: number;
 };

@@ -90,12 +90,15 @@ export function Interval() {
       console.error("Error fetching another interval data:", error);
     }
 
-    const max_time =
-      Number(currentChart.pdata[currentChart.pdata.length - 1].time) +
-      GetIntervalStep(currentIntv) -
-      1;
+    const currentLatest = Number(
+      currentChart.pdata[currentChart.pdata.length - 1].time
+    );
 
-    if (min_time < max_time - GetIntervalStep(intv)) {
+    const max_time = currentLatest - GetIntervalStep(intv);
+
+    console.log("max: ", max_time, "min: ", min_time);
+
+    if (max_time - min_time >= GetIntervalStep(intv)) {
       const appendReqURL = `/intermediate/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}&min_timestamp=${min_time}&max_timestamp=${max_time}`;
       try {
         const appendResponse = await axiosClient.get(appendReqURL);

@@ -1,9 +1,9 @@
-export function Timeformatter(unixTime: string, isChart: boolean): string {
+export function Timeformatter(unixTime: string, isLocal: boolean): string {
   var scoreTime = new Date(unixTime);
   var timeGap = 9;
-  if (isChart) {
+  if (isLocal) {
     timeGap = 0;
-    scoreTime = new Date(parseInt(unixTime));
+    scoreTime = new Date(unixTime);
   }
   const formattedTime =
     scoreTime.getUTCFullYear().toString().slice(2, 4) +

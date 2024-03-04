@@ -25,7 +25,7 @@ export function MypageSettingsSub() {
 
   return (
     <div className="mypage_settings_sub">
-      <MypageHeader title="알람" backLink="mypage/settings" />
+      <MypageHeader title="알림" backLink="mypage/settings" />
       <div className="mypage_settings_sub_option_wrapper">{info.component}</div>
     </div>
   );
@@ -35,12 +35,12 @@ function switchByOption(option: string): SettingInfo {
   switch (option) {
     case option_alram:
       return {
-        title: "알람",
+        title: "알림",
         component: <OptionAlram />,
       };
     default:
       return {
-        title: "알람",
+        title: "알림",
         component: <OptionAlram />,
       };
   }

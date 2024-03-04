@@ -51,11 +51,17 @@ export function OrderInput({ isLong }: Position) {
   const [lossRate, setLossRate] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const quanErr = "주문가능 금액을 초과하였습니다.";
+
   const quantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.valueAsNumber < 0) {
       dispatch(setOrderQuantity(0));
       setQuantityRate(0);
     } else {
+      if ((event.target.valueAsNumber * entryPrice) / leverage > pracBalance) {
+        setErrorMessage(quanErr);
+        return;
+      }
       dispatch(setOrderQuantity(event.target.valueAsNumber));
       setQuantityRate(
         Math.floor(
@@ -63,6 +69,7 @@ export function OrderInput({ isLong }: Position) {
             ((pracBalance * leverage) / entryPrice)
         ) / 100
       );
+      if (errorMessage === quanErr) setErrorMessage("");
     }
   };
 
@@ -79,6 +86,7 @@ export function OrderInput({ isLong }: Position) {
         ) / 10000
       )
     );
+    if (errorMessage === quanErr) setErrorMessage("");
   };
 
   const profitChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -146,9 +154,14 @@ export function OrderInput({ isLong }: Position) {
   };
 
   const leverageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const levErr = "레버리지는 X50 이하로 설정해주세요.";
     if (!event.target.valueAsNumber) {
       dispatch(setOrderLeverage(1));
     } else {
+      if (event.target.valueAsNumber < 1 || event.target.valueAsNumber > 50) {
+        setErrorMessage(levErr);
+        return;
+      }
       dispatch(setOrderLeverage(event.target.valueAsNumber));
       dispatch(
         setOrderQuantity(
@@ -159,6 +172,7 @@ export function OrderInput({ isLong }: Position) {
           ) / 10000
         )
       );
+      if (errorMessage === levErr) setErrorMessage("");
     }
   };
 
@@ -218,7 +232,20 @@ export function OrderInput({ isLong }: Position) {
           <div className={`orderInput_leverage_modal fixed-component`}>
             <div className={`orderInput_leverage_blank fixed-component`}></div>
             <div className={`orderInput_leverage_range fixed-component`}>
-              <div className="orderInput_leverage_range_value">{`X${leverage}`}</div>
+              <div
+                className="orderInput_leverage_range_value"
+                onClick={() => {
+                  const res = prompt(
+                    "레버리지를 입력하세요 (1~50)",
+                    leverage.toString()
+                  );
+                  if (!res || Number(res) < 1 || Number(res) > 50) {
+                    alert("1~50 사이의 값을 입력하세요.");
+                    return;
+                  }
+                  dispatch(setOrderLeverage(Number(res)));
+                }}
+              >{`X${leverage}`}</div>
               <input
                 type={"range"}
                 value={leverage}
@@ -346,8 +373,6 @@ export function OrderInput({ isLong }: Position) {
               className="input_wrapper_2"
               value={profitRate}
               onChange={profitRateChange}
-              defaultValue={0}
-              id={"focus_profit"}
             >
               <option value={0}>현재가 대비%</option>
               {optionArray.map((i) => {
@@ -397,7 +422,6 @@ export function OrderInput({ isLong }: Position) {
               className="input_wrapper_2"
               value={lossRate}
               onChange={lossRateChange}
-              id={"focus_loss"}
             >
               <option value={0}>현재가 대비%</option>
               {optionArray.map((i) => {

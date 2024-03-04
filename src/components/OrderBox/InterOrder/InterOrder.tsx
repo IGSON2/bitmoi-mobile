@@ -97,22 +97,24 @@ export const InterOrder = () => {
       max_timestamp = min_timestamp;
     }
 
+    const currentLatest = Number(
+      currentChart.oneChart.pdata[currentChart.oneChart.pdata.length - 1].time
+    );
     // 첫 주문 시, 작은단위의 캔들이 현재 차트의 다음 캔들부터 시작하도록 한다.
     if (
       intervalInfo.elapsedTime === 0 &&
       CompareInterval(intv, currentChart.interval) === CompareIntervalRes.NEG
     ) {
       const currentNext =
-        Number(
-          currentChart.oneChart.pdata[currentChart.oneChart.pdata.length - 1]
-            .time
-        ) + GetIntervalStep(currentChart.interval);
+        currentLatest + GetIntervalStep(currentChart.interval);
       max_timestamp = currentNext - reqStep;
     }
 
     const orderReq: Order = {
       ...orderState,
+      curinterval: currentChart.interval,
       reqinterval: intv,
+      cur_timestamp: currentLatest,
       min_timestamp: min_timestamp,
       max_timestamp: max_timestamp + reqStep,
     };

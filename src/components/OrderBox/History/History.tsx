@@ -10,10 +10,10 @@ type Summary = {
   total_pnl: number;
   total_win: number;
   total_lose: number;
-  monthly_win: number;
-  monthly_lose: number;
-  monthly_pnl: number;
-  monthly_winrate: number;
+  weekly_win: number;
+  weekly_lose: number;
+  weekly_pnl: number;
+  weekly_winrate: number;
 };
 
 interface HistoryProps {
@@ -27,10 +27,10 @@ export const History = (props: HistoryProps) => {
     total_win: 0,
     total_lose: 0,
     total_pnl: 0,
-    monthly_win: 0,
-    monthly_lose: 0,
-    monthly_pnl: 0,
-    monthly_winrate: 0,
+    weekly_win: 0,
+    weekly_lose: 0,
+    weekly_pnl: 0,
+    weekly_winrate: 0,
   });
 
   const userInfo = useAppSelector((state) => state.userInfo);
@@ -99,10 +99,10 @@ export const History = (props: HistoryProps) => {
           }승 ${summary.total_lose}패`}</div>
         </div>
         <div className="history_row_box">
-          <div>{`이번 달 승률 (${summary.monthly_winrate})`}</div>
-          <div>{`${summary.monthly_win + summary.monthly_lose}전 ${
-            summary.monthly_win
-          }승 ${summary.monthly_lose}패`}</div>
+          <div>{`이번 달 승률 (${summary.weekly_winrate})`}</div>
+          <div>{`${summary.weekly_win + summary.weekly_lose}전 ${
+            summary.weekly_win
+          }승 ${summary.weekly_lose}패`}</div>
         </div>
         <div className="history_row_box">
           <div>전체 수익금</div>
@@ -113,7 +113,7 @@ export const History = (props: HistoryProps) => {
         <div className="history_row_box">
           <div>이번 달 수익금</div>
           <div>{`${(
-            Math.floor(100000 * summary.monthly_pnl) / 100000
+            Math.floor(100000 * summary.weekly_pnl) / 100000
           ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDP`}</div>
         </div>
       </div>

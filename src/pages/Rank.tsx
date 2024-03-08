@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import { PageID } from "../types/types";
 import "./Rank.css";
-import { Timeformatter } from "../utils/Timestamp";
 import axiosClient from "../utils/axiosClient";
 
 type RankInfo = {
@@ -41,6 +40,7 @@ export const Rank = () => {
     }
     getRanks();
   }, [period, category]);
+
   return (
     <div className="rank">
       <h1>랭킹</h1>
@@ -71,6 +71,10 @@ export const Rank = () => {
               {category === "roe" ? "%" : "USDP"}
             </div>
           </div>
+          <div className="rank_period">
+            집계 기간{" : "}
+            {period ? `${period.start.slice(3)} ~ ${period.end.slice(3)}` : ""}
+          </div>
           {rankInfo.length > 0 ? (
             rankInfo.map((info, index) => {
               return (
@@ -96,10 +100,6 @@ export const Rank = () => {
               </p>
             </div>
           )}
-        </div>
-        <div className="rank_period">
-          집계 기간{" : "}
-          {period ? `${period.start.slice(3)} ~ ${period.end.slice(3)}` : ""}
         </div>
       </div>
       <Pagination pageID={PageID.Rank} /> {/* 객체의 전개 연산자 */}

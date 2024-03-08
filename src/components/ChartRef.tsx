@@ -39,9 +39,15 @@ export const ChartRef = () => {
 
   const handleResize = () => {
     if (chartContainerRef.current && chartApiRef.current) {
+      const resizedWidth = document.getElementById("root")?.clientWidth;
+      var resizedHeight = window.innerHeight * 0.75;
+
+      if (resizedWidth && resizedWidth > resizedHeight) {
+        resizedHeight *= 0.8;
+      }
       chartApiRef.current.applyOptions({
-        width: rootWidth,
-        height: window.innerHeight * 0.75,
+        width: resizedWidth,
+        height: resizedHeight,
       });
     }
   };

@@ -95,3 +95,15 @@
   width: 30%;
   text-align: end;
 }
+
+.rank_no_data {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.rank_no_data img {
+  width: 77px;
+  width: 77px;
+}

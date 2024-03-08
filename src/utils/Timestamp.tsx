@@ -1,9 +1,7 @@
-export function Timeformatter(unixTime: string, isLocal: boolean): string {
+export function Timeformatter(unixTime: string, isUTC: boolean): string {
   var scoreTime = new Date(unixTime);
-  var timeGap = 9;
-  if (isLocal) {
-    timeGap = 0;
-    scoreTime = new Date(unixTime);
+  if (isUTC) {
+    scoreTime = new Date(scoreTime.getTime() - 9 * 60 * 60 * 1000);
   }
   const formattedTime =
     scoreTime.getUTCFullYear().toString().slice(2, 4) +
@@ -12,7 +10,7 @@ export function Timeformatter(unixTime: string, isLocal: boolean): string {
     "." +
     scoreTime.getUTCDate().toString().padStart(2, "0") +
     " " +
-    ((scoreTime.getUTCHours() + timeGap) % 24).toString().padStart(2, "0") +
+    (scoreTime.getUTCHours() % 24).toString().padStart(2, "0") +
     ":" +
     scoreTime.getUTCMinutes().toString().padStart(2, "0") +
     ":" +

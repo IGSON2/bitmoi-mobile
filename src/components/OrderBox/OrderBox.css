@@ -44,6 +44,7 @@
   bottom: 20px;
   width: inherit;
   height: 80%;
+  min-height: 80%;
   animation: eraseUp 0.3s ease-in-out;
   z-index: 12;
   display: flex;

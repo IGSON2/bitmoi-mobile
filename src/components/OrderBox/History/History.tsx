@@ -44,7 +44,7 @@ export const History = (props: HistoryProps) => {
       const scrollHeight = container.scrollHeight;
       const clientHeight = container.clientHeight;
 
-      if (scrollTop + clientHeight === scrollHeight - 1) {
+      if (scrollTop + clientHeight === scrollHeight) {
         setPage((prevPage) => prevPage + 1);
       }
     }

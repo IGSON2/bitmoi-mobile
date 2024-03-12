@@ -45,6 +45,8 @@ export const InterOrder = () => {
   const currentChart = useAppSelector((state) => state.currentChart);
 
   const [modified, setModified] = useState(false);
+  const [runningIntv, setRunningIntv] = useState<IntervalType | null>(null);
+  const [lastTimerId, setLastTimerId] = useState<NodeJS.Timer | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -249,6 +251,27 @@ export const InterOrder = () => {
     }
   }, [modified]);
 
+  async function IteratedFetcher(intv: IntervalType) {
+    if (lastTimerId) {
+      clearInterval(lastTimerId);
+      if (intv === runningIntv) {
+        setRunningIntv(null);
+        return;
+      }
+      setLastTimerId(null);
+    }
+    async function fetchData() {
+      try {
+        await GetMediateChart(intv);
+        setRunningIntv(intv);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const id = setInterval(fetchData, 3000);
+    setLastTimerId(id);
+  }
+
   return (
     <div className="inter_order">
       <button style={{ backgroundColor: "#BFBFBF" }} onClick={ClosePosition}>
@@ -256,31 +279,31 @@ export const InterOrder = () => {
       </button>
       <button
         onClick={async () => {
-          await GetMediateChart(fifM);
+          await IteratedFetcher(fifM);
         }}
       >
-        15분
+        {runningIntv === fifM ? "일시정지" : "15분"}
       </button>
       <button
         onClick={async () => {
-          await GetMediateChart(oneH);
+          await IteratedFetcher(oneH);
         }}
       >
-        1시간
+        {runningIntv === oneH ? "일시정지" : "1시간"}
       </button>
       <button
         onClick={async () => {
-          await GetMediateChart(fourH);
+          await IteratedFetcher(fourH);
         }}
       >
-        4시간
+        {runningIntv === fourH ? "일시정지" : "4시간"}
       </button>
       <button
         onClick={async () => {
-          await GetMediateChart(oneD);
+          await IteratedFetcher(oneD);
         }}
       >
-        1일
+        {runningIntv === oneD ? "일시정지" : "1일"}
       </button>
     </div>
   );

@@ -5,11 +5,27 @@ export function Test() {
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const [isPopUp, setIsPopUp] = useState(false);
   const [resizeCnt, setResizeCnt] = useState(0);
+  const [count, setCount] = useState(0);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
 
+  const startInterval = async () => {
+    if (intervalId === null) {
+      const id = setInterval(() => {
+        setCount((prevCount) => prevCount + 1);
+      }, 1000);
+      setIntervalId(id);
+    } else {
+      stopInterval();
+    }
+  };
+
+  const stopInterval = () => {
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+  };
   useEffect(() => {
-    const initialHeight = window.innerHeight;
-    const fixedCmp = document.getElementById("test_fixed");
-
     document.addEventListener("focusin", () => {
       setIsPopUp(true);
       setInnerHeight(window.innerHeight);
@@ -42,31 +58,9 @@ export function Test() {
       <div className="Test_fixed_div" id="test_fixed">
         <div className="Test_input">{`${innerHeight} ${isPopUp} ${resizeCnt}`}</div>
         <div className="Test_input">
-          <input></input>
-          <select>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-            <option>1</option>
-          </select>
+          <div>{count}</div>
+          <button onClick={startInterval}>start</button>
+          <button onClick={stopInterval}>stop</button>
         </div>
         <div className="Test_input">
           <input></input>

@@ -87,10 +87,10 @@ const router = createBrowserRouter([
     path: "/terms",
     element: <Terms />,
   },
-  // {
-  //   path: "/test",
-  //   element: <Test />,
-  // },
+  {
+    path: "/test",
+    element: <Test />,
+  },
   {
     path: "*",
     loader: async () => {

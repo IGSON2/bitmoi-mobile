@@ -81,28 +81,49 @@ export const Rank = () => {
     };
   }, []);
 
-  useEffect(() => {
-    async function getRanks() {
-      if (period && period.start && period.end) {
-        const curPage = category === "pnl" ? page.pnlPage : page.roePage;
-        const res = await axiosClient.get(
-          `/rank?mode=practice&category=${category}&start=${period.start}&end=${period.end}&page=${curPage}`
-        );
-        if (category === "pnl") {
-          setRankInfo((prevRanks) => ({
-            ...prevRanks,
-            pnlRanks: [...prevRanks.pnlRanks, ...res.data],
-          }));
-        } else if (category === "roe") {
-          setRankInfo((prevRanks) => ({
-            ...prevRanks,
-            roeRanks: [...prevRanks.roeRanks, ...res.data],
-          }));
-        }
+  async function getRanks(category: Category) {
+    var curPage: number;
+    switch (category) {
+      case "pnl":
+        curPage = page.pnlPage;
+        break;
+      case "roe":
+        curPage = page.roePage;
+        break;
+    }
+    if (period && period.start && period.end) {
+      const res = await axiosClient.get(
+        `/rank?mode=practice&category=${category}&start=${period.start}&end=${period.end}&page=${curPage}`
+      );
+      if (category === "pnl") {
+        setRankInfo((prevRanks) => ({
+          ...prevRanks,
+          pnlRanks: [...prevRanks.pnlRanks, ...res.data],
+        }));
+      } else if (category === "roe") {
+        setRankInfo((prevRanks) => ({
+          ...prevRanks,
+          roeRanks: [...prevRanks.roeRanks, ...res.data],
+        }));
       }
     }
-    getRanks();
-  }, [period, category]);
+  }
+
+  useEffect(() => {
+    getRanks("pnl");
+    getRanks("roe");
+  }, [period]);
+
+  useEffect(() => {
+    switch (category) {
+      case "pnl":
+        getRanks("pnl");
+        break;
+      case "roe":
+        getRanks("roe");
+        break;
+    }
+  }, [page]);
 
   useEffect(() => {
     switch (category) {
@@ -113,7 +134,7 @@ export const Rank = () => {
         setCurRankInfo(rankInfo.roeRanks);
         break;
     }
-  }, [rankInfo]);
+  }, [rankInfo, category]);
 
   return (
     <div className="rank">

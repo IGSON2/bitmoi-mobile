@@ -43,8 +43,8 @@
 .orderBox_router {
   bottom: 20px;
   width: inherit;
-  height: 80%;
-  min-height: 80%;
+  /* height: 80%; */
+  height: 620px;
   animation: eraseUp 0.3s ease-in-out;
   z-index: 12;
   display: flex;

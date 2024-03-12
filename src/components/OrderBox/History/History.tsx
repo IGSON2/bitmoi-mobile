@@ -99,7 +99,7 @@ export const History = (props: HistoryProps) => {
           }승 ${summary.total_lose}패`}</div>
         </div>
         <div className="history_row_box">
-          <div>{`이번 달 승률 (${summary.weekly_winrate})`}</div>
+          <div>{`이번 주 승률 (${summary.weekly_winrate})`}</div>
           <div>{`${summary.weekly_win + summary.weekly_lose}전 ${
             summary.weekly_win
           }승 ${summary.weekly_lose}패`}</div>
@@ -111,7 +111,7 @@ export const History = (props: HistoryProps) => {
           ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDP`}</div>
         </div>
         <div className="history_row_box">
-          <div>이번 달 수익금</div>
+          <div>이번 주 수익금</div>
           <div>{`${(
             Math.floor(100000 * summary.weekly_pnl) / 100000
           ).toLocaleString("en-US", { maximumFractionDigits: 0 })} USDP`}</div>

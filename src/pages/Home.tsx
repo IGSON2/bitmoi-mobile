@@ -133,6 +133,13 @@ export const Home = () => {
           <div>광고 및 문의 메일 : support@bitmoi.co.kr</div>
           <div>Copyright &copy; BITMOI All right reserved.</div>
           <div>{`v${appVersion}`}</div>
+          {/* <button
+            onClick={() => {
+              window.location.href = "/test";
+            }}
+          >
+            goTest
+          </button> */}
         </div>
       </div>
       <Pagination pageID={PageID.Home} /> {/* 객체의 전개 연산자 */}

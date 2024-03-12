@@ -204,6 +204,12 @@ export function OrderInput({ isLong }: Position) {
     dispatch(setOrderLeverage(1));
   };
 
+  useEffect(() => {
+    document.addEventListener("focusout", () => {
+      window.scrollTo(0, 1);
+    });
+  }, []);
+
   return (
     <div className="orderInput">
       <div className="orderInput_area_top">

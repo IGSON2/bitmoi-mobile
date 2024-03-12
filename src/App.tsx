@@ -20,6 +20,7 @@ import { Terms } from "./pages/Terms";
 import { MypageAccumulation } from "./pages/mypage/mypage_accumulation/MypageAccumulation";
 import { MypageTradingHistory } from "./pages/mypage/mypage_tradingHistory/MypageTradingHistory";
 import { MypageSettingsSub } from "./pages/mypage/mypage_settings/mypage_settings_sub/MypageSettingsSub";
+import { Test } from "./pages/Test";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
     path: "/terms",
     element: <Terms />,
   },
+  // {
+  //   path: "/test",
+  //   element: <Test />,
+  // },
   {
     path: "*",
     loader: async () => {

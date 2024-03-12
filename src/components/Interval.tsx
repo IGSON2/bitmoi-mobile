@@ -72,7 +72,7 @@ export function Interval() {
     setFetching(true);
 
     const fIdentifier = encodeURIComponent(orderState.identifier);
-    const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
+    const reqURL = `/basic/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
 
     let min_time = 0;
     const temp_onechart: OneChart = { pdata: [], vdata: [] };

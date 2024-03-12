@@ -73,7 +73,7 @@ export const InterOrder = () => {
 
     if (min_timestamp === 0) {
       const fIdentifier = encodeURIComponent(orderState.identifier);
-      const reqURL = `/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
+      const reqURL = `/basic/interval?mode=${orderState.mode}&reqinterval=${intv}&identifier=${fIdentifier}`;
       try {
         const response = await axiosClient.get(reqURL);
         min_timestamp = response.data.onechart.pdata[0].time;

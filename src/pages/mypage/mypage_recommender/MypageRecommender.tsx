@@ -52,7 +52,9 @@ export function MypageRecommender() {
 
   useEffect(() => {
     async function getHistory() {
-      const res = await axiosClient.get(`/user/wmoi-transactions?page=${page}`);
+      const res = await axiosClient.get(
+        `/auth/user/wmoi-transactions?page=${page}`
+      );
       const data = res.data;
       if (data.length === 0) {
         rewardRef.current?.removeEventListener("scroll", handleScroll);

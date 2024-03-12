@@ -42,7 +42,7 @@ export const Welcome = () => {
         return;
       }
       try {
-        const res = await axiosClient.post("/user/recommender", {
+        const res = await axiosClient.post("/auth/user/recommender", {
           code: code,
         });
         if (isRecommended) {

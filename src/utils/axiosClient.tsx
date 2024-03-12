@@ -32,7 +32,7 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response && error.response.status === 401) {
-      if (originalRequest.url === "/verifyToken") {
+      if (originalRequest.url === "/basic/verifyToken") {
         return Promise.reject(error);
       }
 
@@ -46,7 +46,7 @@ axiosClient.interceptors.response.use(
             "Content-Type": "application/json",
           },
         });
-        const refResponse = await newAxiosClient.post("/reissueAccess", {
+        const refResponse = await newAxiosClient.post("/basic/reissueAccess", {
           refresh_token: refreshToken,
         });
         if (refResponse && refResponse.status === 200) {
@@ -57,7 +57,7 @@ axiosClient.interceptors.response.use(
           originalRequest.headers[
             "Authorization"
           ] = `Bearer ${refResponse.data.access_token}`;
-          if (originalRequest.url === "/verifyToken") {
+          if (originalRequest.url === "/basic/verifyToken") {
             originalRequest.data = JSON.stringify({
               token: refResponse.data.access_token,
             });

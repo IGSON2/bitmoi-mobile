@@ -20,12 +20,12 @@ export const Login = () => {
 
   function googleLogin() {
     const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
-    window.location.href = `${apiURL}/oauth/${req_url}?platform=google`;
+    window.location.href = `${apiURL}/basic/oauth/${req_url}?platform=google`;
   }
 
   function kakaoLogin() {
     const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
-    window.location.href = `${apiURL}/oauth/${req_url}?platform=kakao`;
+    window.location.href = `${apiURL}/basic/oauth/${req_url}?platform=kakao`;
   }
 
   return (

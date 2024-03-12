@@ -93,7 +93,7 @@ export const Rank = () => {
     }
     if (period && period.start && period.end) {
       const res = await axiosClient.get(
-        `/rank?mode=practice&category=${category}&start=${period.start}&end=${period.end}&page=${curPage}`
+        `/basic/rank?mode=practice&category=${category}&start=${period.start}&end=${period.end}&page=${curPage}`
       );
       if (category === "pnl") {
         setRankInfo((prevRanks) => ({

@@ -8,7 +8,7 @@ export async function checkAccessTokenValidity(reqUrl: string) {
     return null;
   }
   try {
-    const response = await axiosClient.post("/verifyToken", {
+    const response = await axiosClient.post("/basic/verifyToken", {
       token: accessToken,
     });
     if (response.status === 200) {
@@ -19,7 +19,7 @@ export async function checkAccessTokenValidity(reqUrl: string) {
   } catch (error) {
     try {
       const refResponse = await axiosClient.post(
-        "/reissueAccess",
+        "/basic/reissueAccess",
         {
           refresh_token: refreshToken,
         },

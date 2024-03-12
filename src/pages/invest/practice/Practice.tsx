@@ -87,7 +87,7 @@ export function Practice() {
 
       setIsChartLoaded(false);
       try {
-        const response = await axiosClient.get(`/${ModePrac}`);
+        const response = await axiosClient.get(`/basic/${ModePrac}`);
 
         const latestPdata = response.data.onechart.pdata[0];
         dispatch(setOrderEntryPrice(latestPdata.close));

@@ -34,7 +34,7 @@ export function MypageAccumulation() {
 
   useEffect(() => {
     async function getHistory() {
-      const res = await axiosClient.get(`/user/accumulation?page=${page}`);
+      const res = await axiosClient.get(`/auth/user/accumulation?page=${page}`);
       const data = res.data;
       if (data.length === 0) {
         rewardRef.current?.removeEventListener("scroll", handleScroll);

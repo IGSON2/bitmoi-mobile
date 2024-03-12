@@ -34,7 +34,7 @@ export function MypageInfo() {
       return;
     }
     try {
-      await axiosClient.put("/user/nickname", { nickname: edNickname });
+      await axiosClient.put("/auth/user/nickname", { nickname: edNickname });
       setEditFlag(EditingFlag.Idle);
       dispatch(setUserInfo({ ...userInfo, nickname: edNickname }));
     } catch (error) {
@@ -54,7 +54,7 @@ export function MypageInfo() {
     }
 
     try {
-      const res = await axiosClient.put("/user/profile", fd, {
+      const res = await axiosClient.put("/auth/user/profile", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

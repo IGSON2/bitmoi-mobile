@@ -59,7 +59,7 @@ export const History = (props: HistoryProps) => {
       }
       setIsLoading(true);
       const res = await axiosClient.get(
-        `/myscore?mode=${props.mode}&page=${page}`
+        `/auth/myscore?mode=${props.mode}&page=${page}`
       );
       if (res.data.length === 0) {
         // TODO: remove event listener
@@ -76,7 +76,7 @@ export const History = (props: HistoryProps) => {
   useEffect(() => {
     async function GetHistorySummary() {
       try {
-        const res = await axiosClient.get(`/score/${userInfo.nickname}`);
+        const res = await axiosClient.get(`/basic/score/${userInfo.nickname}`);
         setSummary(res.data);
       } catch (err) {
         console.error(err);

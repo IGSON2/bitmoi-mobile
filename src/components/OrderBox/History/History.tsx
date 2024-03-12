@@ -35,6 +35,8 @@ export const History = (props: HistoryProps) => {
 
   const userInfo = useAppSelector((state) => state.userInfo);
   const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [lockReq, setLockReq] = useState<boolean>(false);
 
   const handleScroll = () => {
     const container = historyRef.current;
@@ -52,15 +54,21 @@ export const History = (props: HistoryProps) => {
 
   useEffect(() => {
     async function GetHistory() {
+      if (lockReq) {
+        return;
+      }
+      setIsLoading(true);
       const res = await axiosClient.get(
         `/myscore?mode=${props.mode}&page=${page}`
       );
       if (res.data.length === 0) {
         // TODO: remove event listener
-        console.log("no more data");
+        setLockReq(true);
+        setIsLoading(false);
         return;
       }
       setScores((prev) => [...prev, ...res.data]);
+      setIsLoading(false);
     }
     GetHistory();
   }, [page]);
@@ -176,6 +184,7 @@ export const History = (props: HistoryProps) => {
           </div>
         );
       })}
+      {isLoading && <div style={{ paddingBottom: "10px" }}>Loading...</div>}
     </div>
   );
 };

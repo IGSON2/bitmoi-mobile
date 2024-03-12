@@ -18,7 +18,7 @@ export function Test() {
     document.addEventListener("focusout", () => {
       setIsPopUp(false);
       setInnerHeight(window.innerHeight);
-      window.scrollTo(0, 1);
+      window.scrollTo(0, 1); // 키보드 팝업으로 인한 fixed component의 CSS 깨짐 현상 해결
     });
 
     document.addEventListener("resize", () => {

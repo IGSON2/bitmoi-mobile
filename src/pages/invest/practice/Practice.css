@@ -1,6 +1,6 @@
 .practice {
   width: inherit;
-  height: 100%;
+  height: 100vh;
   min-height: 95vh;
   background-color: #f6f6f6;
   z-index: 1;

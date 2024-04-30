@@ -52,8 +52,8 @@ export const InterOrder = () => {
     let max_reqTime = GetLatestTimestamp(intervalCharts);
     const orderReq: Order = {
       ...orderState,
-      reqinterval: intervalInfo.interval,
-      min_timestamp: max_reqTime - GetIntervalStep(intervalInfo.interval), // 현재 interval의 1 step만큼 빼주면 된다. -> 작은단위와 큰단위 시간이 겹칠경우 : 작은단위가 큰단위보다 몇 칸 앞선경우
+      reqinterval: currentChart.interval,
+      min_timestamp: max_reqTime - GetIntervalStep(currentChart.interval), // 현재 interval의 1 step만큼 빼주면 된다. -> 작은단위와 큰단위 시간이 겹칠경우 : 작은단위가 큰단위보다 몇 칸 앞선경우
       max_timestamp: max_reqTime,
     };
     const res = await axiosClient.post("/intermediate/close", orderReq);

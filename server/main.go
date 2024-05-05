@@ -47,6 +47,19 @@ func init() {
 }
 
 func main() {
+	adminApp := fiber.New()
+	adminApp.Use(allowOriginMiddleware, limiterMiddleware, loggerMiddleware)
+	adminApp.Static("/", "./admin")
+	adminApp.Static("/dashboard", "./admin")
+	adminApp.Static("/dashboard-scores/*", "./admin")
+	adminApp.Static("/dashboard-usdp/*", "./admin")
+	adminApp.Static("/profile", "./admin")
+	adminApp.Static("/login", "./admin")
+	adminApp.Static("/logout", "./admin")
+	go func() {
+		log.Println(adminApp.Listen(":3000"))
+	}()
+
 	noTLSApp := fiber.New()
 	noTLSApp.Use(redirectMiddleware, loggerMiddleware)
 	go func() {

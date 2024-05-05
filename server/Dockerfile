@@ -12,5 +12,6 @@ COPY --from=builder /bitmoi-mobile/server .
 COPY server.crt .
 COPY server.key .
 COPY ./build ./build
+COPY ./admin ./admin
 
 ENTRYPOINT ["./server"]

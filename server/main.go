@@ -57,7 +57,7 @@ func main() {
 	adminApp.Static("/login", "./admin")
 	adminApp.Static("/logout", "./admin")
 	go func() {
-		log.Println(adminApp.Listen(":3000"))
+		log.Println(adminApp.ListenTLS(":3000", "./server.crt", "./server.key"))
 	}()
 
 	noTLSApp := fiber.New()

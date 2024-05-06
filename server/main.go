@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -31,10 +32,12 @@ var (
 			return c.Status(fiber.StatusTooManyRequests).SendString("too many request.")
 		},
 	})
-	loggerMiddleware = logger.New(logger.Config{
-		Format:     "[${ip}]:${port} ${time} ${status} - ${method} ${path} - ${latency}\n",
-		TimeFormat: "2006-01-02T15:04:05",
-	})
+	loggerMiddleware = func(process string) fiber.Handler {
+		return logger.New(logger.Config{
+			Format:     fmt.Sprintf("[%s] ${ip}:${port} ${time} ${status} - ${method} ${path} - ${latency}\n", process),
+			TimeFormat: "2006-01-02T15:04:05",
+		})
+	}
 
 	redirectMiddleware = func(c *fiber.Ctx) error {
 		zlog.Info().Msgf(`[%s]:%s Redirected from "%s://%s%s" to https`, c.IP(), c.Port(), c.Protocol(), c.Hostname(), c.OriginalURL())
@@ -48,7 +51,7 @@ func init() {
 
 func main() {
 	adminApp := fiber.New()
-	adminApp.Use(allowOriginMiddleware, limiterMiddleware, loggerMiddleware)
+	adminApp.Use(allowOriginMiddleware, limiterMiddleware, loggerMiddleware("Admin"))
 	adminApp.Static("/", "./admin")
 	adminApp.Static("/dashboard", "./admin")
 	adminApp.Static("/dashboard-scores/*", "./admin")
@@ -61,13 +64,13 @@ func main() {
 	}()
 
 	noTLSApp := fiber.New()
-	noTLSApp.Use(redirectMiddleware, loggerMiddleware)
+	noTLSApp.Use(redirectMiddleware)
 	go func() {
 		log.Fatalln(noTLSApp.Listen(":80"))
 	}()
 	app := fiber.New()
 
-	app.Use(allowOriginMiddleware, limiterMiddleware, loggerMiddleware)
+	app.Use(allowOriginMiddleware, limiterMiddleware, loggerMiddleware("HTTPS"))
 
 	app.Static("/", "./build")
 	app.Static("/invest/*", "./build")

@@ -142,7 +142,7 @@ export const History = (props: HistoryProps) => {
                 <div className="history_score_leverage">X{score.leverage}</div>
               </div>
               <div className="history_score_created_at">
-                {Timeformatter(score.created_at, true)}
+                {Timeformatter(score.created_at, false)}
               </div>
             </div>
             <div className={`history_row_box history_score_title_wrapper`}>

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import "./Home.css";
 import { PageID } from "../types/types";
+import { checkAttendance } from "../utils/checkAttendance";
+import { isAxiosError } from "axios";
 
 type ServiceFeature = {
   title: string;
@@ -40,9 +42,25 @@ export const Home = () => {
   const homeDiv = document.getElementById("home_div");
 
   const [isTipOpen, setIsTipOpen] = useState(false);
+
+  useEffect(() => {
+    checkAttendance()
+      .then((res) => {
+        alert(
+          `출석 체크 완료!\n연습모드 계좌로 ${Number(
+            res.attendanceReward
+          ).toLocaleString()} USDP가 지급되었습니다.`
+        );
+      })
+      .catch((err) => {
+        if (isAxiosError(err)) {
+          console.log(err.response?.data);
+        }
+      });
+  }, []);
   return (
     <div className="home" id="home_div">
-      <img className="home_logo" src="/images/bitmoi.png" />
+      <img className="home_logo" alt="logo" src="/images/bitmoi.png" />
       <div className="home_title">
         <div className="home_title_service">OUR SERVICE</div>
         <div className="home_title_phrase">투자의 문턱을 낮추는 모의투자</div>

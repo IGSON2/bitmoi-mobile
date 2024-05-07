@@ -21,6 +21,7 @@ import { MypageAccumulation } from "./pages/mypage/mypage_accumulation/MypageAcc
 import { MypageTradingHistory } from "./pages/mypage/mypage_tradingHistory/MypageTradingHistory";
 import { MypageSettingsSub } from "./pages/mypage/mypage_settings/mypage_settings_sub/MypageSettingsSub";
 import { Test } from "./pages/Test";
+import { AdvancedChartRef } from "./components/Advanced-ChartRef/Advanced-ChartRef";
 
 const router = createBrowserRouter([
   {
@@ -87,10 +88,10 @@ const router = createBrowserRouter([
     path: "/terms",
     element: <Terms />,
   },
-  // {
-  //   path: "/test",
-  //   element: <Test />,
-  // },
+  {
+    path: "/test",
+    element: <AdvancedChartRef />,
+  },
   {
     path: "*",
     loader: async () => {

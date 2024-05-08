@@ -44,20 +44,9 @@ export const Home = () => {
   const [isTipOpen, setIsTipOpen] = useState(false);
 
   useEffect(() => {
-    checkAttendance()
-      .then((res) => {
-        alert(
-          `출석 체크 완료!\n연습모드 계좌로 ${Number(
-            res.attendanceReward
-          ).toLocaleString()} USDP가 지급되었습니다.`
-        );
-      })
-      .catch((err) => {
-        if (isAxiosError(err)) {
-          console.log(err.response?.data);
-        }
-      });
+    checkAttendance();
   }, []);
+
   return (
     <div className="home" id="home_div">
       <img className="home_logo" alt="logo" src="/images/bitmoi.png" />

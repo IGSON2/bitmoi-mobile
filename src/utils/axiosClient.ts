@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const apiURL = process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
+export const apiURL =
+  process.env.REACT_APP_API_URL || "https://api.bitmoi.co.kr";
 
 const axiosClient = axios.create({
   baseURL: apiURL,
@@ -24,7 +25,6 @@ axiosClient.interceptors.request.use(
 
 const refreshToken = localStorage.getItem("refreshToken");
 axiosClient.interceptors.response.use(
-  //왜 요청이 여섯 번 씩 갈까
   (response) => {
     return response;
   },

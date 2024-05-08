@@ -40,12 +40,12 @@ export const AdvancedChartRef = () => {
 
   const defaultProps: Omit<ChartContainerProps, "container"> = {
     symbol: "AAPL",
-    interval: "D" as ResolutionString,
+    interval: "60" as ResolutionString,
     datafeedUrl: "https://demo_feed.tradingview.com",
-    libraryPath: "./charting_library/",
+    libraryPath: "/charting_library/",
     chartsStorageUrl: "https://saveload.tradingview.com",
     chartsStorageApiVersion: "1.1",
-    clientId: "tradingview.com",
+    clientId: "bitmoi.co.kr",
     userId: "public_user_id",
     fullscreen: false,
     autosize: true,
@@ -63,9 +63,25 @@ export const AdvancedChartRef = () => {
       container: chartContainerRef.current,
       library_path: defaultProps.libraryPath as string,
 
+      // locale: getLanguageFromURL() || "ko",
       locale: getLanguageFromURL() || "en",
-      disabled_features: ["use_localstorage_for_settings"],
-      enabled_features: ["study_templates"],
+      disabled_features: [
+        "use_localstorage_for_settings",
+        "display_market_status",
+        "header_compare",
+        "header_symbol_search",
+        "header_saveload",
+        "header_quick_search",
+        "header_undo_redo",
+        "symbol_search_hot_key",
+        "go_to_date",
+        "edit_buttons_in_legend",
+        "timeframes_toolbar",
+      ],
+      enabled_features: [
+        "show_hide_button_in_legend",
+        "delete_button_in_legend",
+      ],
       charts_storage_url: defaultProps.chartsStorageUrl,
       charts_storage_api_version: defaultProps.chartsStorageApiVersion,
       client_id: defaultProps.clientId,
@@ -79,19 +95,19 @@ export const AdvancedChartRef = () => {
 
     tvWidget.onChartReady(() => {
       tvWidget.headerReady().then(() => {
-        const button = tvWidget.createButton();
-        button.setAttribute("title", "Click to show a notification popup");
-        button.classList.add("apply-common-tooltip");
-        button.addEventListener("click", () =>
-          tvWidget.showNoticeDialog({
-            title: "Notification",
-            body: "TradingView Charting Library API works correctly",
-            callback: () => {
-              console.log("Noticed!");
-            },
-          })
-        );
-        button.innerHTML = "Check API";
+        // const button = tvWidget.createButton();
+        // button.setAttribute("title", "Click to show a notification popup");
+        // button.classList.add("apply-common-tooltip");
+        // button.addEventListener("click", () =>
+        //   tvWidget.showNoticeDialog({
+        //     title: "Notification",
+        //     body: "TradingView Charting Library API works correctly",
+        //     callback: () => {
+        //       console.log("Noticed!");
+        //     },
+        //   })
+        // );
+        // button.innerHTML = "Check API";
       });
     });
 

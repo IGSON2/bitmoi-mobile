@@ -3,12 +3,10 @@ import {
   GetMarksCallback,
   HistoryCallback,
   IDatafeedChartApi,
-  IDatafeedQuotesApi,
   IExternalDatafeed,
   LibrarySymbolInfo,
   Mark,
   OnReadyCallback,
-  QuotesCallback,
   ResolutionString,
   ResolveCallback,
   SearchSymbolResultItem,
@@ -28,18 +26,12 @@ import {
   UdfErrorResponse,
 } from "./helpers";
 
-import {
-  GetBarsResult,
-  HistoryProvider,
-  LimitedResponseConfiguration,
-  PeriodParamsWithOptionalCountback,
-} from "./history-provider";
+import { PeriodParamsWithOptionalCountback } from "./history-provider";
 
-import { IQuotesProvider } from "./iquotes-provider";
-import { DataPulseProvider } from "./data-pulse-provider";
-import { QuotesPulseProvider } from "./quotes-pulse-provider";
 import { SymbolsStorage } from "./symbols-storage";
 import { IRequester } from "./irequester";
+import { Requester } from "./requester";
+import { Bar } from "./charting_library/charting_library";
 
 export interface CustomResolveSymbolResponse extends LibrarySymbolInfo {
   s: undefined;
@@ -114,9 +106,7 @@ export interface CustomDatafeedConfiguration extends DatafeedConfiguration {
   // tslint:enable:tv-variable-name
 }
 
-export class CustomDatafeed
-  implements IExternalDatafeed, IDatafeedQuotesApi, IDatafeedChartApi
-{
+export class CustomDatafeed implements IExternalDatafeed, IDatafeedChartApi {
   protected _configuration: CustomDatafeedConfiguration =
     defaultConfiguration();
   private readonly _datafeedURL: string;
@@ -124,80 +114,39 @@ export class CustomDatafeed
 
   private _symbolsStorage: SymbolsStorage | null = null;
 
-  private readonly _historyProvider: HistoryProvider;
-  private readonly _dataPulseProvider: DataPulseProvider;
-
-  private readonly _quotesProvider: IQuotesProvider;
-  private readonly _quotesPulseProvider: QuotesPulseProvider;
+  // private readonly _historyProvider: HistoryProvider;
+  // private readonly _dataPulseProvider: DataPulseProvider;
 
   private readonly _requester: IRequester;
 
-  protected constructor(
-    datafeedURL: string,
-    quotesProvider: IQuotesProvider,
-    requester: IRequester,
-    updateFrequency: number = 10 * 1000,
-    limitedServerResponse?: LimitedResponseConfiguration
-  ) {
+  public constructor(datafeedURL: string) {
+    const requester = new Requester();
+
     this._datafeedURL = datafeedURL;
     this._requester = requester;
-    this._historyProvider = new HistoryProvider(
-      datafeedURL,
-      this._requester,
-      limitedServerResponse
-    );
-    this._quotesProvider = quotesProvider;
 
-    this._dataPulseProvider = new DataPulseProvider(
-      this._historyProvider,
-      updateFrequency
-    );
-    this._quotesPulseProvider = new QuotesPulseProvider(this._quotesProvider);
+    this._configurationReadyPromise = new Promise<void>((resolve) => {
+      const configuration = defaultConfiguration();
+      this._setupWithConfiguration(configuration);
+      resolve();
+    });
 
-    this._configurationReadyPromise = this._requestConfiguration().then(
-      (configuration: CustomDatafeedConfiguration | null) => {
-        if (configuration === null) {
-          configuration = defaultConfiguration();
-        }
+    // this._configurationReadyPromise = this._requestConfiguration().then(
+    //   (configuration: CustomDatafeedConfiguration | null) => {
+    //     if (configuration === null) {
+    //       configuration = defaultConfiguration();
+    //     }
 
-        this._setupWithConfiguration(configuration);
-      }
-    );
+    //     this._setupWithConfiguration(configuration);
+    //   }
+    // );
   }
 
   public onReady(callback: OnReadyCallback): void {
+    console.log("onReady called");
     this._configurationReadyPromise.then(() => {
       callback(this._configuration);
     });
-  }
-
-  public getQuotes(
-    symbols: string[],
-    onDataCallback: QuotesCallback,
-    onErrorCallback: (msg: string) => void
-  ): void {
-    this._quotesProvider
-      .getQuotes(symbols)
-      .then(onDataCallback)
-      .catch(onErrorCallback);
-  }
-
-  public subscribeQuotes(
-    symbols: string[],
-    fastSymbols: string[],
-    onRealtimeCallback: QuotesCallback,
-    listenerGuid: string
-  ): void {
-    this._quotesPulseProvider.subscribeQuotes(
-      symbols,
-      fastSymbols,
-      onRealtimeCallback,
-      listenerGuid
-    );
-  }
-
-  public unsubscribeQuotes(listenerGuid: string): void {
-    this._quotesPulseProvider.unsubscribeQuotes(listenerGuid);
   }
 
   public getMarks(
@@ -211,54 +160,54 @@ export class CustomDatafeed
       return;
     }
 
-    const requestParams: RequestParams = {
-      symbol: symbolInfo.ticker || "",
-      from: from,
-      to: to,
-      resolution: resolution,
-    };
+    // const requestParams: RequestParams = {
+    //   symbol: symbolInfo.ticker || "",
+    //   from: from,
+    //   to: to,
+    //   resolution: resolution,
+    // };
 
-    this._send<Mark[] | CustomDatafeedMark>("marks", requestParams)
-      .then((response: Mark[] | CustomDatafeedMark) => {
-        if (!Array.isArray(response)) {
-          const result: Mark[] = [];
-          for (let i = 0; i < response.id.length; ++i) {
-            result.push({
-              id: extractField(response, "id", i),
-              time: extractField(response, "time", i),
-              color: extractField(response, "color", i),
-              text: extractField(response, "text", i),
-              label: extractField(response, "label", i),
-              labelFontColor: extractField(response, "labelFontColor", i),
-              minSize: extractField(response, "minSize", i),
-              borderWidth: extractField(response, "borderWidth", i),
-              hoveredBorderWidth: extractField(
-                response,
-                "hoveredBorderWidth",
-                i
-              ),
-              imageUrl: extractField(response, "imageUrl", i),
-              showLabelWhenImageLoaded: extractField(
-                response,
-                "showLabelWhenImageLoaded",
-                i
-              ),
-            });
-          }
+    // this._send<Mark[] | CustomDatafeedMark>("marks", requestParams)
+    //   .then((response: Mark[] | CustomDatafeedMark) => {
+    //     if (!Array.isArray(response)) {
+    //       const result: Mark[] = [];
+    //       for (let i = 0; i < response.id.length; ++i) {
+    //         result.push({
+    //           id: extractField(response, "id", i),
+    //           time: extractField(response, "time", i),
+    //           color: extractField(response, "color", i),
+    //           text: extractField(response, "text", i),
+    //           label: extractField(response, "label", i),
+    //           labelFontColor: extractField(response, "labelFontColor", i),
+    //           minSize: extractField(response, "minSize", i),
+    //           borderWidth: extractField(response, "borderWidth", i),
+    //           hoveredBorderWidth: extractField(
+    //             response,
+    //             "hoveredBorderWidth",
+    //             i
+    //           ),
+    //           imageUrl: extractField(response, "imageUrl", i),
+    //           showLabelWhenImageLoaded: extractField(
+    //             response,
+    //             "showLabelWhenImageLoaded",
+    //             i
+    //           ),
+    //         });
+    //       }
 
-          response = result;
-        }
+    //       response = result;
+    //     }
 
-        onDataCallback(response);
-      })
-      .catch((error?: string | Error) => {
-        logMessage(
-          `UdfCompatibleDatafeed: Request marks failed: ${getErrorMessage(
-            error
-          )}`
-        );
-        onDataCallback([]);
-      });
+    //     onDataCallback(response);
+    //   })
+    //   .catch((error?: string | Error) => {
+    //     logMessage(
+    //       `UdfCompatibleDatafeed: Request marks failed: ${getErrorMessage(
+    //         error
+    //       )}`
+    //     );
+    //     onDataCallback([]);
+    //   });
   }
 
   public getTimescaleMarks(
@@ -272,49 +221,49 @@ export class CustomDatafeed
       return;
     }
 
-    const requestParams: RequestParams = {
-      symbol: symbolInfo.ticker || "",
-      from: from,
-      to: to,
-      resolution: resolution,
-    };
+    // const requestParams: RequestParams = {
+    //   symbol: symbolInfo.ticker || "",
+    //   from: from,
+    //   to: to,
+    //   resolution: resolution,
+    // };
 
-    this._send<TimescaleMark[] | CustomDatafeedTimescaleMark>(
-      "timescale_marks",
-      requestParams
-    )
-      .then((response: TimescaleMark[] | CustomDatafeedTimescaleMark) => {
-        if (!Array.isArray(response)) {
-          const result: TimescaleMark[] = [];
-          for (let i = 0; i < response.id.length; ++i) {
-            result.push({
-              id: extractField(response, "id", i),
-              time: extractField(response, "time", i),
-              color: extractField(response, "color", i),
-              label: extractField(response, "label", i),
-              tooltip: extractField(response, "tooltip", i),
-              imageUrl: extractField(response, "imageUrl", i),
-              showLabelWhenImageLoaded: extractField(
-                response,
-                "showLabelWhenImageLoaded",
-                i
-              ),
-            });
-          }
+    // this._send<TimescaleMark[] | CustomDatafeedTimescaleMark>(
+    //   "timescale_marks",
+    //   requestParams
+    // )
+    //   .then((response: TimescaleMark[] | CustomDatafeedTimescaleMark) => {
+    //     if (!Array.isArray(response)) {
+    //       const result: TimescaleMark[] = [];
+    //       for (let i = 0; i < response.id.length; ++i) {
+    //         result.push({
+    //           id: extractField(response, "id", i),
+    //           time: extractField(response, "time", i),
+    //           color: extractField(response, "color", i),
+    //           label: extractField(response, "label", i),
+    //           tooltip: extractField(response, "tooltip", i),
+    //           imageUrl: extractField(response, "imageUrl", i),
+    //           showLabelWhenImageLoaded: extractField(
+    //             response,
+    //             "showLabelWhenImageLoaded",
+    //             i
+    //           ),
+    //         });
+    //       }
 
-          response = result;
-        }
+    //       response = result;
+    //     }
 
-        onDataCallback(response);
-      })
-      .catch((error?: string | Error) => {
-        logMessage(
-          `UdfCompatibleDatafeed: Request timescale marks failed: ${getErrorMessage(
-            error
-          )}`
-        );
-        onDataCallback([]);
-      });
+    //     onDataCallback(response);
+    //   })
+    //   .catch((error?: string | Error) => {
+    //     logMessage(
+    //       `UdfCompatibleDatafeed: Request timescale marks failed: ${getErrorMessage(
+    //         error
+    //       )}`
+    //     );
+    //     onDataCallback([]);
+    //   });
   }
 
   public getServerTime(callback: ServerTimeCallback): void {
@@ -322,20 +271,20 @@ export class CustomDatafeed
       return;
     }
 
-    this._send<string>("time")
-      .then((response: string) => {
-        const time = parseInt(response);
-        if (!isNaN(time)) {
-          callback(time);
-        }
-      })
-      .catch((error?: string | Error) => {
-        logMessage(
-          `UdfCompatibleDatafeed: Fail to load server time, error=${getErrorMessage(
-            error
-          )}`
-        );
-      });
+    // this._send<string>("time")
+    //   .then((response: string) => {
+    //     const time = parseInt(response);
+    //     if (!isNaN(time)) {
+    //       callback(time);
+    //     }
+    //   })
+    //   .catch((error?: string | Error) => {
+    //     logMessage(
+    //       `UdfCompatibleDatafeed: Fail to load server time, error=${getErrorMessage(
+    //         error
+    //       )}`
+    //     );
+    //   });
   }
 
   public searchSymbols(
@@ -401,129 +350,157 @@ export class CustomDatafeed
     extension?: SymbolResolveExtension
   ): void {
     logMessage("Resolve requested");
+    onResolve({
+      name: symbolName,
+      timezone: "Asia/Seoul",
+      ticker: symbolName,
+      description: symbolName,
+      type: "crypto",
+      session: "24x7",
+      exchange: "TEST_EXCHANGE",
+      listed_exchange: "TEST_LISTED_EXCHANGE",
+      format: "price",
+      pricescale: 100000,
+      minmov: 1,
+      has_intraday: true,
+      // supported_resolutions: ["60" as ResolutionString],
+    });
+    // console.log(onResolve);
 
-    const currencyCode = extension && extension.currencyCode;
-    const unitId = extension && extension.unitId;
+    // const currencyCode = extension && extension.currencyCode;
+    // const unitId = extension && extension.unitId;
 
-    const resolveRequestStartTime = Date.now();
-    function onResultReady(symbolInfo: LibrarySymbolInfo): void {
-      logMessage(`Symbol resolved: ${Date.now() - resolveRequestStartTime}ms`);
-      onResolve(symbolInfo);
-    }
+    // const resolveRequestStartTime = Date.now();
+    // function onResultReady(symbolInfo: LibrarySymbolInfo): void {
+    //   logMessage(`Symbol resolved: ${Date.now() - resolveRequestStartTime}ms`);
+    //   onResolve(symbolInfo);
+    // }
 
-    if (!this._configuration.supports_group_request) {
-      const params: RequestParams = {
-        symbol: symbolName,
-      };
-      if (currencyCode !== undefined) {
-        params.currencyCode = currencyCode;
-      }
-      if (unitId !== undefined) {
-        params.unitId = unitId;
-      }
+    // if (!this._configuration.supports_group_request) {
+    //   const params: RequestParams = {
+    //     symbol: symbolName,
+    //   };
+    //   if (currencyCode !== undefined) {
+    //     params.currencyCode = currencyCode;
+    //   }
+    //   if (unitId !== undefined) {
+    //     params.unitId = unitId;
+    //   }
 
-      this._send<CustomResolveSymbolResponse | UdfErrorResponse>(
-        "symbols",
-        params
-      )
-        .then((response: CustomResolveSymbolResponse | UdfErrorResponse) => {
-          if (response.s !== undefined) {
-            onError("unknown_symbol");
-          } else {
-            const symbol = response.name;
-            const listedExchange =
-              response.listed_exchange ?? response["exchange-listed"];
-            const tradedExchange =
-              response.exchange ?? response["exchange-traded"];
+    //   this._send<CustomResolveSymbolResponse | UdfErrorResponse>(
+    //     "symbols",
+    //     params
+    //   )
+    //     .then((response: CustomResolveSymbolResponse | UdfErrorResponse) => {
+    //       if (response.s !== undefined) {
+    //         onError("unknown_symbol");
+    //       } else {
+    //         const symbol = response.name;
+    //         const listedExchange =
+    //           response.listed_exchange ?? response["exchange-listed"];
+    //         const tradedExchange =
+    //           response.exchange ?? response["exchange-traded"];
 
-            const result: LibrarySymbolInfo = {
-              ...response,
-              name: symbol,
-              base_name: [listedExchange + ":" + symbol],
-              listed_exchange: listedExchange,
-              exchange: tradedExchange,
-              ticker: response.ticker,
-              currency_code:
-                response.currency_code ?? response["currency-code"],
-              original_currency_code:
-                response.original_currency_code ??
-                response["original-currency-code"],
-              unit_id: response.unit_id ?? response["unit-id"],
-              original_unit_id:
-                response.original_unit_id ?? response["original-unit-id"],
-              unit_conversion_types:
-                response.unit_conversion_types ??
-                response["unit-conversion-types"],
-              has_intraday:
-                response.has_intraday ?? response["has-intraday"] ?? false,
-              visible_plots_set:
-                response.visible_plots_set ?? response["visible-plots-set"],
-              minmov: response.minmovement ?? response.minmov ?? 0,
-              minmove2: response.minmovement2 ?? response.minmove2,
-              session: response.session ?? response["session-regular"],
-              session_holidays:
-                response.session_holidays ?? response["session-holidays"],
-              supported_resolutions:
-                response.supported_resolutions ??
-                response["supported-resolutions"] ??
-                this._configuration.supported_resolutions ??
-                [],
-              has_daily: response.has_daily ?? response["has-daily"] ?? true,
-              intraday_multipliers: response.intraday_multipliers ??
-                response["intraday-multipliers"] ?? [
-                  "1",
-                  "5",
-                  "15",
-                  "30",
-                  "60",
-                ],
-              has_weekly_and_monthly:
-                response.has_weekly_and_monthly ??
-                response["has-weekly-and-monthly"],
-              has_empty_bars:
-                response.has_empty_bars ?? response["has-empty-bars"],
-              volume_precision:
-                response.volume_precision ?? response["volume-precision"],
-              format: response.format ?? "price",
-            };
-            onResultReady(result);
-          }
-        })
-        .catch((reason?: string | Error) => {
-          logMessage(
-            `UdfCompatibleDatafeed: Error resolving symbol: ${getErrorMessage(
-              reason
-            )}`
-          );
-          onError("unknown_symbol");
-        });
-    } else {
-      if (this._symbolsStorage === null) {
-        throw new Error(
-          "UdfCompatibleDatafeed: inconsistent configuration (symbols storage)"
-        );
-      }
+    //         const result: LibrarySymbolInfo = {
+    //           ...response,
+    //           name: symbol,
+    //           base_name: [listedExchange + ":" + symbol],
+    //           listed_exchange: listedExchange,
+    //           exchange: tradedExchange,
+    //           ticker: response.ticker,
+    //           currency_code:
+    //             response.currency_code ?? response["currency-code"],
+    //           original_currency_code:
+    //             response.original_currency_code ??
+    //             response["original-currency-code"],
+    //           unit_id: response.unit_id ?? response["unit-id"],
+    //           original_unit_id:
+    //             response.original_unit_id ?? response["original-unit-id"],
+    //           unit_conversion_types:
+    //             response.unit_conversion_types ??
+    //             response["unit-conversion-types"],
+    //           has_intraday:
+    //             response.has_intraday ?? response["has-intraday"] ?? false,
+    //           visible_plots_set:
+    //             response.visible_plots_set ?? response["visible-plots-set"],
+    //           minmov: response.minmovement ?? response.minmov ?? 0,
+    //           minmove2: response.minmovement2 ?? response.minmove2,
+    //           session: response.session ?? response["session-regular"],
+    //           session_holidays:
+    //             response.session_holidays ?? response["session-holidays"],
+    //           supported_resolutions:
+    //             response.supported_resolutions ??
+    //             response["supported-resolutions"] ??
+    //             this._configuration.supported_resolutions ??
+    //             [],
+    //           has_daily: response.has_daily ?? response["has-daily"] ?? true,
+    //           intraday_multipliers: response.intraday_multipliers ??
+    //             response["intraday-multipliers"] ?? [
+    //               "1",
+    //               "5",
+    //               "15",
+    //               "30",
+    //               "60",
+    //             ],
+    //           has_weekly_and_monthly:
+    //             response.has_weekly_and_monthly ??
+    //             response["has-weekly-and-monthly"],
+    //           has_empty_bars:
+    //             response.has_empty_bars ?? response["has-empty-bars"],
+    //           volume_precision:
+    //             response.volume_precision ?? response["volume-precision"],
+    //           format: response.format ?? "price",
+    //         };
+    //         onResultReady(result);
+    //       }
+    //     })
+    //     .catch((reason?: string | Error) => {
+    //       logMessage(
+    //         `UdfCompatibleDatafeed: Error resolving symbol: ${getErrorMessage(
+    //           reason
+    //         )}`
+    //       );
+    //       onError("unknown_symbol");
+    //     });
+    // } else {
+    //   if (this._symbolsStorage === null) {
+    //     throw new Error(
+    //       "UdfCompatibleDatafeed: inconsistent configuration (symbols storage)"
+    //     );
+    //   }
 
-      this._symbolsStorage
-        .resolveSymbol(symbolName, currencyCode, unitId)
-        .then(onResultReady)
-        .catch(onError);
-    }
+    //   this._symbolsStorage
+    //     .resolveSymbol(symbolName, currencyCode, unitId)
+    //     .then(onResultReady)
+    //     .catch(onError);
+    // }
   }
 
-  public getBars(
+  public async getBars(
     symbolInfo: LibrarySymbolInfo,
     resolution: ResolutionString,
     periodParams: PeriodParamsWithOptionalCountback,
     onResult: HistoryCallback,
     onError: ErrorCallback
-  ): void {
-    this._historyProvider
-      .getBars(symbolInfo, resolution, periodParams)
-      .then((result: GetBarsResult) => {
-        onResult(result.bars, result.meta);
-      })
-      .catch(onError);
+  ): Promise<void> {
+    try {
+      const result = await this._send<any>("basic/practice");
+      const bars: Bar[] = [];
+      for (let i = 0; i < result.onechart.pdata.length; i++) {
+        result.onechart.pdata[i].time = result.onechart.pdata[i].time * 1000;
+        bars.unshift(result.onechart.pdata[i] as Bar);
+        bars[0].volume = result.onechart.vdata[i];
+      }
+      onResult(bars);
+    } catch (e: any) {
+      onError(e);
+    }
+    // this._historyProvider
+    // .getBars(symbolInfo, resolution, periodParams)
+    // .then((result: GetBarsResult) => {
+    // onResult(result.bars, result.meta);
+    // })
+    // .catch(onError);
   }
 
   public subscribeBars(
@@ -533,16 +510,18 @@ export class CustomDatafeed
     listenerGuid: string,
     _onResetCacheNeededCallback: () => void
   ): void {
-    this._dataPulseProvider.subscribeBars(
-      symbolInfo,
-      resolution,
-      onTick,
-      listenerGuid
-    );
+    console.log("Subscribe Bars called");
+    // this._dataPulseProvider.subscribeBars(
+    // symbolInfo,
+    // resolution,
+    // onTick,
+    // listenerGuid
+    // );
   }
 
   public unsubscribeBars(listenerGuid: string): void {
-    this._dataPulseProvider.unsubscribeBars(listenerGuid);
+    console.log("Unsubscribe Bars called");
+    // this._dataPulseProvider.unsubscribeBars(listenerGuid);
   }
 
   protected _requestConfiguration(): Promise<CustomDatafeedConfiguration | null> {
@@ -601,19 +580,16 @@ export class CustomDatafeed
 
 function defaultConfiguration(): CustomDatafeedConfiguration {
   return {
-    supports_search: false,
-    supports_group_request: true,
+    supports_search: true,
+    supports_group_request: false,
     supported_resolutions: [
-      "1" as ResolutionString,
-      "5" as ResolutionString,
       "15" as ResolutionString,
-      "30" as ResolutionString,
       "60" as ResolutionString,
-      "1D" as ResolutionString,
-      "1W" as ResolutionString,
-      "1M" as ResolutionString,
+      "240" as ResolutionString,
+      // "1D" as ResolutionString,
     ],
     supports_marks: false,
     supports_timescale_marks: false,
+    supports_time: false,
   };
 }

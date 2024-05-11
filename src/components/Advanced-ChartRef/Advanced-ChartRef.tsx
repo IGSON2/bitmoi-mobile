@@ -8,6 +8,7 @@ import {
 } from "./charting_library";
 import * as React from "react";
 import { UDFCompatibleDatafeed } from "./udf-compatible-datafeed";
+import { CustomDatafeed } from "./custom-datafeed";
 
 export interface ChartContainerProps {
   symbol: ChartingLibraryWidgetOptions["symbol"];
@@ -39,9 +40,10 @@ export const AdvancedChartRef = () => {
     useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 
   const defaultProps: Omit<ChartContainerProps, "container"> = {
-    symbol: "AAPL",
+    symbol: "TEST",
     interval: "60" as ResolutionString,
-    datafeedUrl: "https://demo_feed.tradingview.com",
+    // datafeedUrl: "https://demo_feed.tradingview.com",
+    datafeedUrl: "https://api.bitmoi.co.kr",
     libraryPath: "/charting_library/",
     chartsStorageUrl: "https://saveload.tradingview.com",
     chartsStorageApiVersion: "1.1",
@@ -57,7 +59,8 @@ export const AdvancedChartRef = () => {
       symbol: defaultProps.symbol as string,
       // BEWARE: no trailing slash is expected in feed URL
       // tslint:disable-next-line:no-any
-      datafeed: new UDFCompatibleDatafeed(defaultProps.datafeedUrl) as any,
+      // datafeed: new UDFCompatibleDatafeed(defaultProps.datafeedUrl) as any,
+      datafeed: new CustomDatafeed(defaultProps.datafeedUrl) as any,
       interval:
         defaultProps.interval as ChartingLibraryWidgetOptions["interval"],
       container: chartContainerRef.current,
@@ -95,6 +98,7 @@ export const AdvancedChartRef = () => {
 
     tvWidget.onChartReady(() => {
       tvWidget.headerReady().then(() => {
+        // tvWidget.setDebugMode(true);
         // const button = tvWidget.createButton();
         // button.setAttribute("title", "Click to show a notification popup");
         // button.classList.add("apply-common-tooltip");

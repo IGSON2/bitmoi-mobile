@@ -157,15 +157,21 @@ export class UDFCompatibleDatafeedBase
     );
     this._quotesPulseProvider = new QuotesPulseProvider(this._quotesProvider);
 
-    this._configurationReadyPromise = this._requestConfiguration().then(
-      (configuration: UdfCompatibleConfiguration | null) => {
-        if (configuration === null) {
-          configuration = defaultConfiguration();
-        }
+    this._configurationReadyPromise = new Promise<void>((resolve) => {
+      const configuration = defaultConfiguration();
+      this._setupWithConfiguration(configuration);
+      resolve();
+    });
 
-        this._setupWithConfiguration(configuration);
-      }
-    );
+    // this._configurationReadyPromise = this._requestConfiguration().then(
+    //   (configuration: UdfCompatibleConfiguration | null) => {
+    //     if (configuration === null) {
+    //       configuration = defaultConfiguration();
+    //     }
+
+    //     this._setupWithConfiguration(configuration);
+    //   }
+    // );
   }
 
   public onReady(callback: OnReadyCallback): void {
@@ -598,8 +604,8 @@ export class UDFCompatibleDatafeedBase
 
 function defaultConfiguration(): UdfCompatibleConfiguration {
   return {
-    supports_search: false,
-    supports_group_request: true,
+    supports_search: true,
+    supports_group_request: false,
     supported_resolutions: [
       "1" as ResolutionString,
       "5" as ResolutionString,

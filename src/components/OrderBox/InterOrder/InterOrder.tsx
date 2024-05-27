@@ -143,7 +143,7 @@ export const InterOrder = () => {
 
       for (const key in interResponse.data.another_charts) {
         if (
-          !interResponse.data.another_charts[key].pdata ||
+          !interResponse.data.another_charts[key] ||
           !CheckIntervalCharts(key as IntervalType, intervalCharts)
         ) {
           continue;
